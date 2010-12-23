@@ -14,10 +14,9 @@ public class main
 class myFrame extends Frame
 {
 	Vector data;
-	Vector line;
 	alg kernel;
-	Dialog dlg;
-	Button dlgb;
+	Dialog myDialog;
+	Button myDialogBotton;
 	int State;
 		//0 = 初始、游戏暂停状态
 		//1 = 用户还须下1子
@@ -36,21 +35,23 @@ class myFrame extends Frame
 	int mode;
 		//0 = 练习模式
 		//1 = 实战模式
-	MenuBar m_MenuBar = new MenuBar();
-	Menu m_game = 		new Menu("游戏");
-	Menu m_ngame = 			new Menu("开始新游戏");
-	MenuItem m_first = 			new MenuItem("先手(玩家黑棋先行)");
-	MenuItem m_last = 			new MenuItem("后手(玩家白棋后行)");	
-	MenuItem m_restart = 		new MenuItem("重新开始游戏");
-	MenuItem m_reset = 			new MenuItem("重置游戏");
-	CheckboxMenuItem m_comp = 		new CheckboxMenuItem("人机对战");
-	MenuItem m_prac = new MenuItem("切换为实战模式");
-	MenuItem m_int = 		new MenuItem("暂停游戏");
-	MenuItem m_exit = 		new MenuItem("退出");
-	MenuItem m_back = 		new MenuItem("悔棋");
-	Menu m_file = 		new Menu("游戏战绩");
-	MenuItem m_open = 		new MenuItem("打开游戏战绩");
-	MenuItem m_save = 		new MenuItem("保存游戏战绩");
+
+	//菜单栏
+	MenuBar menu_MenuBar = new MenuBar();
+	Menu menu_game = 		new Menu("游戏");
+	Menu menu_ngame = 			new Menu("开始新游戏");
+	MenuItem menu_first = 			new MenuItem("先手(玩家黑棋先行)");
+	MenuItem menu_last = 			new MenuItem("后手(玩家白棋后行)");	
+	MenuItem menu_restart = 		new MenuItem("重新开始游戏");
+	MenuItem menu_reset = 			new MenuItem("重置游戏");
+	CheckboxMenuItem menu_comp = 		new CheckboxMenuItem("人机对战");
+	MenuItem menu_prac = new MenuItem("切换为实战模式");
+	MenuItem menu_int = 		new MenuItem("暂停游戏");
+	MenuItem menu_exit = 		new MenuItem("退出");
+	MenuItem menu_back = 		new MenuItem("悔棋");
+	Menu menu_file = 		new Menu("游戏战绩");
+	MenuItem menu_open = 		new MenuItem("打开游戏战绩");
+	MenuItem menu_save = 		new MenuItem("保存游戏战绩");
 
 	
 	myFrame()
@@ -59,48 +60,64 @@ class myFrame extends Frame
 		setSize(650, 680);
 		setResizable(false);
 		
+		//初始化数据
 		data = new Vector();
-		line = new Vector();
-		kernel = new alg(data, line);
+		kernel = new alg(data);
 		State = 0;
 		pause = false;
 		computer = true;
 		
 		//菜单栏及按钮监听
-		setMenuBar(m_MenuBar);
-		m_MenuBar.add(m_game);
-			m_game.add(m_ngame);
-				m_ngame.add(m_first);	m_first.addActionListener(new afirst());
-										m_first.setShortcut(new MenuShortcut(KeyEvent.VK_F2));				
-				m_ngame.add(m_last);	m_last.addActionListener(new alast());
-										m_last.setShortcut(new MenuShortcut(KeyEvent.VK_F3));
-			m_game.add(m_restart);		m_restart.addActionListener(new arestart());	m_restart.setEnabled(false);
-										m_restart.setShortcut(new MenuShortcut(KeyEvent.VK_F5));
-			m_game.add(m_reset);		m_reset.addActionListener(new areset());
-										m_reset.setShortcut(new MenuShortcut(KeyEvent.VK_F1));
-			m_game.add(m_comp);			m_comp.addItemListener(new acomp());			m_comp.setState(true);
-			m_game.add(m_prac);			m_prac.addActionListener(new aprac());
-			m_game.add(m_int);			m_int.addActionListener(new aint());			m_int.setEnabled(false);
-										m_int.setShortcut(new MenuShortcut(KeyEvent.VK_F4));
-			m_game.add(m_back);			m_back.addActionListener(new aback());			m_back.setEnabled(false);
-										m_back.setShortcut(new MenuShortcut(KeyEvent.VK_LEFT));
-		m_game.add(m_exit);				m_exit.addActionListener(new aexit());
-		m_MenuBar.add(m_file);
-			m_file.add(m_open);			m_open.addActionListener(new aopen());
-										m_open.setShortcut(new MenuShortcut(KeyEvent.VK_O));
-			m_file.add(m_save);			m_save.addActionListener(new asave());
-										m_save.setShortcut(new MenuShortcut(KeyEvent.VK_S));			
+		setMenuBar(menu_MenuBar);
+		menu_MenuBar.add(menu_game);
+			menu_game.add(menu_ngame);
+				menu_ngame.add(menu_first);	
+					menu_first.addActionListener(new ack_menu_first());
+					menu_first.setShortcut(new MenuShortcut(KeyEvent.VK_F2));				
+				menu_ngame.add(menu_last);
+					menu_last.addActionListener(new ack_menu_last());
+					menu_last.setShortcut(new MenuShortcut(KeyEvent.VK_F3));
+			menu_game.add(menu_restart);
+				menu_restart.addActionListener(new ack_menu_restart());	
+				menu_restart.setEnabled(false);
+				menu_restart.setShortcut(new MenuShortcut(KeyEvent.VK_F5));
+			menu_game.add(menu_reset);		
+				menu_reset.addActionListener(new ack_menu_reset());
+				menu_reset.setShortcut(new MenuShortcut(KeyEvent.VK_F1));
+			menu_game.add(menu_comp);			
+				menu_comp.addItemListener(new ack_menu_comp());			
+				menu_comp.setState(true);
+			menu_game.add(menu_prac);			
+				menu_prac.addActionListener(new ack_menu_prac());
+			menu_game.add(menu_int);			
+				menu_int.addActionListener(new ack_menu_int());			
+				menu_int.setEnabled(false);
+				menu_int.setShortcut(new MenuShortcut(KeyEvent.VK_F4));
+			menu_game.add(menu_back);			
+				menu_back.addActionListener(new ack_menu_back());		
+				menu_back.setEnabled(false);
+				menu_back.setShortcut(new MenuShortcut(KeyEvent.VK_LEFT));
+			menu_game.add(menu_exit);				
+				menu_exit.addActionListener(new ack_menu_exit());
+		menu_MenuBar.add(menu_file);
+			menu_file.add(menu_open);			
+				menu_open.addActionListener(new ack_menu_open());
+				menu_open.setShortcut(new MenuShortcut(KeyEvent.VK_O));
+			menu_file.add(menu_save);			
+				menu_save.addActionListener(new ack_menu_save());
+				menu_save.setShortcut(new MenuShortcut(KeyEvent.VK_S));			
 
 		//窗口监听
 		addWindowListener(new Wclose());
 		addMouseListener(new amouse());
 		
+		//打开游戏时读取文件
 		FileInputStream istream;
-		ObjectInputStream p;
+		ObjectInputStream iFstream;
 		try{
 			istream = new FileInputStream("close.c6db");
-			p = new ObjectInputStream(istream);
-			data = (Vector)p.readObject();
+			iFstream = new ObjectInputStream(istream);
+			data = (Vector)iFstream.readObject();
 			istream.close();
 			kernel.set(data);
 		}catch (Exception x)
@@ -110,52 +127,56 @@ class myFrame extends Frame
 		
 		if (data.size() != 0)
 		{
-			int s;
 			pause = true;
 			State = 0;
-			m_int.setEnabled(true);
-			m_int.setLabel("继续游戏");
+			menu_int.setEnabled(true);
+			menu_int.setLabel("继续游戏");
 		}
 		
 		repaint();
-		
 		setmytitle();
 		setVisible(true);
 	}
 
 	public void paint(Graphics g)
-	{
-		int i, j;
+	{//界面绘制
+		int i, Size;
 		mypoint p;
 		g.setColor(new Color(240, 120, 20));
-		g.fillRect(20, 60, 600, 600);
-		g.setColor(Color.darkGray);
+		g.fillRect(20, 60, 600, 600);				//绘制背景
+		g.setColor(Color.darkGray);					//绘制网格
 		for (i=0; i<19; i++)
 		{
 			g.drawLine(50, 90 + 30 * i, 590, 90 + 30 * i);
 			g.drawLine(50 + 30 * i, 90, 50 + 30 * i, 630);
 		}
-		g.setColor(Color.black);
-		g.fillOval(320-3, 360-3, 7, 7);
-		g.fillOval(140-3, 180-3, 7, 7);
-		g.fillOval(140-3, 540-3, 7, 7);
-		g.fillOval(500-3, 180-3, 7, 7);
-		g.fillOval(500-3, 540-3, 7, 7);
 		
-		j = data.size();
-		for (i=0; i<j; i++)
+		g.setColor(Color.black);
+		g.fillOval(10 * 30 + 20 - 3, 10 * 30 + 60 - 3, 7, 7);			//绘制5个标志点
+		g.fillOval( 4 * 30 + 20 - 3,  4 * 30 + 60 - 3, 7, 7);
+		g.fillOval( 4 * 30 + 20 - 3, 16 * 30 + 60 - 3, 7, 7);
+		g.fillOval(16 * 30 + 20 - 3,  4 * 30 + 60 - 3, 7, 7);
+		g.fillOval(16 * 30 + 20 - 3, 16 * 30 + 60 - 3, 7, 7);
+		
+		Size = data.size();							//绘制棋子
+		for (i=0; i<Size; i++)
 		{
 			p = (mypoint)data.elementAt(i);
 			if (p.getcolor() == 0)
-			{	g.setColor(new Color(20, 20, 20));}
+			{	
+				g.setColor(new Color(20, 20, 20));
+			}
 			else
-			{	g.setColor(Color.white);}
+			{	
+				g.setColor(Color.white);
+			}
+			
 			g.fillOval(50 + 30 * p.getx() - 10, 90 + 30 * p.gety() - 10, 21, 21);
 		}
 	}
 	
-	class afirst implements ActionListener
-	{
+	class ack_menu_first implements ActionListener
+	{//新游戏->先手 事件响应
 		public void actionPerformed(ActionEvent e)
 		{
 			data.clear();
@@ -164,13 +185,13 @@ class myFrame extends Frame
 			color = 0;
 			pause = false;
 			setmytitle();
-			m_back.setEnabled(false);
-			m_restart.setEnabled(false);
+			menu_back.setEnabled(false);
+			menu_restart.setEnabled(false);
 		}
 	}
 	
-	class alast implements ActionListener
-	{
+	class ack_menu_last implements ActionListener
+	{//新游戏->后手 事件响应
 		public void actionPerformed(ActionEvent e)
 		{
 			data.clear();
@@ -180,13 +201,13 @@ class myFrame extends Frame
 			color = 1;
 			pause = false;
 			setmytitle();
-			m_back.setEnabled(false);
-			m_restart.setEnabled(false);
+			menu_back.setEnabled(false);
+			menu_restart.setEnabled(false);
 		}
 	}
 	
-	class arestart implements ActionListener
-	{
+	class ack_menu_restart implements ActionListener
+	{//重新开始游戏 事件响应
 		public void actionPerformed(ActionEvent e)
 		{
 			int p;
@@ -195,9 +216,14 @@ class myFrame extends Frame
 			{
 				p = data.size();
 				if (p % 2 != 0)
-					ccolor = 1 - ((mypoint)data.elementAt(p-1)).getcolor();
+				{
+					ccolor = 1 - ( (mypoint)data.elementAt(p - 1)).getcolor();
+				}
 				else
-					ccolor = 1 - ((mypoint)data.elementAt(p-2)).getcolor();
+				{
+					ccolor = 1 - ( (mypoint)data.elementAt(p - 2)).getcolor();
+				}
+				
 				if (ccolor == 0)
 				{
 					data.clear();
@@ -205,8 +231,8 @@ class myFrame extends Frame
 					State = 1;
 					color = 0;
 					setmytitle();
-					m_back.setEnabled(false);
-					m_restart.setEnabled(false);
+					menu_back.setEnabled(false);
+					menu_restart.setEnabled(false);
 				}
 				else
 				{
@@ -216,8 +242,8 @@ class myFrame extends Frame
 					State = 2;
 					color = 1;
 					setmytitle();
-					m_back.setEnabled(false);
-					m_restart.setEnabled(false);
+					menu_back.setEnabled(false);
+					menu_restart.setEnabled(false);
 				}
 			}
 			else
@@ -227,14 +253,14 @@ class myFrame extends Frame
 				State = 1;
 				color = 0;
 				setmytitle();
-				m_back.setEnabled(false);
-				m_restart.setEnabled(false);				
+				menu_back.setEnabled(false);
+				menu_restart.setEnabled(false);				
 			}
 		}
 	}
 	
-	class areset implements ActionListener
-	{
+	class ack_menu_reset implements ActionListener
+	{//重置游戏 事件响应
 		public void actionPerformed(ActionEvent e)
 		{
 			data.clear();
@@ -243,33 +269,37 @@ class myFrame extends Frame
 			mode = 0;
 			pause = false;
 			computer = true;
-			m_comp.setState(true);
-			m_int.setEnabled(false);
-			m_back.setEnabled(false);
-			m_restart.setEnabled(false);
-			m_prac.setLabel("切换为实战模式");
+			menu_comp.setState(true);
+			menu_int.setEnabled(false);
+			menu_back.setEnabled(false);
+			menu_restart.setEnabled(false);
+			menu_prac.setLabel("切换为实战模式");
 			setmytitle();
 		}
 	}
 	
-	class acomp implements ItemListener
-	{
+	class ack_menu_comp implements ItemListener
+	{//选择或取消人机对战功能 事件响应
 		public void itemStateChanged(ItemEvent e)
 		{
-			computer = m_comp.getState();
+			computer = menu_comp.getState();
 			State = 0;
 			data.clear();
 			repaint();
 			setmytitle();
 			if (!computer)
-				m_last.setEnabled(false);
+			{
+				menu_last.setEnabled(false);
+			}
 			else
-				m_last.setEnabled(true);
+			{
+				menu_last.setEnabled(true);
+			}
 		}
 	}
 	
-	class aprac implements ActionListener
-	{
+	class ack_menu_prac implements ActionListener
+	{//模式选择 事件响应
 		public void actionPerformed(ActionEvent e)
 		{
 			data.clear();
@@ -278,125 +308,133 @@ class myFrame extends Frame
 			pause = false;
 			if (mode == 0)
 			{
-				m_prac.setLabel("切换为练习模式");
+				menu_prac.setLabel("切换为练习模式");
 			}
 			else
 			{
-				m_prac.setLabel("切换为实战模式");
+				menu_prac.setLabel("切换为实战模式");
 			}
+			
 			mode = 1 - mode;
 			setmytitle();
 		}
 	}
 	
-	class aback implements ActionListener
-	{
+	class ack_menu_back implements ActionListener
+	{//悔棋 事件响应
 		public void actionPerformed(ActionEvent e)
 		{
-			int i, j;
-			j = data.size();
-			if (j == 0)
-			{	return;}
+			int i, Size;
+			Size = data.size();
+			if (Size == 0)
+			{	
+				return;
+			}
+			
 			if (!computer)
 			{
-				data.remove(j - 1);
-				j--;
-				if (j % 2 == 0)
+				data.remove(Size - 1);
+				Size--;
+				if (Size % 2 == 0)
 				{
 					State = 1;
-					color = ((mypoint)data.elementAt(j-1)).getcolor();
+					color = ((mypoint)data.elementAt(Size - 1)).getcolor();
 				}
 				else
 				{
 					State = 2;
-					color = 1 - ((mypoint)data.elementAt(j-1)).getcolor();
+					color = 1 - ((mypoint)data.elementAt(Size - 1)).getcolor();
 				}
 			}
 			else
 			{
-				if (j % 2 == 0)
+				if (Size % 2 == 0)
 				{
-					data.remove(j - 1);
+					data.remove(Size - 1);
 					State++;
 				}
-				else if (j == 3)
+				else if (Size == 3)
 				{
 					data.clear();
 					State = 1;
 				}
 				else
 				{
-					data.remove(j - 1);
-					data.remove(j - 2);
-					data.remove(j - 3);
-					data.remove(j - 4);
+					data.remove(Size - 1);
+					data.remove(Size - 2);
+					data.remove(Size - 3);
+					data.remove(Size - 4);
 				}
 			}
+			
 			if (data.size() <= 1)
 			{
 				pause = false;
-				m_int.setLabel("暂停游戏");
-				m_int.setEnabled(false);
-				m_back.setEnabled(false);
-				m_restart.setEnabled(false);
+				menu_int.setLabel("暂停游戏");
+				menu_int.setEnabled(false);
+				menu_back.setEnabled(false);
+				menu_restart.setEnabled(false);
 			}
 			else
 			{
 				pause = true;
-				m_int.setLabel("继续游戏");
+				menu_int.setLabel("继续游戏");
 				State = 0;
 				
 			}
+			
 			repaint();
 			setmytitle();
 		}
 	}
 	
-	class aexit implements ActionListener
-	{
+	class ack_menu_exit implements ActionListener
+	{//退出 事件响应
 		public void actionPerformed(ActionEvent e)
 		{
-			ObjectOutputStream p;
+			ObjectOutputStream oFstream;
 			FileOutputStream ostream;
 			try{
 				ostream = new FileOutputStream("close.c6db");
-				p = new ObjectOutputStream(ostream);
-				p.writeObject(data);
-				p.flush();ostream.close();
+				oFstream = new ObjectOutputStream(ostream);
+				oFstream.writeObject(data);
+				oFstream.flush();ostream.close();
 			}catch (Exception x)
 			{
 				x.printStackTrace();
 			};
+			
 			System.exit(0);
 		}		
 	}
 	
-	class aint implements ActionListener
-	{
+	class ack_menu_int implements ActionListener
+	{//暂停游戏事件响应
 		public void actionPerformed(ActionEvent e)
 		{
 			if (!pause)
 			{
 				State = 0;
 				pause = true;
-				m_int.setLabel("继续游戏");
+				menu_int.setLabel("继续游戏");
 				setmytitle();
 			}
 			else
 			{
-				int j;
-				j = data.size();
-				m_int.setLabel("暂停游戏");
-				if (j % 2 == 0)
+				int Size;
+				Size = data.size();
+				menu_int.setLabel("暂停游戏");
+				if (Size % 2 == 0)
 				{
 					State = 1;
-					color = ((mypoint)data.elementAt(j-1)).getcolor();
+					color = ((mypoint)data.elementAt(Size-1)).getcolor();
 				}
 				else
 				{
 					State = 2;
-					color = 1 - ((mypoint)data.elementAt(j-1)).getcolor();
+					color = 1 - ((mypoint)data.elementAt(Size-1)).getcolor();
 				}
+				
 				pause = false;
 				setmytitle();
 			}
@@ -404,47 +442,65 @@ class myFrame extends Frame
 	}
 	
 	class amouse extends MouseAdapter
-	{
+	{//鼠标在棋盘上点击 事件响应
 		public void mouseClicked(MouseEvent e)
 		{
+			//分析无效操作，包括非法点击，点击不可靠等
 			if (State == 0 || pause)
+			{
 				return;
+			}
+			
 			int x, y;
 			x = e.getX();
 			y = e.getY();
 			if (  ((x - 35) % 30 > 25)
-				||((y - 75) % 30 > 25))return;
+				||((y - 75) % 30 > 25) )
+			{
+				return;
+			}
+			
 			x = (x - 35)/30;
 			y = (y - 75)/30;
 			if (  (x < 0)||(x > 18)
-				||(y < 0)||(y > 18))return;
-			
-			
-			int i, j;
-			
-			j = data.size();
-			for (i=0; i<j; i++)
-				if (  (((mypoint)data.elementAt(i)).getx() == x)
-					&&(((mypoint)data.elementAt(i)).gety() == y))
+				||(y < 0)||(y > 18) )
+			{
 				return;
-				
+			}
+			
+			int i, Size;
+			Size = data.size();
+			for (i=0; i<Size; i++)	//重复下子
+				if (  (((mypoint)data.elementAt(i)).getx() == x)
+					&&(((mypoint)data.elementAt(i)).gety() == y) )
+			{
+				return;
+			}
+			
 			Graphics g = myFrame.this.getGraphics();
 			
 			if (color == 0)
-			{g.setColor(new Color(20, 20, 20));}
+			{
+				g.setColor(new Color(20, 20, 20));
+			}
 			else
-			{g.setColor(Color.white);}
+			{	
+				g.setColor(Color.white);
+			}
 			
 			g.fillOval(50 + 30 * x - 10, 90 + 30 * y - 10, 21, 21);
 			
-			m_restart.setEnabled(true);
-			m_int.setEnabled(true);
+			menu_restart.setEnabled(true);
+			menu_int.setEnabled(true);
 			
 			mypoint p;
 			p = new mypoint(x, y, color);
 			data.add(p);
 			if (mode == 0)
-				m_back.setEnabled(true);
+			{
+				menu_back.setEnabled(true);
+			}
+			
 			State--;
 			if (computer)
 			{
@@ -465,7 +521,9 @@ class myFrame extends Frame
 						setmytitle();
 					}
 					else
+					{
 						State = 2;
+					}
 				}
 			}
 			else
@@ -489,28 +547,29 @@ class myFrame extends Frame
 		}
 	}
 	
-	class asave implements ActionListener
-	{
+	class ack_menu_save implements ActionListener
+	{//保存 事件响应
 		public void actionPerformed(ActionEvent e)
 		{
-			FileDialog f = new FileDialog(myFrame.this,"save",FileDialog.SAVE);
-			f.setVisible(true);
-			String dir = f.getDirectory();
-			String fname = f.getFile();
+			FileDialog myFileDialog = new FileDialog(myFrame.this,"save",FileDialog.SAVE);
+			myFileDialog.setVisible(true);
+			String dir = myFileDialog.getDirectory();
+			String fname = myFileDialog.getFile();
 			if ((dir != null) && (fname != null))
 			{
-				String file = (new String(fname)).toLowerCase();
-				if (!file.endsWith(".c6db"))
-				{file = file + ".c6db";}
-				file = dir + file;
-				ObjectOutputStream p;
+				String fullFileName = (new String(fname)).toLowerCase();
+				if (!fullFileName.endsWith(".c6db"))
+				{fullFileName = fullFileName + ".c6db";}
+				fullFileName = dir + fullFileName;
+				ObjectOutputStream oFstream;
 				FileOutputStream ostream;
 				try{
-					ostream = new FileOutputStream(file);
-					p = new ObjectOutputStream(ostream);
-					System.out.println(file);
-					p.writeObject(data);
-					p.flush();ostream.close();
+					ostream = new FileOutputStream(fullFileName);
+					oFstream = new ObjectOutputStream(ostream);
+//					System.out.println(fullFileName);		//TestCode
+					oFstream.writeObject(data);
+					oFstream.flush();
+					ostream.close();
 				}catch (Exception x)
 				{
 					x.printStackTrace();
@@ -520,8 +579,8 @@ class myFrame extends Frame
 		}
 	}
 	
-	class aopen implements ActionListener
-	{
+	class ack_menu_open implements ActionListener
+	{//打开 事件响应
 		public void actionPerformed(ActionEvent e)
 		{
 			FileDialog f = new FileDialog(myFrame.this,"open",FileDialog.LOAD);
@@ -544,8 +603,8 @@ class myFrame extends Frame
 					kernel.set(data);
 					pause = true;
 					State = 0;
-					m_int.setLabel("继续游戏");
-					m_int.setEnabled(true);
+					menu_int.setLabel("继续游戏");
+					menu_int.setEnabled(true);
 				}catch (Exception x)
 				{
 					x.printStackTrace();
@@ -587,27 +646,27 @@ class myFrame extends Frame
 	void msgbox(String msg)
 	{//弹出消息窗
 		myFrame.this.setEnabled(false);
-		dlg = new Dialog(myFrame.this, "游戏结束");
-		dlg.setSize(150,100);
-		dlg.setLayout(new FlowLayout(FlowLayout.CENTER,1000,10));
-		dlg.add(new Label(msg));
-		dlgb = new Button("确定");
-		dlg.add(dlgb);
-		dlg.setVisible(true);
-		dlgb.addActionListener(new ActionListener()
+		myDialog = new Dialog(myFrame.this, "游戏结束");
+		myDialog.setSize(150,100);
+		myDialog.setLayout(new FlowLayout(FlowLayout.CENTER,1000,10));
+		myDialog.add(new Label(msg));
+		myDialogBotton = new Button("确定");
+		myDialog.add(myDialogBotton);
+		myDialog.setVisible(true);
+		myDialogBotton.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
 			{	
 				myFrame.this.setEnabled(true);
-				myFrame.this.dlg.dispose();
+				myFrame.this.myDialog.dispose();
 			}
 		});
-		dlg.addWindowListener(new WindowAdapter()
+		myDialog.addWindowListener(new WindowAdapter()
 		{
 			public void windowClosing(WindowEvent e)
 			{
 				myFrame.this.setEnabled(true);
-				myFrame.this.dlg.dispose();
+				myFrame.this.myDialog.dispose();
 			}
 		});
 		return;
@@ -620,58 +679,22 @@ class myFrame extends Frame
 			{
 				data.clear();
 			}
-			ObjectOutputStream p;
+			
+			ObjectOutputStream oFstream;
 			FileOutputStream ostream;
 			try{
 				ostream = new FileOutputStream("close.c6db");
-				p = new ObjectOutputStream(ostream);
-				p.writeObject(data);
-				p.flush();ostream.close();
+				oFstream = new ObjectOutputStream(ostream);
+				oFstream.writeObject(data);
+				oFstream.flush();
+				ostream.close();
 			}catch (Exception x)
 			{
 				x.printStackTrace();
 			};
+			
 			System.exit(0);
 		}
 	}
 }
 
-class mypoint implements Serializable
-{
-	private int x, y, color;
-	mypoint(int _x, int _y, int _color)
-	{
-		x = _x;
-		y = _y;
-		color = _color;
-	}
-	int getx()
-	{return x;}
-	int gety()
-	{return y;}
-	int getcolor()
-	{return color;}
-}
-
-class myline
-{
-	private int x1, y1, x2, y2, color;
-	myline(int _x1, int _y1, int _x2, int _y2, int _color)
-	{
-		x1 = _x1;
-		y1 = _y1;
-		x2 = _y2;
-		y2 = _y2;
-		color = _color;
-	}
-	int getx1()
-	{return x1;}
-	int getx2()
-	{return x2;}
-	int gety1()
-	{return y1;}
-	int gety2()
-	{return y2;}
-	int getcolor()
-	{return color;}
-}
