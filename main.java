@@ -24,10 +24,12 @@ class myFrame extends Frame
 		//2 = 用户还须下2子
 	boolean pause;
 		//游戏是否处于暂停状态
+		
 	int color;
 		//0 = 黑子
 		//1 = 白子
 		//-1 = 空白
+		
 	boolean computer;
 		//0 = 非人机对战
 		//1 = 人机对战
