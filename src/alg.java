@@ -11,8 +11,6 @@ class alg
 		//O共享内存部分，储存每一条线的位置与颜色
 	private int ChessBoard[][];
 	
-//	int ms[];
-//	int os[];
 	static int[] os = new int[]{0, 0, 2, 20, 65535, 65535, 65535};
 	static int[] ms = new int[]{0, 0, 1, 10, 35, 35, 999999};	
 	alg(Vector _data)
@@ -46,7 +44,7 @@ class alg
 	}
 	
 	void cal(int color)
-	{
+	{//计算之后两枚颜色为color的子的位置，直接将数据插入data中
 		int size;
 		size = data.size();
 		if (size == 0)
@@ -68,7 +66,7 @@ class alg
 		k = 1;
 		_x1 = _x2 = _y1 = _y2 = 0;
 		vmax = -99999999;
-		for (x1=0; x1<19; x1++)
+		for (x1=0; x1<19; x1++)//枚举之后两枚棋的位置
 		for (x2=0; x2<19; x2++)
 		for (y1=0; y1<19; y1++)
 		for (y2=0; y2<19; y2++)
@@ -85,7 +83,7 @@ class alg
 			ChessBoard[x1][y1] = color;
 			ChessBoard[x2][y2] = color;
 			
-			v = value(color);
+			v = value(color);//计算得分
 			if (vmax < v)
 			{
 				vmax = v;
@@ -96,7 +94,7 @@ class alg
 				_y2 = y2;
 			}
 			else if (vmax == v)
-			{
+			{//如果得分相同则随机选择一个，但保证相同得分的所有下法等概率
 				if (Math.random() * k <= 1)
 				{
 					_x1 = x1;
@@ -135,7 +133,7 @@ class alg
 	}
 	
 	int value(int color)
-	{
+	{//计算当前棋盘该颜色的得分
 		SixPoint l = new SixPoint();
 		
 		int _value;
@@ -223,7 +221,7 @@ class alg
 			l.add(ChessBoard[i+2][16]);
 			l.add(ChessBoard[i+3][15]);
 			l.add(ChessBoard[i+4][14]);
-			for (int j=5; i+j < 19; j++)
+			for (int j=5; i + j < 19; j++)
 			{
 				l.add(ChessBoard[i+j][18-j]);
 				_value += ms[l.score(color)];
@@ -233,12 +231,8 @@ class alg
 		return _value;
 	}
 	
-	void calline()
-	{
-	}
-	
 	boolean hadsix(int color)
-	{
+	{//返回是否有此颜色的六连
 		int ChessBoardState[][];
 		ChessBoardState = new int[19][];
 		int i, j;
@@ -303,7 +297,7 @@ class alg
 	}
 	
 	boolean hadsix()
-	{
+	{//返回是否有六连（不区分黑白）
 		mypoint p;
 		int size = data.size();
 		clrp();
@@ -312,13 +306,14 @@ class alg
 			p = (mypoint)data.elementAt(i);
 			ChessBoard[p.getx()][p.gety()] = p.getcolor();
 		}
+		
 		return (hadsix(0)||hadsix(1));
 	}
 }
 
 
 class SixPoint
-{
+{//棋盘上的连续6个位置队列
 	int i[] = new int[6];
 	int colors[] = new int[3];
 	int CurrentPoint;
@@ -332,7 +327,7 @@ class SixPoint
 	}
 	
 	void add(int color)
-	{
+	{//在队列中加入一个棋子，同时弹出最后一个
 		colors[i[CurrentPoint] + 1]--;
 		i[CurrentPoint++] = color;
 		CurrentPoint %= 6;
@@ -340,7 +335,7 @@ class SixPoint
 	}
 	
 	int score(int color)
-	{
+	{//返回当前队列相应颜色的得分
 		if (colors[1 - color + 1] != 0)
 			return 0;
 		return colors[color + 1];
@@ -348,7 +343,7 @@ class SixPoint
 }
 
 class mypoint implements Serializable
-{
+{//记录坐标及颜色
 	private int x, y, color;
 	mypoint(int _x, int _y, int _color)
 	{
