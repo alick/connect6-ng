@@ -645,13 +645,17 @@ class myFrame extends Frame
 	
 	void msgbox(String msg)
 	{//弹出消息窗
+		Point position = myFrame.this.getLocation();
 		myFrame.this.setEnabled(false);
+		position.translate(250, 300);
 		myDialog = new Dialog(myFrame.this, "游戏结束");
 		myDialog.setSize(150,100);
 		myDialog.setLayout(new FlowLayout(FlowLayout.CENTER,1000,10));
 		myDialog.add(new Label(msg));
 		myDialogBotton = new Button("确定");
 		myDialog.add(myDialogBotton);
+		myDialog.setLocation(position);
+		myDialog.setResizable(false);
 		myDialog.setVisible(true);
 		myDialogBotton.addActionListener(new ActionListener()
 		{
