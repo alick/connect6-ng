@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="connect6-ng" default="run" basedir=".">
+    <!-- 这里的basedir是 工程的目录为根目录
+        一般basedir="."表示的是build.xml文件所在的相对目录为根目录即项目根目录下
+    -->
+    <property name="src" value="src"/>
+    <property name="dest" value="classes"/>
+    <property name="myclasspath" value="classes"/>
+
+    <echo message="init ..." />
+    <!-- =================================
+          target: init
+         ================================= -->
+    <target name="init">
+        <mkdir dir="${dest}"/>
+        <delete dir="${src}/classes"></delete>
+    </target>
+    <!-- =================================
+              target: run
+             ================================= -->
+    <!-- 编译class文件-->
+    <target name="build" depends="init">
+        <javac srcdir="${src}" destdir="${dest}"></javac>
+    </target>
+
+    <target name="run" depends="build">
+        <exec executable="java">
+            <arg line=" -classpath ${myclasspath} cn.edu.tsinghua.se2011.connect6ng.main" />
+        </exec>
+    </target>
+
+    <target name="clean">
+        <delete includeEmptyDirs="true">
+            <fileset dir="${dest}" />
+        </delete>
+    </target> 
+</project>
