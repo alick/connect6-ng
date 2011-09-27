@@ -4,23 +4,29 @@
         一般basedir="."表示的是build.xml文件所在的相对目录为根目录即项目根目录下
     -->
     <property name="src" value="src"/>
-    <property name="dest" value="classes"/>
-    <property name="myclasspath" value="classes"/>
+    <property name="build" value="build"/>
+    <property name="myclasspath" value="${build}/classes/java"/>
 
     <echo message="init ..." />
     <!-- =================================
           target: init
          ================================= -->
     <target name="init">
-        <mkdir dir="${dest}"/>
+	<mkdir dir="${build}/classes/java"/>
         <delete dir="${src}/classes"></delete>
     </target>
-    <!-- =================================
-              target: run
-             ================================= -->
+
     <!-- 编译class文件-->
     <target name="build" depends="init">
-        <javac srcdir="${src}" destdir="${dest}"></javac>
+	<javac
+	    encoding="UTF-8"
+	    srcdir="${src}/java"
+	    destdir="${build}/classes/java">
+	    <compilerarg line="-Xmaxwarns 10000000"/>
+	    <compilerarg line="-Xmaxerrs 10000000"/>
+	    <!-- for generics in Java 1.5: -->
+	    <!--<compilerarg line="-Xlint:unchecked"/>-->
+	</javac>
     </target>
 
     <target name="run" depends="build">
@@ -31,7 +37,7 @@
 
     <target name="clean">
         <delete includeEmptyDirs="true">
-            <fileset dir="${dest}" />
+            <fileset dir="${build}" />
         </delete>
     </target> 
 </project>
