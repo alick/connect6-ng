@@ -3,3 +3,8 @@
 
 *.class
 *.jar
+
+*.c6db
+
+build/
+dist/
