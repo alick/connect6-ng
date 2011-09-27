@@ -3,16 +3,19 @@
     <!-- 这里的basedir是 工程的目录为根目录
         一般basedir="."表示的是build.xml文件所在的相对目录为根目录即项目根目录下
     -->
+    <property name="product" value="connect6-ng"/>
+    <property name="version" value="0.1"/>
     <property name="src" value="src"/>
-    <property name="build" value="build"/>
-    <property name="myclasspath" value="${build}/classes/java"/>
+    <property name="build.dir" value="${basedir}/build"/>
+    <property name="myclasspath" value="${build.dir}/classes/java"/>
+    <property name="jar.file" value="${product}-${version}.jar"/>
 
     <echo message="init ..." />
     <!-- =================================
           target: init
          ================================= -->
     <target name="init">
-	<mkdir dir="${build}/classes/java"/>
+	<mkdir dir="${build.dir}/classes/java"/>
         <delete dir="${src}/classes"></delete>
     </target>
 
@@ -21,7 +24,7 @@
 	<javac
 	    encoding="UTF-8"
 	    srcdir="${src}/java"
-	    destdir="${build}/classes/java">
+	    destdir="${build.dir}/classes/java">
 	    <compilerarg line="-Xmaxwarns 10000000"/>
 	    <compilerarg line="-Xmaxerrs 10000000"/>
 	    <!-- for generics in Java 1.5: -->
@@ -29,15 +32,23 @@
 	</javac>
     </target>
 
-    <target name="run" depends="build">
-        <exec executable="java">
-            <arg line=" -classpath ${myclasspath} cn.edu.tsinghua.se2011.connect6ng.main" />
-        </exec>
+    <target name="jar" depends="build">
+	<jar
+	    basedir="${build.dir}/classes/java"
+	    destfile="${build.dir}/${jar.file}">
+	    <manifest>
+		<attribute name="Main-Class" value="cn.edu.tsinghua.se2011.connect6ng.main"/>
+		<!--<attribute name="Class-Path" value=""/>-->
+	    </manifest>
+	</jar>
+    </target>
+
+    <target name="run" depends="jar">
+	<java jar="${build.dir}/${jar.file}" fork="yes">
+	</java>
     </target>
 
     <target name="clean">
-        <delete includeEmptyDirs="true">
-            <fileset dir="${build}" />
-        </delete>
+	<delete dir="${build.dir}" quiet="true" />
     </target> 
 </project>
