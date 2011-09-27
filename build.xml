@@ -4,7 +4,7 @@
         一般basedir="."表示的是build.xml文件所在的相对目录为根目录即项目根目录下
     -->
     <property name="product" value="connect6-ng"/>
-    <property name="version" value="0.1"/>
+    <property name="version" value="0.1-dev"/>
     <property name="src" value="src"/>
     <property name="build.dir" value="${basedir}/build"/>
     <property name="dist.dir" value="${basedir}/dist"/>
