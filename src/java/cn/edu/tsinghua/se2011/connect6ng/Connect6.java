@@ -54,8 +54,7 @@ class MyFrame extends Frame {
 
 
     @SuppressWarnings("unchecked")
-    MyFrame()
-    {
+    MyFrame() {
         super("Connect 6 - 游戏尚未开始 - 练习模式");
         setSize(650, 680);
         setResizable(false);
@@ -121,13 +120,11 @@ class MyFrame extends Frame {
             data = (Vector<MyPoint>)iFstream.readObject();
             istream.close();
             kernel.set(data);
-        } catch (Exception x)
-        {
+        } catch (Exception x) {
             x.printStackTrace();
         };
 
-        if (data.size() != 0)
-        {
+        if (data.size() != 0) {
             pause = true;
             State = 0;
             menu_int.setEnabled(true);
@@ -139,15 +136,14 @@ class MyFrame extends Frame {
         setVisible(true);
     }
 
-    public void paint(Graphics g)
-    {   //界面绘制
+    public void paint(Graphics g) {
+        //界面绘制
         int i, Size;
         MyPoint p;
         g.setColor(new Color(240, 120, 20));
         g.fillRect(20, 60, 600, 600);				//绘制背景
         g.setColor(Color.darkGray);					//绘制网格
-        for (i=0; i<19; i++)
-        {
+        for (i=0; i<19; i++) {
             g.drawLine(50, 90 + 30 * i, 590, 90 + 30 * i);
             g.drawLine(50 + 30 * i, 90, 50 + 30 * i, 630);
         }
@@ -160,15 +156,11 @@ class MyFrame extends Frame {
         g.fillOval(16 * 30 + 20 - 3, 16 * 30 + 60 - 3, 7, 7);
 
         Size = data.size();							//绘制棋子
-        for (i=0; i<Size; i++)
-        {
+        for (i=0; i<Size; i++) {
             p = (MyPoint)data.elementAt(i);
-            if (p.getcolor() == 0)
-            {
+            if (p.getcolor() == 0) {
                 g.setColor(new Color(20, 20, 20));
-            }
-            else
-            {
+            } else {
                 g.setColor(Color.white);
             }
 
@@ -176,10 +168,9 @@ class MyFrame extends Frame {
         }
     }
 
-    class ack_menu_first implements ActionListener
-    {   //新游戏->先手 事件响应
-        public void actionPerformed(ActionEvent e)
-        {
+    class ack_menu_first implements ActionListener {
+        //新游戏->先手 事件响应
+        public void actionPerformed(ActionEvent e) {
             data.clear();
             repaint();
             State = 1;
@@ -191,10 +182,9 @@ class MyFrame extends Frame {
         }
     }
 
-    class ack_menu_last implements ActionListener
-    {   //新游戏->后手 事件响应
-        public void actionPerformed(ActionEvent e)
-        {
+    class ack_menu_last implements ActionListener {
+        //新游戏->后手 事件响应
+        public void actionPerformed(ActionEvent e) {
             data.clear();
             data.add(new MyPoint(9, 9, 0));
             repaint();
@@ -207,26 +197,20 @@ class MyFrame extends Frame {
         }
     }
 
-    class ack_menu_restart implements ActionListener
-    {   //重新开始游戏 事件响应
-        public void actionPerformed(ActionEvent e)
-        {
+    class ack_menu_restart implements ActionListener {
+        //重新开始游戏 事件响应
+        public void actionPerformed(ActionEvent e) {
             int p;
             int ccolor;
-            if (computer)
-            {
+            if (computer) {
                 p = data.size();
-                if (p % 2 != 0)
-                {
+                if (p % 2 != 0) {
                     ccolor = 1 - ( (MyPoint)data.elementAt(p - 1)).getcolor();
-                }
-                else
-                {
+                } else {
                     ccolor = 1 - ( (MyPoint)data.elementAt(p - 2)).getcolor();
                 }
 
-                if (ccolor == 0)
-                {
+                if (ccolor == 0) {
                     data.clear();
                     repaint();
                     State = 1;
@@ -234,9 +218,7 @@ class MyFrame extends Frame {
                     setmytitle();
                     menu_back.setEnabled(false);
                     menu_restart.setEnabled(false);
-                }
-                else
-                {
+                } else {
                     data.clear();
                     data.add(new MyPoint(9, 9, 0));
                     repaint();
@@ -246,9 +228,7 @@ class MyFrame extends Frame {
                     menu_back.setEnabled(false);
                     menu_restart.setEnabled(false);
                 }
-            }
-            else
-            {
+            } else {
                 data.clear();
                 repaint();
                 State = 1;
@@ -260,10 +240,9 @@ class MyFrame extends Frame {
         }
     }
 
-    class ack_menu_reset implements ActionListener
-    {   //重置游戏 事件响应
-        public void actionPerformed(ActionEvent e)
-        {
+    class ack_menu_reset implements ActionListener {
+        //重置游戏 事件响应
+        public void actionPerformed(ActionEvent e) {
             data.clear();
             repaint();
             State = 0;
@@ -279,40 +258,32 @@ class MyFrame extends Frame {
         }
     }
 
-    class ack_menu_comp implements ItemListener
-    {   //选择或取消人机对战功能 事件响应
-        public void itemStateChanged(ItemEvent e)
-        {
+    class ack_menu_comp implements ItemListener {
+        //选择或取消人机对战功能 事件响应
+        public void itemStateChanged(ItemEvent e) {
             computer = menu_comp.getState();
             State = 0;
             data.clear();
             repaint();
             setmytitle();
-            if (!computer)
-            {
+            if (!computer) {
                 menu_last.setEnabled(false);
-            }
-            else
-            {
+            } else {
                 menu_last.setEnabled(true);
             }
         }
     }
 
-    class ack_menu_prac implements ActionListener
-    {   //模式选择 事件响应
-        public void actionPerformed(ActionEvent e)
-        {
+    class ack_menu_prac implements ActionListener {
+        //模式选择 事件响应
+        public void actionPerformed(ActionEvent e) {
             data.clear();
             repaint();
             State = 0;
             pause = false;
-            if (mode == 0)
-            {
+            if (mode == 0) {
                 menu_prac.setLabel("切换为练习模式");
-            }
-            else
-            {
+            } else {
                 menu_prac.setLabel("切换为实战模式");
             }
 
@@ -321,46 +292,33 @@ class MyFrame extends Frame {
         }
     }
 
-    class ack_menu_back implements ActionListener
-    {   //悔棋 事件响应
-        public void actionPerformed(ActionEvent e)
-        {
+    class ack_menu_back implements ActionListener {
+        //悔棋 事件响应
+        public void actionPerformed(ActionEvent e) {
             int i, Size;
             Size = data.size();
-            if (Size == 0)
-            {
+            if (Size == 0) {
                 return;
             }
 
-            if (!computer)
-            {
+            if (!computer) {
                 data.remove(Size - 1);
                 Size--;
-                if (Size % 2 == 0)
-                {
+                if (Size % 2 == 0) {
                     State = 1;
                     color = ((MyPoint)data.elementAt(Size - 1)).getcolor();
-                }
-                else
-                {
+                } else {
                     State = 2;
                     color = 1 - ((MyPoint)data.elementAt(Size - 1)).getcolor();
                 }
-            }
-            else
-            {
-                if (Size % 2 == 0)
-                {
+            } else {
+                if (Size % 2 == 0) {
                     data.remove(Size - 1);
                     State++;
-                }
-                else if (Size == 3)
-                {
+                } else if (Size == 3) {
                     data.clear();
                     State = 1;
-                }
-                else
-                {
+                } else {
                     data.remove(Size - 1);
                     data.remove(Size - 2);
                     data.remove(Size - 3);
@@ -368,16 +326,13 @@ class MyFrame extends Frame {
                 }
             }
 
-            if (data.size() <= 1)
-            {
+            if (data.size() <= 1) {
                 pause = false;
                 menu_int.setLabel("暂停游戏");
                 menu_int.setEnabled(false);
                 menu_back.setEnabled(false);
                 menu_restart.setEnabled(false);
-            }
-            else
-            {
+            } else {
                 pause = true;
                 menu_int.setLabel("继续游戏");
                 State = 0;
@@ -389,10 +344,9 @@ class MyFrame extends Frame {
         }
     }
 
-    class ack_menu_exit implements ActionListener
-    {   //退出 事件响应
-        public void actionPerformed(ActionEvent e)
-        {
+    class ack_menu_exit implements ActionListener {
+        //退出 事件响应
+        public void actionPerformed(ActionEvent e) {
             ObjectOutputStream oFstream;
             FileOutputStream ostream;
             try {
@@ -401,8 +355,7 @@ class MyFrame extends Frame {
                 oFstream.writeObject(data);
                 oFstream.flush();
                 ostream.close();
-            } catch (Exception x)
-            {
+            } catch (Exception x) {
                 x.printStackTrace();
             };
 
@@ -410,29 +363,22 @@ class MyFrame extends Frame {
         }
     }
 
-    class ack_menu_int implements ActionListener
-    {   //暂停游戏事件响应
-        public void actionPerformed(ActionEvent e)
-        {
-            if (!pause)
-            {
+    class ack_menu_int implements ActionListener {
+        //暂停游戏事件响应
+        public void actionPerformed(ActionEvent e) {
+            if (!pause) {
                 State = 0;
                 pause = true;
                 menu_int.setLabel("继续游戏");
                 setmytitle();
-            }
-            else
-            {
+            } else {
                 int Size;
                 Size = data.size();
                 menu_int.setLabel("暂停游戏");
-                if (Size % 2 == 0)
-                {
+                if (Size % 2 == 0) {
                     State = 1;
                     color = ((MyPoint)data.elementAt(Size-1)).getcolor();
-                }
-                else
-                {
+                } else {
                     State = 2;
                     color = 1 - ((MyPoint)data.elementAt(Size-1)).getcolor();
                 }
@@ -443,13 +389,11 @@ class MyFrame extends Frame {
         }
     }
 
-    class amouse extends MouseAdapter
-    {   //鼠标在棋盘上点击 事件响应
-        public void mouseClicked(MouseEvent e)
-        {
+    class amouse extends MouseAdapter {
+        //鼠标在棋盘上点击 事件响应
+        public void mouseClicked(MouseEvent e) {
             //分析无效操作，包括非法点击，点击不可靠等
-            if (State == 0 || pause)
-            {
+            if (State == 0 || pause) {
                 return;
             }
 
@@ -457,16 +401,14 @@ class MyFrame extends Frame {
             x = e.getX();
             y = e.getY();
             if (  ((x - 35) % 30 > 25)
-                    ||((y - 75) % 30 > 25) )
-            {
+                    ||((y - 75) % 30 > 25) ) {
                 return;
             }
 
             x = (x - 35)/30;
             y = (y - 75)/30;
             if (  (x < 0)||(x > 18)
-                    ||(y < 0)||(y > 18) )
-            {
+                    ||(y < 0)||(y > 18) ) {
                 return;
             }
 
@@ -474,19 +416,15 @@ class MyFrame extends Frame {
             Size = data.size();
             for (i=0; i<Size; i++)	//重复下子
                 if (  (((MyPoint)data.elementAt(i)).getx() == x)
-                        &&(((MyPoint)data.elementAt(i)).gety() == y) )
-                {
+                        &&(((MyPoint)data.elementAt(i)).gety() == y) ) {
                     return;
                 }
 
             Graphics g = MyFrame.this.getGraphics();
 
-            if (color == 0)
-            {
+            if (color == 0) {
                 g.setColor(new Color(20, 20, 20));
-            }
-            else
-            {
+            } else {
                 g.setColor(Color.white);
             }
 
@@ -498,40 +436,29 @@ class MyFrame extends Frame {
             MyPoint p;
             p = new MyPoint(x, y, color);
             data.add(p);
-            if (mode == 0)
-            {
+            if (mode == 0) {
                 menu_back.setEnabled(true);
             }
 
             State--;
-            if (computer)
-            {
-                if (kernel.hadsix())
-                {
+            if (computer) {
+                if (kernel.hadsix()) {
                     msgbox("恭喜你战胜了电脑！！！");
                     State = 0;
                     setmytitle();
                     repaint();
-                }
-                else if (State == 0)
-                {
+                } else if (State == 0) {
                     kernel.cal(1 - color);
                     repaint();
-                    if (kernel.hadsix())
-                    {
+                    if (kernel.hadsix()) {
                         msgbox("电脑获得胜利！！！");
                         setmytitle();
-                    }
-                    else
-                    {
+                    } else {
                         State = 2;
                     }
                 }
-            }
-            else
-            {
-                if (kernel.hadsix())
-                {
+            } else {
+                if (kernel.hadsix()) {
                     if (color == 0)
                         msgbox("黑方获胜！！！");
                     else
@@ -539,9 +466,7 @@ class MyFrame extends Frame {
                     State = 0;
                     setmytitle();
                     repaint();
-                }
-                else if (State == 0)
-                {
+                } else if (State == 0) {
                     State = 2;
                     color = 1 - color;
                 }
@@ -549,19 +474,16 @@ class MyFrame extends Frame {
         }
     }
 
-    class ack_menu_save implements ActionListener
-    {   //保存 事件响应
-        public void actionPerformed(ActionEvent e)
-        {
+    class ack_menu_save implements ActionListener {
+        //保存 事件响应
+        public void actionPerformed(ActionEvent e) {
             FileDialog myFileDialog = new FileDialog(MyFrame.this,"save",FileDialog.SAVE);
             myFileDialog.setVisible(true);
             String dir = myFileDialog.getDirectory();
             String fname = myFileDialog.getFile();
-            if ((dir != null) && (fname != null))
-            {
+            if ((dir != null) && (fname != null)) {
                 String fullFileName = (new String(fname)).toLowerCase();
-                if (!fullFileName.endsWith(".c6db"))
-                {
+                if (!fullFileName.endsWith(".c6db")) {
                     fullFileName = fullFileName + ".c6db";
                 }
                 fullFileName = dir + fullFileName;
@@ -574,8 +496,7 @@ class MyFrame extends Frame {
                     oFstream.writeObject(data);
                     oFstream.flush();
                     ostream.close();
-                } catch (Exception x)
-                {
+                } catch (Exception x) {
                     x.printStackTrace();
                     msgbox(new String("文件打开失败！！！"));
                 };
@@ -583,20 +504,17 @@ class MyFrame extends Frame {
         }
     }
 
-    class ack_menu_open implements ActionListener
-    {   //打开 事件响应
+    class ack_menu_open implements ActionListener {
+        //打开 事件响应
         @SuppressWarnings("unchecked")
-        public void actionPerformed(ActionEvent e)
-        {
+        public void actionPerformed(ActionEvent e) {
             FileDialog f = new FileDialog(MyFrame.this,"open",FileDialog.LOAD);
             f.setVisible(true);
             String dir = f.getDirectory();
             String fname = f.getFile();
-            if ((dir != null) && (fname != null))
-            {
+            if ((dir != null) && (fname != null)) {
                 String file = (new String(fname)).toLowerCase();
-                if (!file.endsWith(".c6db"))
-                {
+                if (!file.endsWith(".c6db")) {
                     file = file + ".c6db";
                 }
                 file = dir + file;
@@ -613,8 +531,7 @@ class MyFrame extends Frame {
                     State = 0;
                     menu_int.setLabel("继续游戏");
                     menu_int.setEnabled(true);
-                } catch (Exception x)
-                {
+                } catch (Exception x) {
                     x.printStackTrace();
                     msgbox(new String("文件打开失败！！！"));
                 };
@@ -625,16 +542,12 @@ class MyFrame extends Frame {
         }
     }
 
-    void setmytitle()
-    {
+    void setmytitle() {
         String s;
         s = new String("Connect 6");
-        if (State != 0)
-        {
+        if (State != 0) {
             s += " - 游戏进行中";
-        }
-        else
-        {
+        } else {
             if (pause)
                 s += " - 游戏已暂停";
             else
@@ -651,8 +564,8 @@ class MyFrame extends Frame {
         setTitle(s);
     }
 
-    void msgbox(String msg)
-    {   //弹出消息窗
+    void msgbox(String msg) {
+        //弹出消息窗
         Point position = MyFrame.this.getLocation();
         MyFrame.this.setEnabled(false);
         position.translate(250, 300);
@@ -665,30 +578,24 @@ class MyFrame extends Frame {
         myDialog.setLocation(position);
         myDialog.setResizable(false);
         myDialog.setVisible(true);
-        myDialogBotton.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e)
-            {
+        myDialogBotton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
                 MyFrame.this.setEnabled(true);
                 MyFrame.this.myDialog.dispose();
             }
         });
-        myDialog.addWindowListener(new WindowAdapter()
-        {
-            public void windowClosing(WindowEvent e)
-            {
+        myDialog.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
                 MyFrame.this.setEnabled(true);
                 MyFrame.this.myDialog.dispose();
             }
         });
         return;
     }
-    class Wclose extends WindowAdapter
-    {   //窗口关闭
-        public void windowClosing(WindowEvent e)
-        {
-            if (!pause)
-            {
+    class Wclose extends WindowAdapter {
+        //窗口关闭
+        public void windowClosing(WindowEvent e) {
+            if (!pause) {
                 data.clear();
             }
 
@@ -700,8 +607,7 @@ class MyFrame extends Frame {
                 oFstream.writeObject(data);
                 oFstream.flush();
                 ostream.close();
-            } catch (Exception x)
-            {
+            } catch (Exception x) {
                 x.printStackTrace();
             };
 
