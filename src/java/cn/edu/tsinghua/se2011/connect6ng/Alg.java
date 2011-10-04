@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 
-class alg
+class Alg
 {
 	private Vector data;
 		//IO共享内存部分，储存每一个棋子的位置与颜色
@@ -15,7 +15,7 @@ class alg
 	
 	static int[] os = new int[]{0, 0, 2, 20, 65535, 65535, 65535};
 	static int[] ms = new int[]{0, 0, 1, 10, 35, 35, 999999};	
-	alg(Vector _data)
+	Alg(Vector _data)
 	{
 		data = _data;
 		ChessBoard = new int[19][];
@@ -51,14 +51,14 @@ class alg
 		size = data.size();
 		if (size == 0)
 		{
-			data.add(new mypoint(9, 9, 0));
+			data.add(new MyPoint(9, 9, 0));
 			return;
 		}
-		mypoint p;
+		MyPoint p;
 		clrp();
 		for (int i=0; i<size; i++)
 		{
-			p = (mypoint)data.elementAt(i);
+			p = (MyPoint)data.elementAt(i);
 			ChessBoard[p.getx()][p.gety()] = p.getcolor();
 		}
 
@@ -110,8 +110,8 @@ class alg
 			ChessBoard[x2][y2] = -1;
 		}
 //		System.out.println(vmax);	//TestCode
-		data.add(new mypoint(_x1, _y1, color));
-		data.add(new mypoint(_x2, _y2, color));
+		data.add(new MyPoint(_x1, _y1, color));
+		data.add(new MyPoint(_x2, _y2, color));
 	}
 	
 	boolean check(int x, int y)
@@ -300,12 +300,12 @@ class alg
 	
 	boolean hadsix()
 	{//返回是否有六连（不区分黑白）
-		mypoint p;
+		MyPoint p;
 		int size = data.size();
 		clrp();
 		for (int i=0; i<size; i++)
 		{
-			p = (mypoint)data.elementAt(i);
+			p = (MyPoint)data.elementAt(i);
 			ChessBoard[p.getx()][p.gety()] = p.getcolor();
 		}
 		
@@ -344,10 +344,10 @@ class SixPoint
 	}
 }
 
-class mypoint implements Serializable
+class MyPoint implements Serializable
 {//记录坐标及颜色
 	private int x, y, color;
-	mypoint(int _x, int _y, int _color)
+	MyPoint(int _x, int _y, int _color)
 	{
 		x = _x;
 		y = _y;

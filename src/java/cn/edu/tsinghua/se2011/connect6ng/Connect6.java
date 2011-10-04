@@ -5,18 +5,15 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 
-public class main
-{
-	public static void main(String[] args)
-	{
-        myFrame form = new myFrame();
+public class Connect6 {
+	public static void main(String[] args) {
+		MyFrame form = new MyFrame();
 	}
 }
 
-class myFrame extends Frame
-{
+class MyFrame extends Frame {
 	Vector data;
-	alg kernel;
+	Alg kernel;
 	Dialog myDialog;
 	Button myDialogBotton;
 	int State;
@@ -56,7 +53,7 @@ class myFrame extends Frame
 	MenuItem menu_save = 		new MenuItem("保存游戏战绩");
 
 	
-	myFrame()
+	MyFrame()
 	{
 		super("Connect 6 - 游戏尚未开始 - 练习模式");
 		setSize(650, 680);
@@ -64,7 +61,7 @@ class myFrame extends Frame
 		
 		//初始化数据
 		data = new Vector();
-		kernel = new alg(data);
+		kernel = new Alg(data);
 		State = 0;
 		pause = false;
 		computer = true;
@@ -479,7 +476,7 @@ class myFrame extends Frame
 				return;
 			}
 			
-			Graphics g = myFrame.this.getGraphics();
+			Graphics g = MyFrame.this.getGraphics();
 			
 			if (color == 0)
 			{
@@ -553,7 +550,7 @@ class myFrame extends Frame
 	{//保存 事件响应
 		public void actionPerformed(ActionEvent e)
 		{
-			FileDialog myFileDialog = new FileDialog(myFrame.this,"save",FileDialog.SAVE);
+			FileDialog myFileDialog = new FileDialog(MyFrame.this,"save",FileDialog.SAVE);
 			myFileDialog.setVisible(true);
 			String dir = myFileDialog.getDirectory();
 			String fname = myFileDialog.getFile();
@@ -585,7 +582,7 @@ class myFrame extends Frame
 	{//打开 事件响应
 		public void actionPerformed(ActionEvent e)
 		{
-			FileDialog f = new FileDialog(myFrame.this,"open",FileDialog.LOAD);
+			FileDialog f = new FileDialog(MyFrame.this,"open",FileDialog.LOAD);
 			f.setVisible(true);
 			String dir = f.getDirectory();
 			String fname = f.getFile();
@@ -647,10 +644,10 @@ class myFrame extends Frame
 	
 	void msgbox(String msg)
 	{//弹出消息窗
-		Point position = myFrame.this.getLocation();
-		myFrame.this.setEnabled(false);
+		Point position = MyFrame.this.getLocation();
+		MyFrame.this.setEnabled(false);
 		position.translate(250, 300);
-		myDialog = new Dialog(myFrame.this, "游戏结束");
+		myDialog = new Dialog(MyFrame.this, "游戏结束");
 		myDialog.setSize(150,100);
 		myDialog.setLayout(new FlowLayout(FlowLayout.CENTER,1000,10));
 		myDialog.add(new Label(msg));
@@ -663,16 +660,16 @@ class myFrame extends Frame
 		{
 			public void actionPerformed(ActionEvent e)
 			{	
-				myFrame.this.setEnabled(true);
-				myFrame.this.myDialog.dispose();
+				MyFrame.this.setEnabled(true);
+				MyFrame.this.myDialog.dispose();
 			}
 		});
 		myDialog.addWindowListener(new WindowAdapter()
 		{
 			public void windowClosing(WindowEvent e)
 			{
-				myFrame.this.setEnabled(true);
-				myFrame.this.myDialog.dispose();
+				MyFrame.this.setEnabled(true);
+				MyFrame.this.myDialog.dispose();
 			}
 		});
 		return;

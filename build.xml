@@ -43,7 +43,7 @@
 	    basedir="${build.dir}/classes/java"
 	    destfile="${build.dir}/${jar.file}">
 	    <manifest>
-		<attribute name="Main-Class" value="cn.edu.tsinghua.se2011.connect6ng.main"/>
+		<attribute name="Main-Class" value="cn.edu.tsinghua.se2011.connect6ng.Connect6"/>
 		<!--<attribute name="Class-Path" value=""/>-->
 	    </manifest>
 	</jar>
