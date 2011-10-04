@@ -12,7 +12,7 @@ public class Connect6 {
 }
 
 class MyFrame extends Frame {
-    Vector data;
+    Vector<MyPoint> data;
     Alg kernel;
     Dialog myDialog;
     Button myDialogBotton;
@@ -53,6 +53,7 @@ class MyFrame extends Frame {
     MenuItem menu_save = 		new MenuItem("保存游戏战绩");
 
 
+    @SuppressWarnings("unchecked")
     MyFrame()
     {
         super("Connect 6 - 游戏尚未开始 - 练习模式");
@@ -60,7 +61,7 @@ class MyFrame extends Frame {
         setResizable(false);
 
         //初始化数据
-        data = new Vector();
+        data = new Vector<MyPoint>();
         kernel = new Alg(data);
         State = 0;
         pause = false;
@@ -116,7 +117,8 @@ class MyFrame extends Frame {
         try {
             istream = new FileInputStream("close.c6db");
             iFstream = new ObjectInputStream(istream);
-            data = (Vector)iFstream.readObject();
+            // the Xlint:unchecked warning is suppressed
+            data = (Vector<MyPoint>)iFstream.readObject();
             istream.close();
             kernel.set(data);
         } catch (Exception x)
@@ -583,6 +585,7 @@ class MyFrame extends Frame {
 
     class ack_menu_open implements ActionListener
     {   //打开 事件响应
+        @SuppressWarnings("unchecked")
         public void actionPerformed(ActionEvent e)
         {
             FileDialog f = new FileDialog(MyFrame.this,"open",FileDialog.LOAD);
@@ -602,7 +605,8 @@ class MyFrame extends Frame {
                 try {
                     istream = new FileInputStream(file);
                     p = new ObjectInputStream(istream);
-                    data = (Vector)p.readObject();
+                    // the Xlint:unchecked warning is suppressed
+                    data = (Vector<MyPoint>)p.readObject();
                     istream.close();
                     kernel.set(data);
                     pause = true;

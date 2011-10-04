@@ -7,7 +7,7 @@ import java.io.*;
 
 class Alg
 {
-    private Vector data;
+    private Vector<MyPoint> data;
     //IO共享内存部分，储存每一个棋子的位置与颜色
     private Vector line;
     //O共享内存部分，储存每一条线的位置与颜色
@@ -15,7 +15,7 @@ class Alg
 
     static int[] os = new int[] {0, 0, 2, 20, 65535, 65535, 65535};
     static int[] ms = new int[] {0, 0, 1, 10, 35, 35, 999999};
-    Alg(Vector _data)
+    Alg(Vector<MyPoint> _data)
     {
         data = _data;
         ChessBoard = new int[19][];
@@ -29,7 +29,7 @@ class Alg
         }
     }
 
-    void set(Vector _data)
+    void set(Vector<MyPoint> _data)
     {
         data = _data;
     }
