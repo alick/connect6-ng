@@ -8,6 +8,20 @@
     <property name="build.dir" value="${basedir}/build"/>
     <property name="dist.dir" value="${basedir}/dist"/>
     <property name="myclasspath" value="${build.dir}/classes/java"/>
+    <property name="jar.file" value="${product}-${version}.jar"/>
+    <property name="findbugs.home" value="/usr/share/java" />
+
+    <taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask"/>
+
+    <target name="findbugs" depends="jar">
+        <findbugs home="${findbugs.home}"
+            output="xml"
+            outputFile="${build.dir}/connect6-ng-fb.xml" >
+            <!--<auxClasspath path="${basedir}/lib/Regex.jar" />-->
+            <sourcePath path="${basedir}/src/" />
+            <class location="${build.dir}/${jar.file}" />
+        </findbugs>
+    </target>
 
     <patternset
         id="src.dist.patterns"

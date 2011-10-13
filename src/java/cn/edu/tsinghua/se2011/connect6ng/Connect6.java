@@ -5,6 +5,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 
+/** This class serves as the top level class.
+ * It creates the main frame and start the game.
+ *
+ */
 public class Connect6 {
     public static void main(String[] args) {
         MyFrame form = new MyFrame();
