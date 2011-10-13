@@ -6,10 +6,8 @@ import java.awt.event.*;
 import java.io.*;
 
 class Alg {
-    private Vector<MyPoint> data;
     //IO共享内存部分，储存每一个棋子的位置与颜色
-    private Vector line;
-    //O共享内存部分，储存每一条线的位置与颜色
+    private Vector<MyPoint> data;
     private int ChessBoard[][];
 
     static int[] os = new int[] {0, 0, 2, 20, 65535, 65535, 65535};
