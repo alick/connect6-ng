@@ -1,20 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="connect6-ng" default="run" basedir=".">
+<project name="connect6-ng" default="jar" basedir=".">
     <!-- 这里的basedir是 工程的目录为根目录
         一般basedir="."表示的是build.xml文件所在的相对目录为根目录即项目根目录下
     -->
     <property name="product" value="connect6-ng"/>
-    <property name="version" value="0.1-dev"/>
     <property name="src" value="src"/>
     <property name="build.dir" value="${basedir}/build"/>
     <property name="dist.dir" value="${basedir}/dist"/>
     <property name="myclasspath" value="${build.dir}/classes/java"/>
-    <property name="jar.file" value="${product}-${version}.jar"/>
 
     <patternset
-	id="src.dist.patterns"
-	includes="src/,build.xml,*build*.xml,docs/,*.txt,contrib/,lib/"
-	excludes="" />
+        id="src.dist.patterns"
+        includes="src/,build.xml,*build*.xml,docs/,*.txt,contrib/,lib/"
+        excludes="" />
+
+    <available file=".git" type="dir" property="git.present"/>
+
+    <target name="git.revision" description="Store git revision in ${repository.version}" if="git.present">
+        <exec executable="git" outputproperty="git.revision" failifexecutionfails="false" errorproperty="">
+            <arg value="describe"/>
+            <arg value="--tags"/>
+            <arg value="--always"/>
+            <arg value="HEAD"/>
+        </exec>
+        <condition property="repository.version" value="${git.revision}" else="unknown">
+            <and>
+                <isset property="git.revision"/>
+                <length string="${git.revision}" trim="yes" length="0" when="greater"/>
+            </and>
+        </condition>
+    </target>
+
+    <target name="version" depends="git.revision" description="Set version number">
+	<property name="version" value="${repository.version}"/>
+    </target>
 
     <echo message="init ..." />
     <!-- =================================
@@ -38,7 +57,8 @@
 	</javac>
     </target>
 
-    <target name="jar" depends="build">
+    <target name="jar" depends="build,version">
+	<property name="jar.file" value="${product}-${version}.jar"/>
 	<jar
 	    basedir="${build.dir}/classes/java"
 	    destfile="${build.dir}/${jar.file}">
@@ -62,7 +82,7 @@
   <!-- ================================================================== -->
   <!-- S O U R C E  D I S T R I B U T I O N                               -->
   <!-- ================================================================== -->
-    <target name="init-dist" >
+    <target name="init-dist" depends="version">
 
         <!-- Package is not called first if packaging src standalone, so the dist.dir may not exist -->
         <mkdir dir="${build.dir}"/>
