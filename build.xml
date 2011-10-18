@@ -18,6 +18,8 @@
             output="xml"
             outputFile="${build.dir}/connect6-ng-fb.xml" >
             <!--<auxClasspath path="${basedir}/lib/Regex.jar" />-->
+            <auxClasspath path="/usr/share/java/jsr-305.jar" />
+            <auxClasspath path="/usr/share/java/findbugs-annotations.jar" />
             <sourcePath path="${basedir}/src/" />
             <class location="${build.dir}/${jar.file}" />
         </findbugs>
@@ -60,15 +62,16 @@
 
     <!-- 编译class文件-->
     <target name="build" depends="init">
-	<javac
-	    encoding="UTF-8"
-	    srcdir="${src}/java"
-	    destdir="${build.dir}/classes/java">
-	    <compilerarg line="-Xmaxwarns 10000000"/>
-	    <compilerarg line="-Xmaxerrs 10000000"/>
-	    <!-- for generics in Java 1.5: -->
-	    <compilerarg line="-Xlint:unchecked"/>
-	</javac>
+        <javac
+            classpath="/usr/share/java/jsr-305.jar:/usr/share/java/findbugs-annotations.jar"
+            encoding="UTF-8"
+            srcdir="${src}/java"
+            destdir="${build.dir}/classes/java">
+            <compilerarg line="-Xmaxwarns 10000000"/>
+            <compilerarg line="-Xmaxerrs 10000000"/>
+            <!-- for generics in Java 1.5: -->
+            <compilerarg line="-Xlint:unchecked"/>
+        </javac>
     </target>
 
     <target name="jar" depends="build,version">
