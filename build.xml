@@ -8,7 +8,6 @@
     <property name="build.dir" value="${basedir}/build"/>
     <property name="dist.dir" value="${basedir}/dist"/>
     <property name="myclasspath" value="${build.dir}/classes/java"/>
-    <property name="jar.file" value="${product}-${version}.jar"/>
     <property name="findbugs.home" value="/usr/share/java" />
 
     <taskdef name="findbugs" classname="edu.umd.cs.findbugs.anttask.FindBugsTask"/>
