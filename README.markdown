@@ -8,8 +8,10 @@ the connect6 game.
 
 # Howto Install and Run
 
-The recommended way to use connect6-ng is using the source code.
-Fist you should clone the repository by git:
+The recommended way to use connect6-ng is building from the source code.
+You need prepare git, JDK, ant, findbugs to begin the journey.
+
+First you should clone the repository by git:
 
     git clone https://code.google.com/p/connect6-ng/
 
@@ -31,11 +33,13 @@ be enough.
 # Notes
 The old connect6 project's svn history has been converted
 to git style by git-svn. Also the historical log is linked with
-the current project's tree by git-replace. However, `git clone'
-and simple `git pull' won't download the old history. To get it,
-add this line into origin section in the file `.git/config':
+the current project's tree by git-replace. However, `git clone`
+and simple `git pull` won't download the old history. To get it,
+add this line into origin section in the file `.git/config`:
+
     fetch = +refs/replace/*:refs/replace/*
-Then run `git pull'. Hopefully you can see the longer history.
+
+Then run `git pull`. Hopefully you can see the longer history.
 
 [connect6]: http://code.google.com/p/connect6/
 [connect6org]: http://www.connect6.org/web/index.php
