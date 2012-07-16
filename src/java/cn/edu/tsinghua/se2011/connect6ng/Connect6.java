@@ -4,6 +4,7 @@ import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
+import java.util.logging.*;
 
 /** This is the top level class of connect6.
  * It consists of just main routine.
@@ -121,18 +122,23 @@ class MyFrame extends Frame {
         addMouseListener(new amouse());
 
         //打开游戏时读取文件
-        FileInputStream istream;
-        ObjectInputStream iFstream;
         try {
-            istream = new FileInputStream("close.c6db");
-            iFstream = new ObjectInputStream(istream);
-            // the Xlint:unchecked warning is suppressed
-            data = (Vector<MyPoint>)iFstream.readObject();
-            istream.close();
-            kernel.setData(data);
-        } catch (Exception x) {
-            x.printStackTrace();
-        };
+            FileInputStream istream = new FileInputStream("close.c6db");
+            ObjectInputStream iFstream = new ObjectInputStream(istream);
+            try {
+                // the Xlint:unchecked warning is suppressed
+                data = (Vector<MyPoint>)iFstream.readObject();
+                kernel.setData(data);
+            } finally {
+                iFstream.close();
+            }
+        } catch (IOException ex) {
+            // Ignore file not found issue.
+            // FIXME
+            //fLogger.log(Level.SEVERE, "Failed to perform input when starting.", ex);
+        } catch (ClassNotFoundException ex) {
+            fLogger.log(Level.SEVERE, "Failed to perform input when starting. Class not found.", ex);
+        }
 
         if (data.size() != 0) {
             pause = true;
@@ -361,18 +367,17 @@ class MyFrame extends Frame {
     class ack_menu_exit implements ActionListener {
         //退出 事件响应
         public void actionPerformed(ActionEvent e) {
-            ObjectOutputStream oFstream;
-            FileOutputStream ostream;
             try {
-                ostream = new FileOutputStream("close.c6db");
-                oFstream = new ObjectOutputStream(ostream);
-                oFstream.writeObject(data);
-                oFstream.flush();
-                ostream.close();
-            } catch (Exception x) {
-                x.printStackTrace();
-            };
-
+                FileOutputStream file = new FileOutputStream("close.c6db");
+                ObjectOutputStream output = new ObjectOutputStream(file);
+                try {
+                    output.writeObject(data);
+                } finally {
+                    output.close();
+                }
+            } catch (IOException ex) {
+                fLogger.log(Level.SEVERE, "Failed to perform output when exiting.", ex);
+            }
             System.exit(0);
         }
     }
@@ -504,19 +509,19 @@ class MyFrame extends Frame {
                     fullFileName = fullFileName + ".c6db";
                 }
                 fullFileName = dir + fullFileName;
-                ObjectOutputStream oFstream;
-                FileOutputStream ostream;
+
                 try {
-                    ostream = new FileOutputStream(fullFileName);
-                    oFstream = new ObjectOutputStream(ostream);
-//					System.out.println(fullFileName);		//TestCode
-                    oFstream.writeObject(data);
-                    oFstream.flush();
-                    ostream.close();
-                } catch (Exception x) {
-                    x.printStackTrace();
-                    popupMessageBox(new String("文件打开失败！！！"));
-                };
+                    FileOutputStream file = new FileOutputStream(fullFileName);
+                    ObjectOutputStream output = new ObjectOutputStream(file);
+                    try {
+                        output.writeObject(data);
+                    } finally {
+                        output.close();
+                    }
+                } catch (IOException ex) {
+                    fLogger.log(Level.SEVERE, "Failed to perform output when saving.", ex);
+                    popupMessageBox(new String("保存游戏战绩时文件打开失败！"));
+                }
             }
         }
     }
@@ -535,23 +540,26 @@ class MyFrame extends Frame {
                     file = file + ".c6db";
                 }
                 file = dir + file;
-                FileInputStream istream;
-                ObjectInputStream p;
                 try {
-                    istream = new FileInputStream(file);
-                    p = new ObjectInputStream(istream);
-                    // the Xlint:unchecked warning is suppressed
-                    data = (Vector<MyPoint>)p.readObject();
-                    istream.close();
-                    kernel.setData(data);
-                    pause = true;
-                    State = 0;
-                    menu_int.setLabel("继续游戏");
-                    menu_int.setEnabled(true);
-                } catch (Exception x) {
-                    x.printStackTrace();
-                    popupMessageBox(new String("文件打开失败！！！"));
-                };
+                    FileInputStream istream = new FileInputStream(file);
+                    ObjectInputStream input = new ObjectInputStream(istream);
+                    try {
+                        // the Xlint:unchecked warning is suppressed
+                        data = (Vector<MyPoint>)input.readObject();
+                    } finally {
+                        input.close();
+                        kernel.setData(data);
+                        pause = true;
+                        State = 0;
+                        menu_int.setLabel("继续游戏");
+                        menu_int.setEnabled(true);
+                    }
+                } catch (IOException ex) {
+                    fLogger.log(Level.SEVERE, "Failed to perform input when opening.", ex);
+                    popupMessageBox(new String("打开游戏战绩时文件打开失败！"));
+                } catch (ClassNotFoundException ex) {
+                    fLogger.log(Level.SEVERE, "Failed to perform input when opening. Class not found.", ex);
+                }
 
                 repaint();
                 setTitle();
@@ -621,19 +629,20 @@ class MyFrame extends Frame {
                 data.clear();
             }
 
-            ObjectOutputStream oFstream;
-            FileOutputStream ostream;
             try {
-                ostream = new FileOutputStream("close.c6db");
-                oFstream = new ObjectOutputStream(ostream);
-                oFstream.writeObject(data);
-                oFstream.flush();
-                ostream.close();
-            } catch (Exception x) {
-                x.printStackTrace();
-            };
-
+                FileOutputStream file = new FileOutputStream("close.c6db");
+                ObjectOutputStream output = new ObjectOutputStream(file);
+                try {
+                    output.writeObject(data);
+                } finally {
+                    output.close();
+                }
+            } catch (IOException ex) {
+                fLogger.log(Level.SEVERE, "Failed to perform output when closing.", ex);
+            }
             System.exit(0);
         }
     }
+    private static final Logger fLogger =
+        Logger.getLogger(MyFrame.class.getPackage().getName());
 }
