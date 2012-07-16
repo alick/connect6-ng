@@ -125,7 +125,7 @@ class MyFrame extends Frame {
             // the Xlint:unchecked warning is suppressed
             data = (Vector<MyPoint>)iFstream.readObject();
             istream.close();
-            kernel.set(data);
+            kernel.setData(data);
         } catch (Exception x) {
             x.printStackTrace();
         };
@@ -164,13 +164,13 @@ class MyFrame extends Frame {
         Size = data.size();							//绘制棋子
         for (i=0; i<Size; i++) {
             p = (MyPoint)data.elementAt(i);
-            if (p.getcolor() == 0) {
+            if (p.getColor() == 0) {
                 g.setColor(new Color(20, 20, 20));
             } else {
                 g.setColor(Color.white);
             }
 
-            g.fillOval(50 + 30 * p.getx() - 10, 90 + 30 * p.gety() - 10, 21, 21);
+            g.fillOval(50 + 30 * p.getX() - 10, 90 + 30 * p.getY() - 10, 21, 21);
         }
     }
 
@@ -211,9 +211,9 @@ class MyFrame extends Frame {
             if (computer) {
                 p = data.size();
                 if (p % 2 != 0) {
-                    ccolor = 1 - ( (MyPoint)data.elementAt(p - 1)).getcolor();
+                    ccolor = 1 - ( (MyPoint)data.elementAt(p - 1)).getColor();
                 } else {
-                    ccolor = 1 - ( (MyPoint)data.elementAt(p - 2)).getcolor();
+                    ccolor = 1 - ( (MyPoint)data.elementAt(p - 2)).getColor();
                 }
 
                 if (ccolor == 0) {
@@ -312,10 +312,10 @@ class MyFrame extends Frame {
                 Size--;
                 if (Size % 2 == 0) {
                     State = 1;
-                    color = ((MyPoint)data.elementAt(Size - 1)).getcolor();
+                    color = ((MyPoint)data.elementAt(Size - 1)).getColor();
                 } else {
                     State = 2;
-                    color = 1 - ((MyPoint)data.elementAt(Size - 1)).getcolor();
+                    color = 1 - ((MyPoint)data.elementAt(Size - 1)).getColor();
                 }
             } else {
                 if (Size % 2 == 0) {
@@ -383,10 +383,10 @@ class MyFrame extends Frame {
                 menu_int.setLabel("暂停游戏");
                 if (Size % 2 == 0) {
                     State = 1;
-                    color = ((MyPoint)data.elementAt(Size-1)).getcolor();
+                    color = ((MyPoint)data.elementAt(Size-1)).getColor();
                 } else {
                     State = 2;
-                    color = 1 - ((MyPoint)data.elementAt(Size-1)).getcolor();
+                    color = 1 - ((MyPoint)data.elementAt(Size-1)).getColor();
                 }
 
                 pause = false;
@@ -421,8 +421,8 @@ class MyFrame extends Frame {
             int i, Size;
             Size = data.size();
             for (i=0; i<Size; i++)	//重复下子
-                if (  (((MyPoint)data.elementAt(i)).getx() == x)
-                        &&(((MyPoint)data.elementAt(i)).gety() == y) ) {
+                if (  (((MyPoint)data.elementAt(i)).getX() == x)
+                        &&(((MyPoint)data.elementAt(i)).getY() == y) ) {
                     return;
                 }
 
@@ -448,7 +448,7 @@ class MyFrame extends Frame {
 
             State--;
             if (computer) {
-                if (kernel.hadsix()) {
+                if (kernel.hasSix()) {
                     msgbox("恭喜你战胜了电脑！！！");
                     State = 0;
                     setmytitle();
@@ -459,7 +459,7 @@ class MyFrame extends Frame {
                     //long t1 = System.nanoTime();
                     //System.out.println("placeTwoStones time: " + (t1-t0)/1e6 + "ms");
                     repaint();
-                    if (kernel.hadsix()) {
+                    if (kernel.hasSix()) {
                         msgbox("电脑获得胜利！！！");
                         setmytitle();
                     } else {
@@ -467,7 +467,7 @@ class MyFrame extends Frame {
                     }
                 }
             } else {
-                if (kernel.hadsix()) {
+                if (kernel.hasSix()) {
                     if (color == 0)
                         msgbox("黑方获胜！！！");
                     else
@@ -535,7 +535,7 @@ class MyFrame extends Frame {
                     // the Xlint:unchecked warning is suppressed
                     data = (Vector<MyPoint>)p.readObject();
                     istream.close();
-                    kernel.set(data);
+                    kernel.setData(data);
                     pause = true;
                     State = 0;
                     menu_int.setLabel("继续游戏");

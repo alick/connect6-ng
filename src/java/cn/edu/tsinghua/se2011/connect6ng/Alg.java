@@ -13,7 +13,10 @@ class Alg {
 
     static int[] os = new int[] {0, 0, 2, 20, 65535, 65535, 65535};
     static int[] ms = new int[] {0, 0, 1, 10, 35, 35, 999999};
-    /** Class constructor. */
+    /** Class constructor.
+     *
+     * @param _data the data to be set to
+     */
     Alg(Vector<MyPoint> _data) {
         data = _data;
         ChessBoard = new int[19][];
@@ -25,11 +28,16 @@ class Alg {
         }
     }
 
-    void set(Vector<MyPoint> _data) {
+    /** Sets internal data to the one specified in input.
+     *
+     * @param _data the data to be set to
+     */
+    void setData(Vector<MyPoint> _data) {
         data = _data;
     }
 
-    void clrp() {
+    /** Resets chess board to initial state(no stones). */
+    void resetChessBoard() {
         for (int i=0; i<19; i++) {
             for (int j=0; j<19; j++) {
                 ChessBoard[i][j] = -1;
@@ -37,7 +45,10 @@ class Alg {
         }
     }
 
-    /** 计算之后两枚颜色为color的子的位置，直接将数据插入data中。 */
+    /** 计算之后两枚颜色为color的子的位置，直接将数据插入data中。
+     *
+     * @param color the color of the stone to be placed
+     */
     void placeTwoStones(int color) {
         int size;
         size = data.size();
@@ -46,10 +57,10 @@ class Alg {
             return;
         }
         MyPoint p;
-        clrp();
+        resetChessBoard();
         for (int i=0; i<size; i++) {
             p = (MyPoint)data.elementAt(i);
-            ChessBoard[p.getx()][p.gety()] = p.getcolor();
+            ChessBoard[p.getX()][p.getY()] = p.getColor();
         }
 
         int x1, x2, y1, y2, _x1, _x2, _y1, _y2;
@@ -207,8 +218,13 @@ class Alg {
         return score;
     }
 
-    boolean hadsix(int color) {
-        //返回是否有此颜色的六连
+    /** Return whether one color gets six stones in a row.
+     * The row may be horizontal, vertical or diagonal.
+     *
+     * @param color the color of the stone
+     * @return true if one gets six in a row
+     */
+    boolean hasSix(int color) {
         int ChessBoardState[][];
         ChessBoardState = new int[19][];
         int i, j;
@@ -264,17 +280,20 @@ class Alg {
         return false;
     }
 
-    boolean hadsix() {
-        //返回是否有六连（不区分黑白）
+    /** Return whether one side has six stones in a row no matter which color.
+     *
+     * @return true if one has six in a row whichever one's color
+     */
+    boolean hasSix() {
         MyPoint p;
         int size = data.size();
-        clrp();
+        resetChessBoard();
         for (int i=0; i<size; i++) {
             p = (MyPoint)data.elementAt(i);
-            ChessBoard[p.getx()][p.gety()] = p.getcolor();
+            ChessBoard[p.getX()][p.getY()] = p.getColor();
         }
 
-        return (hadsix(0)||hadsix(1));
+        return (hasSix(0) || hasSix(1));
     }
 }
 
@@ -302,7 +321,10 @@ class SixPointsLine {
         offset = 0;
     }
 
-    /** 在队列中加入一个棋子，同时弹出最后一个。 */
+    /** 在队列中加入一个棋子，同时弹出最后一个。
+     *
+     * @param color the color of the stone
+     */
     void push(int color) {
         // We use modulus to map colors(0, 1, -1) to
         // array index(0, 1, 2).
@@ -312,7 +334,10 @@ class SixPointsLine {
         cnts[(color + 3) % 3]++;
     }
 
-    /** 返回当前队列相应颜色的得分。 */
+    /** 返回当前队列相应颜色的得分。
+     *
+     * @param color the color of the stone
+     */
     int getScore(int color) {
         int i = (color + 3) % 3;
         if (i < 2 && cnts[1 - i] != 0) {
@@ -323,21 +348,42 @@ class SixPointsLine {
     }
 }
 
+/** This class records the point with side/color information.
+ */
 class MyPoint implements Serializable {
     //记录坐标及颜色
     private int x, y, color;
+
+    /** Class constructor.
+     *
+     * @param _x the x-coordinate
+     * @param _y the y-coordinate
+     * @param _color the color of the stone
+     */
     MyPoint(int _x, int _y, int _color) {
         x = _x;
         y = _y;
         color = _color;
     }
-    int getx() {
+    /** Gets the x-coordinate.
+     *
+     * @return the x-coordinate
+     */
+    int getX() {
         return x;
     }
-    int gety() {
+    /** Gets the y-coordinate.
+     *
+     * @return the y-coordinate
+     */
+    int getY() {
         return y;
     }
-    int getcolor() {
+    /** Returns the color of the stone.
+     *
+     * @return the color of the stone
+     */
+    int getColor() {
         return color;
     }
 }
