@@ -452,7 +452,10 @@ class MyFrame extends Frame {
                     setmytitle();
                     repaint();
                 } else if (State == 0) {
+                    //long t0 = System.nanoTime();
                     kernel.cal(1 - color);
+                    //long t1 = System.nanoTime();
+                    //System.out.println("cal time: " + (t1-t0)/1e6 + "ms");
                     repaint();
                     if (kernel.hadsix()) {
                         msgbox("电脑获得胜利！！！");

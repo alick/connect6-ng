@@ -57,9 +57,14 @@ class Alg {
         _x1 = _x2 = _y1 = _y2 = 0;
         vmax = -99999999;
         for (x1=0; x1<19; x1++)//枚举之后两枚棋的位置
-            for (x2=0; x2<19; x2++)
-                for (y1=0; y1<19; y1++)
+            for (y1=0; y1<19; y1++)
+                for (x2=0; x2<19; x2++)
                     for (y2=0; y2<19; y2++) {
+                        // Do not compute with the dual double pairs,
+                        // i.e. (x1, y1; x2, y2) ~ (x2, y2; x1, y1)
+                        if (x1 * 19 + y1 > x2 * 19 + y2) {
+                            continue;
+                        }
                         if (  (ChessBoard[x1][y1] != -1)
                                 ||(ChessBoard[x2][y2] != -1)
                                 ||(x1 == x2 && y1 == y2)
