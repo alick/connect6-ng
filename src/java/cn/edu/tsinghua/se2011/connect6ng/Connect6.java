@@ -5,11 +5,13 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 
-/** This class serves as the top level class.
- * It creates the main frame and start the game.
- *
+/** This is the top level class of connect6.
+ * It consists of just main routine.
  */
 public class Connect6 {
+    /** This is the main routine.
+     * It creates the main frame and start the game.
+     */
     public static void main(String[] args) {
         MyFrame form = new MyFrame();
     }
@@ -453,9 +455,9 @@ class MyFrame extends Frame {
                     repaint();
                 } else if (State == 0) {
                     //long t0 = System.nanoTime();
-                    kernel.cal(1 - color);
+                    kernel.placeTwoStones(1 - color);
                     //long t1 = System.nanoTime();
-                    //System.out.println("cal time: " + (t1-t0)/1e6 + "ms");
+                    //System.out.println("placeTwoStones time: " + (t1-t0)/1e6 + "ms");
                     repaint();
                     if (kernel.hadsix()) {
                         msgbox("电脑获得胜利！！！");

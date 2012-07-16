@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
 
+/** This class implements the core algorithm. */
 class Alg {
     //IO共享内存部分，储存每一个棋子的位置与颜色
     private Vector<MyPoint> data;
@@ -12,6 +13,7 @@ class Alg {
 
     static int[] os = new int[] {0, 0, 2, 20, 65535, 65535, 65535};
     static int[] ms = new int[] {0, 0, 1, 10, 35, 35, 999999};
+    /** Class constructor. */
     Alg(Vector<MyPoint> _data) {
         data = _data;
         ChessBoard = new int[19][];
@@ -35,8 +37,8 @@ class Alg {
         }
     }
 
-    void cal(int color) {
-        //计算之后两枚颜色为color的子的位置，直接将数据插入data中
+    /** 计算之后两枚颜色为color的子的位置，直接将数据插入data中。 */
+    void placeTwoStones(int color) {
         int size;
         size = data.size();
         if (size == 0) {
@@ -68,8 +70,8 @@ class Alg {
                         if (  (ChessBoard[x1][y1] != -1)
                                 ||(ChessBoard[x2][y2] != -1)
                                 ||(x1 == x2 && y1 == y2)
-                                ||!check(x1, y1)
-                                ||!check(x2, y2) ) {
+                                ||!hasStonesAround(x1, y1)
+                                ||!hasStonesAround(x2, y2) ) {
                             continue;
                         }
 
@@ -102,7 +104,12 @@ class Alg {
         data.add(new MyPoint(_x2, _y2, color));
     }
 
-    boolean check(int x, int y) {
+    /** Checks whether the point (x, y) has stones around it.
+     *
+     * @param x the x-coordinate of the point
+     * @param y the y-coordinate of the point
+     */
+    boolean hasStonesAround(int x, int y) {
         x = Math.min(x, 16);
         y = Math.min(y, 16);
         x = Math.max(x, 2);
