@@ -107,6 +107,7 @@ class MyFrame extends Frame {
         menu_back.setShortcut(new MenuShortcut(KeyEvent.VK_LEFT));
         menu_game.add(menu_exit);
         menu_exit.addActionListener(new ack_menu_exit());
+        menu_exit.setShortcut(new MenuShortcut(KeyEvent.VK_X));
         menu_MenuBar.add(menu_file);
         menu_file.add(menu_open);
         menu_open.addActionListener(new ack_menu_open());
