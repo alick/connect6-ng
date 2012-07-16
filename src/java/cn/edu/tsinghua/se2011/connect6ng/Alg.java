@@ -78,7 +78,7 @@ class Alg {
                         ChessBoard[x1][y1] = color;
                         ChessBoard[x2][y2] = color;
 
-                        v = value(color);//计算得分
+                        v = getTotalScore(color);//计算得分
                         if (vmax < v) {
                             vmax = v;
                             k = 2;
@@ -127,93 +127,84 @@ class Alg {
         return false;
     }
 
-    int value(int color) {
-        //计算当前棋盘该颜色的得分
+    /** Calculates and returns the total score of one color(side).
+     *
+     * @param color the color of the stone
+     * @return the total score of the color in the whole chess board
+     */
+    int getTotalScore(int color) {
         SixPointsLine l = new SixPointsLine();
 
-        int _value;
-        _value = 0;
+        int score = 0;
 
-        for (int i=0; i<19; i++) {
-            //水平方向
-            l.push(ChessBoard[i][0]);
-            l.push(ChessBoard[i][1]);
-            l.push(ChessBoard[i][2]);
-            l.push(ChessBoard[i][3]);
-            l.push(ChessBoard[i][4]);
-            for (int j=5; j<19; j++) {
+        //水平方向
+        for (int i = 0; i < 19; i++) {
+            for (int j = 0; j < 5; j++) {
                 l.push(ChessBoard[i][j]);
-                _value += ms[l.getScore(color)];
-                _value -= os[l.getScore(1-color)];
+            }
+            for (int j = 5; j < 19; j++) {
+                l.push(ChessBoard[i][j]);
+                score += ms[l.getScore(color)];
+                score -= os[l.getScore(1-color)];
             }
         }
 
-        for (int i=0; i<19; i++) {
-            //竖直方向
-            l.push(ChessBoard[0][i]);
-            l.push(ChessBoard[1][i]);
-            l.push(ChessBoard[2][i]);
-            l.push(ChessBoard[3][i]);
-            l.push(ChessBoard[4][i]);
+        //竖直方向
+        for (int i = 0; i < 19; i++) {
+            for (int j = 0; j < 5; j++) {
+                l.push(ChessBoard[j][i]);
+            }
             for (int j=5; j<19; j++) {
                 l.push(ChessBoard[j][i]);
-                _value += ms[l.getScore(color)];
-                _value -= os[l.getScore(1-color)];
+                score += ms[l.getScore(color)];
+                score -= os[l.getScore(1-color)];
             }
         }
 
         //"\"方向
-        for (int i=0; i<14; i++) {
-            l.push(ChessBoard[0][i]);
-            l.push(ChessBoard[1][i+1]);
-            l.push(ChessBoard[2][i+2]);
-            l.push(ChessBoard[3][i+3]);
-            l.push(ChessBoard[4][i+4]);
-            for (int j=5; i+j < 19; j++) {
-                l.push(ChessBoard[j][i+j]);
-                _value += ms[l.getScore(color)];
-                _value -= os[l.getScore(1-color)];
+        for (int i = 0; i < 14; i++) {
+            for (int j = 0; j < 5; j++) {
+                l.push(ChessBoard[j][i + j]);
+            }
+            for (int j = 5; i + j < 19; j++) {
+                l.push(ChessBoard[j][i + j]);
+                score += ms[l.getScore(color)];
+                score -= os[l.getScore(1-color)];
             }
         }
-        for (int i=1; i<14; i++) {
-            l.push(ChessBoard[i][0]);
-            l.push(ChessBoard[i+1][1]);
-            l.push(ChessBoard[i+2][2]);
-            l.push(ChessBoard[i+3][3]);
-            l.push(ChessBoard[i+4][4]);
-            for (int j=5; i+j < 19; j++) {
-                l.push(ChessBoard[i+j][j]);
-                _value += ms[l.getScore(color)];
-                _value -= os[l.getScore(1-color)];
+        for (int i = 0; i < 14; i++) {
+            for (int j = 0; j < 5; j++) {
+                l.push(ChessBoard[i + j][j]);
+            }
+            for (int j = 5; i + j < 19; j++) {
+                l.push(ChessBoard[i + j][j]);
+                score += ms[l.getScore(color)];
+                score -= os[l.getScore(1-color)];
             }
         }
 
         //"/"方向
-        for (int i=5; i<19; i++) {
-            l.push(ChessBoard[0][i]);
-            l.push(ChessBoard[1][i-1]);
-            l.push(ChessBoard[2][i-2]);
-            l.push(ChessBoard[3][i-3]);
-            l.push(ChessBoard[4][i-4]);
-            for (int j=5; j <= i; j++) {
+        for (int i = 5; i < 19; i++) {
+            for (int j = 0; j < 5; j++) {
+                l.push(ChessBoard[j][i - j]);
+            }
+            for (int j = 5; j <= i; j++) {
                 l.push(ChessBoard[j][i-j]);
-                _value += ms[l.getScore(color)];
-                _value -= os[l.getScore(1-color)];
+                score += ms[l.getScore(color)];
+                score -= os[l.getScore(1-color)];
             }
         }
-        for (int i=1; i<14; i++) {
-            l.push(ChessBoard[i][18]);
-            l.push(ChessBoard[i+1][17]);
-            l.push(ChessBoard[i+2][16]);
-            l.push(ChessBoard[i+3][15]);
-            l.push(ChessBoard[i+4][14]);
-            for (int j=5; i + j < 19; j++) {
-                l.push(ChessBoard[i+j][18-j]);
-                _value += ms[l.getScore(color)];
-                _value -= os[l.getScore(1-color)];
+        for (int i = 1; i < 14; i++) {
+            for (int j = 0; j < 5; j++) {
+                l.push(ChessBoard[i + j][18 - j]);
+            }
+            for (int j = 5; i + j < 19; j++) {
+                l.push(ChessBoard[i + j][18 - j]);
+                score += ms[l.getScore(color)];
+                score -= os[l.getScore(1-color)];
             }
         }
-        return _value;
+        return score;
     }
 
     boolean hadsix(int color) {
