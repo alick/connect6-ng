@@ -5,6 +5,7 @@
     -->
     <property name="product" value="connect6-ng"/>
     <property name="src" value="src"/>
+    <property name="doc" value="docs"/>
     <property name="build.dir" value="${basedir}/build"/>
     <property name="dist.dir" value="${basedir}/dist"/>
     <property name="myclasspath" value="${build.dir}/classes/java"/>
@@ -93,7 +94,16 @@
     <target name="clean">
 	<delete dir="${build.dir}" quiet="true" />
 	<delete dir="${dist.dir}" quiet="true" />
-    </target> 
+    </target>
+
+    <target name="doc">
+        <javadoc
+            sourcepath="${src}/java"
+            destdir="${doc}/api"
+            packagenames="cn.edu.tsinghua.se2011.connect6ng"
+            Private="yes">
+        </javadoc>
+    </target>
 
   <!-- ================================================================== -->
   <!-- S O U R C E  D I S T R I B U T I O N                               -->
