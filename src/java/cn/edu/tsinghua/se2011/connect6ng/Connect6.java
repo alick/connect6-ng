@@ -17,6 +17,8 @@ public class Connect6 {
     }
 }
 
+/** The main window with AI kernel.
+ */
 class MyFrame extends Frame {
     Vector<MyPoint> data;
     Alg kernel;
@@ -59,6 +61,7 @@ class MyFrame extends Frame {
     MenuItem menu_save = 		new MenuItem("保存游戏战绩");
 
 
+    /** Class constructor.  */
     @SuppressWarnings("unchecked")
     MyFrame() {
         super("Connect 6 - 游戏尚未开始 - 练习模式");
@@ -138,12 +141,16 @@ class MyFrame extends Frame {
         }
 
         repaint();
-        setmytitle();
+        setTitle();
         setVisible(true);
     }
 
+    /** 界面绘制。
+     *
+     * TODO
+     * @param g
+     */
     public void paint(Graphics g) {
-        //界面绘制
         int i, Size;
         MyPoint p;
         g.setColor(new Color(240, 120, 20));
@@ -182,7 +189,7 @@ class MyFrame extends Frame {
             State = 1;
             color = 0;
             pause = false;
-            setmytitle();
+            setTitle();
             menu_back.setEnabled(false);
             menu_restart.setEnabled(false);
         }
@@ -197,7 +204,7 @@ class MyFrame extends Frame {
             State = 2;
             color = 1;
             pause = false;
-            setmytitle();
+            setTitle();
             menu_back.setEnabled(false);
             menu_restart.setEnabled(false);
         }
@@ -221,7 +228,7 @@ class MyFrame extends Frame {
                     repaint();
                     State = 1;
                     color = 0;
-                    setmytitle();
+                    setTitle();
                     menu_back.setEnabled(false);
                     menu_restart.setEnabled(false);
                 } else {
@@ -230,7 +237,7 @@ class MyFrame extends Frame {
                     repaint();
                     State = 2;
                     color = 1;
-                    setmytitle();
+                    setTitle();
                     menu_back.setEnabled(false);
                     menu_restart.setEnabled(false);
                 }
@@ -239,7 +246,7 @@ class MyFrame extends Frame {
                 repaint();
                 State = 1;
                 color = 0;
-                setmytitle();
+                setTitle();
                 menu_back.setEnabled(false);
                 menu_restart.setEnabled(false);
             }
@@ -260,7 +267,7 @@ class MyFrame extends Frame {
             menu_back.setEnabled(false);
             menu_restart.setEnabled(false);
             menu_prac.setLabel("切换为实战模式");
-            setmytitle();
+            setTitle();
         }
     }
 
@@ -271,7 +278,7 @@ class MyFrame extends Frame {
             State = 0;
             data.clear();
             repaint();
-            setmytitle();
+            setTitle();
             if (!computer) {
                 menu_last.setEnabled(false);
             } else {
@@ -294,7 +301,7 @@ class MyFrame extends Frame {
             }
 
             mode = 1 - mode;
-            setmytitle();
+            setTitle();
         }
     }
 
@@ -346,7 +353,7 @@ class MyFrame extends Frame {
             }
 
             repaint();
-            setmytitle();
+            setTitle();
         }
     }
 
@@ -376,7 +383,7 @@ class MyFrame extends Frame {
                 State = 0;
                 pause = true;
                 menu_int.setLabel("继续游戏");
-                setmytitle();
+                setTitle();
             } else {
                 int Size;
                 Size = data.size();
@@ -390,7 +397,7 @@ class MyFrame extends Frame {
                 }
 
                 pause = false;
-                setmytitle();
+                setTitle();
             }
         }
     }
@@ -449,9 +456,9 @@ class MyFrame extends Frame {
             State--;
             if (computer) {
                 if (kernel.hasSix()) {
-                    msgbox("恭喜你战胜了电脑！！！");
+                    popupMessageBox("恭喜你战胜了电脑！！！");
                     State = 0;
-                    setmytitle();
+                    setTitle();
                     repaint();
                 } else if (State == 0) {
                     //long t0 = System.nanoTime();
@@ -460,8 +467,8 @@ class MyFrame extends Frame {
                     //System.out.println("placeTwoStones time: " + (t1-t0)/1e6 + "ms");
                     repaint();
                     if (kernel.hasSix()) {
-                        msgbox("电脑获得胜利！！！");
-                        setmytitle();
+                        popupMessageBox("电脑获得胜利！！！");
+                        setTitle();
                     } else {
                         State = 2;
                     }
@@ -469,11 +476,11 @@ class MyFrame extends Frame {
             } else {
                 if (kernel.hasSix()) {
                     if (color == 0)
-                        msgbox("黑方获胜！！！");
+                        popupMessageBox("黑方获胜！！！");
                     else
-                        msgbox("白方获胜！！！");
+                        popupMessageBox("白方获胜！！！");
                     State = 0;
-                    setmytitle();
+                    setTitle();
                     repaint();
                 } else if (State == 0) {
                     State = 2;
@@ -507,7 +514,7 @@ class MyFrame extends Frame {
                     ostream.close();
                 } catch (Exception x) {
                     x.printStackTrace();
-                    msgbox(new String("文件打开失败！！！"));
+                    popupMessageBox(new String("文件打开失败！！！"));
                 };
             }
         }
@@ -542,16 +549,18 @@ class MyFrame extends Frame {
                     menu_int.setEnabled(true);
                 } catch (Exception x) {
                     x.printStackTrace();
-                    msgbox(new String("文件打开失败！！！"));
+                    popupMessageBox(new String("文件打开失败！！！"));
                 };
 
                 repaint();
-                setmytitle();
+                setTitle();
             }
         }
     }
 
-    void setmytitle() {
+    /** Sets the title of the frame window to reflect different status.
+     */
+    void setTitle() {
         String s;
         s = new String("Connect 6");
         if (State != 0) {
@@ -573,8 +582,11 @@ class MyFrame extends Frame {
         setTitle(s);
     }
 
-    void msgbox(String msg) {
-        //弹出消息窗
+    /** Popup a message box to show the result.
+     *
+     * @param msg the message to be shown in the dialog box
+     */
+    void popupMessageBox(String msg) {
         Point position = MyFrame.this.getLocation();
         MyFrame.this.setEnabled(false);
         position.translate(250, 300);
