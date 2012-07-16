@@ -129,88 +129,88 @@ class Alg {
 
     int value(int color) {
         //计算当前棋盘该颜色的得分
-        SixPoint l = new SixPoint();
+        SixPointsLine l = new SixPointsLine();
 
         int _value;
         _value = 0;
 
         for (int i=0; i<19; i++) {
             //水平方向
-            l.add(ChessBoard[i][0]);
-            l.add(ChessBoard[i][1]);
-            l.add(ChessBoard[i][2]);
-            l.add(ChessBoard[i][3]);
-            l.add(ChessBoard[i][4]);
+            l.push(ChessBoard[i][0]);
+            l.push(ChessBoard[i][1]);
+            l.push(ChessBoard[i][2]);
+            l.push(ChessBoard[i][3]);
+            l.push(ChessBoard[i][4]);
             for (int j=5; j<19; j++) {
-                l.add(ChessBoard[i][j]);
-                _value += ms[l.score(color)];
-                _value -= os[l.score(1-color)];
+                l.push(ChessBoard[i][j]);
+                _value += ms[l.getScore(color)];
+                _value -= os[l.getScore(1-color)];
             }
         }
 
         for (int i=0; i<19; i++) {
             //竖直方向
-            l.add(ChessBoard[0][i]);
-            l.add(ChessBoard[1][i]);
-            l.add(ChessBoard[2][i]);
-            l.add(ChessBoard[3][i]);
-            l.add(ChessBoard[4][i]);
+            l.push(ChessBoard[0][i]);
+            l.push(ChessBoard[1][i]);
+            l.push(ChessBoard[2][i]);
+            l.push(ChessBoard[3][i]);
+            l.push(ChessBoard[4][i]);
             for (int j=5; j<19; j++) {
-                l.add(ChessBoard[j][i]);
-                _value += ms[l.score(color)];
-                _value -= os[l.score(1-color)];
+                l.push(ChessBoard[j][i]);
+                _value += ms[l.getScore(color)];
+                _value -= os[l.getScore(1-color)];
             }
         }
 
         //"\"方向
         for (int i=0; i<14; i++) {
-            l.add(ChessBoard[0][i]);
-            l.add(ChessBoard[1][i+1]);
-            l.add(ChessBoard[2][i+2]);
-            l.add(ChessBoard[3][i+3]);
-            l.add(ChessBoard[4][i+4]);
+            l.push(ChessBoard[0][i]);
+            l.push(ChessBoard[1][i+1]);
+            l.push(ChessBoard[2][i+2]);
+            l.push(ChessBoard[3][i+3]);
+            l.push(ChessBoard[4][i+4]);
             for (int j=5; i+j < 19; j++) {
-                l.add(ChessBoard[j][i+j]);
-                _value += ms[l.score(color)];
-                _value -= os[l.score(1-color)];
+                l.push(ChessBoard[j][i+j]);
+                _value += ms[l.getScore(color)];
+                _value -= os[l.getScore(1-color)];
             }
         }
         for (int i=1; i<14; i++) {
-            l.add(ChessBoard[i][0]);
-            l.add(ChessBoard[i+1][1]);
-            l.add(ChessBoard[i+2][2]);
-            l.add(ChessBoard[i+3][3]);
-            l.add(ChessBoard[i+4][4]);
+            l.push(ChessBoard[i][0]);
+            l.push(ChessBoard[i+1][1]);
+            l.push(ChessBoard[i+2][2]);
+            l.push(ChessBoard[i+3][3]);
+            l.push(ChessBoard[i+4][4]);
             for (int j=5; i+j < 19; j++) {
-                l.add(ChessBoard[i+j][j]);
-                _value += ms[l.score(color)];
-                _value -= os[l.score(1-color)];
+                l.push(ChessBoard[i+j][j]);
+                _value += ms[l.getScore(color)];
+                _value -= os[l.getScore(1-color)];
             }
         }
 
         //"/"方向
         for (int i=5; i<19; i++) {
-            l.add(ChessBoard[0][i]);
-            l.add(ChessBoard[1][i-1]);
-            l.add(ChessBoard[2][i-2]);
-            l.add(ChessBoard[3][i-3]);
-            l.add(ChessBoard[4][i-4]);
+            l.push(ChessBoard[0][i]);
+            l.push(ChessBoard[1][i-1]);
+            l.push(ChessBoard[2][i-2]);
+            l.push(ChessBoard[3][i-3]);
+            l.push(ChessBoard[4][i-4]);
             for (int j=5; j <= i; j++) {
-                l.add(ChessBoard[j][i-j]);
-                _value += ms[l.score(color)];
-                _value -= os[l.score(1-color)];
+                l.push(ChessBoard[j][i-j]);
+                _value += ms[l.getScore(color)];
+                _value -= os[l.getScore(1-color)];
             }
         }
         for (int i=1; i<14; i++) {
-            l.add(ChessBoard[i][18]);
-            l.add(ChessBoard[i+1][17]);
-            l.add(ChessBoard[i+2][16]);
-            l.add(ChessBoard[i+3][15]);
-            l.add(ChessBoard[i+4][14]);
+            l.push(ChessBoard[i][18]);
+            l.push(ChessBoard[i+1][17]);
+            l.push(ChessBoard[i+2][16]);
+            l.push(ChessBoard[i+3][15]);
+            l.push(ChessBoard[i+4][14]);
             for (int j=5; i + j < 19; j++) {
-                l.add(ChessBoard[i+j][18-j]);
-                _value += ms[l.score(color)];
-                _value -= os[l.score(1-color)];
+                l.push(ChessBoard[i+j][18-j]);
+                _value += ms[l.getScore(color)];
+                _value -= os[l.getScore(1-color)];
             }
         }
         return _value;
@@ -288,32 +288,47 @@ class Alg {
 }
 
 
-class SixPoint {
+/** This class describes the line made up of six adjacent points.
+ * It is a FIFO queue. It give scores for each color(side) of the game.
+ */
+class SixPointsLine {
     //棋盘上的连续6个位置队列
-    int i[] = new int[6];
-    int colors[] = new int[3];
-    int CurrentPoint;
-    SixPoint() {
-        CurrentPoint = 0;
-        colors[1] = colors[2] = 0;
-        colors[0] = 6;
-        for (int s=0; s<6; s++)
-            i[s] = -1;
+    int queue[] = new int[6];
+    // Number of stones with each side(color)
+    int cnts[] = new int[3];
+    // Indicates where to push new element.
+    int offset;
+
+    /** Class constructor. */
+    SixPointsLine() {
+        // Init with six points with no stones.
+        for (int k = 0; k < 6; k++)
+            queue[k] = -1;
+        cnts[0] = 0;
+        cnts[1] = 0;
+        cnts[2] = 6;
+
+        offset = 0;
     }
 
-    void add(int color) {
-        //在队列中加入一个棋子，同时弹出最后一个
-        colors[i[CurrentPoint] + 1]--;
-        i[CurrentPoint++] = color;
-        CurrentPoint %= 6;
-        colors[color + 1]++;
+    /** 在队列中加入一个棋子，同时弹出最后一个。 */
+    void push(int color) {
+        // We use modulus to map colors(0, 1, -1) to
+        // array index(0, 1, 2).
+        cnts[(queue[offset] + 3) % 3]--;
+        queue[offset++] = color;
+        offset %= 6;
+        cnts[(color + 3) % 3]++;
     }
 
-    int score(int color) {
-        //返回当前队列相应颜色的得分
-        if (colors[1 - color + 1] != 0)
+    /** 返回当前队列相应颜色的得分。 */
+    int getScore(int color) {
+        int i = (color + 3) % 3;
+        if (i < 2 && cnts[1 - i] != 0) {
             return 0;
-        return colors[color + 1];
+        } else {
+            return cnts[i];
+        }
     }
 }
 
