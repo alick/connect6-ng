@@ -50,7 +50,6 @@
 	<property name="version" value="${repository.version}"/>
     </target>
 
-    <echo message="init ..." />
     <!-- =================================
           target: init
          ================================= -->
@@ -64,6 +63,7 @@
         <javac
             classpath="/usr/share/java/jsr-305.jar:/usr/share/java/findbugs-annotations.jar"
             encoding="UTF-8"
+            includeantruntime="false"
             srcdir="${src}/java"
             destdir="${build.dir}/classes/java">
             <compilerarg line="-Xmaxwarns 10000000"/>
