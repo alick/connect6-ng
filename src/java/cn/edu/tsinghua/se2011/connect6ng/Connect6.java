@@ -470,6 +470,12 @@ class MyFrame extends Frame {
                     kernel.placeTwoStones(1 - color);
                     //long t1 = System.nanoTime();
                     //System.out.println("placeTwoStones time: " + (t1-t0)/1e6 + "ms");
+                    try {
+                        // Pause for 1 second.
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ex) {
+                        // Ignore it.
+                    }
                     repaint();
                     if (kernel.hasSix()) {
                         popupMessageBox("电脑获得胜利！！！");
