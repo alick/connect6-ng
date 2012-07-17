@@ -133,9 +133,8 @@ class MyFrame extends Frame {
                 iFstream.close();
             }
         } catch (IOException ex) {
-            // Ignore file not found issue.
-            // FIXME
-            //fLogger.log(Level.SEVERE, "Failed to perform input when starting.", ex);
+            // Ignore file not found or eof exception.
+            fLogger.log(Level.INFO, "Old database file not found or empty. Go ahead.");
         } catch (ClassNotFoundException ex) {
             fLogger.log(Level.SEVERE, "Failed to perform input when starting. Class not found.", ex);
         }
@@ -376,7 +375,7 @@ class MyFrame extends Frame {
                     output.close();
                 }
             } catch (IOException ex) {
-                fLogger.log(Level.SEVERE, "Failed to perform output when exiting.", ex);
+                fLogger.log(Level.WARNING, "Failed to perform output when exiting.", ex);
             }
             System.exit(0);
         }
@@ -519,8 +518,8 @@ class MyFrame extends Frame {
                         output.close();
                     }
                 } catch (IOException ex) {
-                    fLogger.log(Level.SEVERE, "Failed to perform output when saving.", ex);
-                    popupMessageBox(new String("保存游戏战绩时文件打开失败！"));
+                    fLogger.log(Level.WARNING, "Failed to perform output when saving.", ex);
+                    popupMessageBox("文件打开失败", "请确保有足够权限。");
                 }
             }
         }
@@ -555,8 +554,8 @@ class MyFrame extends Frame {
                         menu_int.setEnabled(true);
                     }
                 } catch (IOException ex) {
-                    fLogger.log(Level.SEVERE, "Failed to perform input when opening.", ex);
-                    popupMessageBox(new String("打开游戏战绩时文件打开失败！"));
+                    fLogger.log(Level.WARNING, "Failed to perform input when opening.", ex);
+                    popupMessageBox("文件打开失败", "请确保文件路径正确。");
                 } catch (ClassNotFoundException ex) {
                     fLogger.log(Level.SEVERE, "Failed to perform input when opening. Class not found.", ex);
                 }
@@ -591,16 +590,25 @@ class MyFrame extends Frame {
         setTitle(s);
     }
 
-    /** Popup a message box to show the result.
+    /** Popup a dialog box to show result message.
      *
      * @param msg the message to be shown in the dialog box
      */
     void popupMessageBox(String msg) {
+        popupMessageBox("游戏结束", msg);
+    }
+
+    /** Popup a dialog box to show informative message.
+     *
+     * @param title the title of the dialog box
+     * @param msg the message to be shown in the dialog box
+     */
+    void popupMessageBox(String title, String msg) {
         Point position = MyFrame.this.getLocation();
         MyFrame.this.setEnabled(false);
         position.translate(250, 300);
-        myDialog = new Dialog(MyFrame.this, "游戏结束");
-        myDialog.setSize(150,100);
+        myDialog = new Dialog(MyFrame.this, title);
+        myDialog.setSize(180,100);
         myDialog.setLayout(new FlowLayout(FlowLayout.CENTER,1000,10));
         myDialog.add(new Label(msg));
         myDialogBotton = new Button("确定");
@@ -638,7 +646,7 @@ class MyFrame extends Frame {
                     output.close();
                 }
             } catch (IOException ex) {
-                fLogger.log(Level.SEVERE, "Failed to perform output when closing.", ex);
+                fLogger.log(Level.WARNING, "Failed to perform output when closing.", ex);
             }
             System.exit(0);
         }
