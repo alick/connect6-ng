@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/setmode"
+            android:textSize="20dp" />
+    </LinearLayout>
+
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp" >
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+                android:layout_weight="4"
+                android:gravity="right"
+                android:text="@string/PVEmode"
+                android:textSize="15dp" />
+            
+            <Button
+                android:id="@+id/PVEmode"
+                android:layout_width="0dip"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginRight="20dp"
+                android:layout_weight="5"
+                android:text="@string/PVE"
+                android:textSize="15dp" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+                android:layout_weight="4"
+                android:gravity="right"
+                android:text="@string/operationalmode"
+                android:textSize="15dp" />
+
+            <Button
+                android:id="@+id/operationalmode"
+                android:layout_width="0dip"
+                android:layout_height="40dp"
+                android:layout_marginRight="20dp"
+                android:gravity="center"
+                android:layout_weight="5"
+                android:text="@string/practice"
+                android:textSize="15dp" />
+        </TableRow>
+    </TableLayout>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp" >
+
+        <Button
+            android:id="@+id/setmodeok"
+            android:layout_width="120dp"
+            android:layout_height="40dp" 
+            android:text="@string/setmodeok"
+            android:layout_marginLeft="20dp"
+            android:gravity="center"
+            android:textSize="15dp"/>
+
+        <Button
+            android:id="@+id/setmodecancel"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:text="@string/setmodecancel"
+            android:textSize="15dp"
+            android:gravity="center"
+            android:layout_marginLeft="20dp"/>
+    </LinearLayout>
+
+</LinearLayout>
