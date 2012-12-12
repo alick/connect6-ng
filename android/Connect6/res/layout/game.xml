@@ -8,7 +8,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
 
-        <ImageView
+        <cn.edu.tsinghua.se2012.connect6.ChessBoardView
             android:id="@+id/chessborad"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
