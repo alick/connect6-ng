@@ -6,7 +6,9 @@
 
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/gamemenuabove"
+        android:layout_above="@+id/gamemenubelow" >
 
         <cn.edu.tsinghua.se2012.connect6.ChessBoardView
             android:id="@+id/chessborad"
@@ -14,11 +16,12 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
-            android:scaleType="centerInside"
+            android:scaleType="matrix"
             android:src="@drawable/chessboard" />
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/gamemenuabove"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -49,6 +52,7 @@
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/gamemenubelow"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -67,6 +71,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:text="@string/undogame" />
+
+        <ZoomControls
+            android:id="@+id/zoomControls"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
     </LinearLayout>
 
 </RelativeLayout>

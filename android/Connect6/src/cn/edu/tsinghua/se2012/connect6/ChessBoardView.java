@@ -30,7 +30,7 @@ public class ChessBoardView extends ImageView{
         paint.setColor(Color.BLACK);
         paint.setStrokeWidth(2);
         //»­³öÆåÅÌÏß
-        canvas.drawLine(6, screenHeight/2, 6, screenHeight/2+10, paint);
+        canvas.drawLine(6, screenHeight/2, 6, screenHeight/2+50, paint);
 	}
 
 	public int getScreenWidth() {
