@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.widget.ImageView;
 
 public class ChessBoardView extends ImageView{
@@ -48,4 +49,11 @@ public class ChessBoardView extends ImageView{
 	public void setScreenHeight(int screenHeight) {
 		this.screenHeight = screenHeight;
 	}
+    
+    public boolean onTouchEvent(MotionEvent event){
+    	int action = event.getAction();
+    	int PosX = (int) event.getX();
+    	int PosY = (int) event.getY();
+    	return true;
+    }
 }
