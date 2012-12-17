@@ -12,16 +12,21 @@ public final class R {
     }
     public static final class drawable {
         public static final int aboutus=0x7f020000;
-        public static final int chessboard=0x7f020001;
-        public static final int exit=0x7f020002;
-        public static final int floatbox=0x7f020003;
-        public static final int ic_action_search=0x7f020004;
-        public static final int ic_launcher=0x7f020005;
-        public static final int openchessmanual=0x7f020006;
-        public static final int setmode=0x7f020007;
-        public static final int startbackground=0x7f020008;
-        public static final int startgame=0x7f020009;
-        public static final int welcome=0x7f02000a;
+        public static final int button=0x7f020001;
+        public static final int button_r=0x7f020002;
+        public static final int buttonstyle=0x7f020003;
+        public static final int chessboard=0x7f020004;
+        public static final int exit=0x7f020005;
+        public static final int floatbox=0x7f020006;
+        public static final int gamebackground=0x7f020007;
+        public static final int ic_action_search=0x7f020008;
+        public static final int ic_launcher=0x7f020009;
+        public static final int logo=0x7f02000a;
+        public static final int openchessmanual=0x7f02000b;
+        public static final int setmode=0x7f02000c;
+        public static final int startbackground=0x7f02000d;
+        public static final int startgame=0x7f02000e;
+        public static final int welcome=0x7f02000f;
     }
     public static final class id {
         public static final int PVEmode=0x7f06000e;

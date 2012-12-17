@@ -1,5 +1,7 @@
 package cn.edu.tsinghua.se2012.connect6;
 
+import java.util.Vector;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -34,7 +36,7 @@ public class GameActivity extends Activity{
     
 	final int CODE = 0x717;				//开启游戏设置界面请求码
 	
-	ChessBoardView chessboard;
+	private ChessBoardView chessboard;
 	private Button newGameBtn;
 	private Button undoGameBtn;
 	private Button gameSettingBtn;
@@ -78,11 +80,16 @@ public class GameActivity extends Activity{
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
         computer = bundle.getBoolean("isPVE");
-        mode = bundle.getBoolean("isPractice")?0:1;      
+        mode = bundle.getBoolean("isPractice")?0:1;
+        
+        Vector data = new Vector();
+        chessboard.init(data, true);
+        chessboard.SetArea(5, screenWidth-5, 25, screenHeight-25);
 		
 		//开始新游戏
 		newGameBtn.setOnClickListener(new View.OnClickListener() {
 		    public void onClick(View v) {
+		    	chessboard.First();
 		    	//to be added
 		    }
 		});
@@ -118,15 +125,17 @@ public class GameActivity extends Activity{
         {   
             public void onClick(View v)   
             {    
-            	scaleSize = scaleSize + 1;
-            	resizeChessBoard = Bitmap.createScaledBitmap(originalChessBoard, scaleArray[scaleSize-1], scaleArray[scaleSize-1], true); 
-                chessboard.setImageBitmap(resizeChessBoard);
-                               
-                zoomControls.setIsZoomOutEnabled(true);
-                
-                if (scaleSize == 5){
-                	zoomControls.setIsZoomInEnabled(false);
-                }
+//            	scaleSize = scaleSize + 1;
+//            	resizeChessBoard = Bitmap.createScaledBitmap(originalChessBoard, scaleArray[scaleSize-1], scaleArray[scaleSize-1], true); 
+//                chessboard.setImageBitmap(resizeChessBoard);
+//                               
+//                zoomControls.setIsZoomOutEnabled(true);
+//                
+//                if (scaleSize == 5){
+//                	zoomControls.setIsZoomInEnabled(false);
+//                }
+            	chessboard.ZoomIn();
+            	chessboard.invalidate();
             }   
         });
 		
@@ -134,15 +143,17 @@ public class GameActivity extends Activity{
 		zoomControls.setOnZoomOutClickListener(new View.OnClickListener()   
         {   
             public void onClick(View v) {   
-            	scaleSize = scaleSize - 1;
-            	resizeChessBoard = Bitmap.createScaledBitmap(originalChessBoard, scaleArray[scaleSize-1], scaleArray[scaleSize-1], true); 
-                chessboard.setImageBitmap(resizeChessBoard);
-                                
-                zoomControls.setIsZoomInEnabled(true);
-                
-                if (scaleSize == 1){
-                	zoomControls.setIsZoomOutEnabled(false);
-                } 
+//            	scaleSize = scaleSize - 1;
+//            	resizeChessBoard = Bitmap.createScaledBitmap(originalChessBoard, scaleArray[scaleSize-1], scaleArray[scaleSize-1], true); 
+//                chessboard.setImageBitmap(resizeChessBoard);
+//                                
+//                zoomControls.setIsZoomInEnabled(true);
+//                
+//                if (scaleSize == 1){
+//                	zoomControls.setIsZoomOutEnabled(false);
+//                } 
+            	chessboard.ZoomOut();
+            	chessboard.invalidate();
             }   
                
         }); 
