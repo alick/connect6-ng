@@ -19,7 +19,6 @@ public class StartActivity extends Activity {
 	static private boolean isPractice = true;
 	static float screenHeight; // 屏幕高度
 	static float screenWidth; // 屏幕宽度
-	WelcomeView welcomeView;
 	static boolean flag = false;
 	
 	final int CODE = 0x717;			//启动设置模式活动的请求码
