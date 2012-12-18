@@ -69,6 +69,7 @@ public class GameActivity extends Activity{
         //布置好棋盘背景图片
         originalChessBoard = BitmapFactory.decodeResource(getResources(), R.drawable.chessboard); 
 		resizeChessBoard = Bitmap.createScaledBitmap(originalChessBoard, scaleArray[2], scaleArray[2], true);
+		chessboard.SetArea(5, screenWidth-5, 5, screenWidth-5);
 		chessboard.setImageBitmap(resizeChessBoard);
         
 		//画上棋盘线
@@ -84,12 +85,13 @@ public class GameActivity extends Activity{
         
         Vector data = new Vector();
         chessboard.init(data, true);
-        chessboard.SetArea(5, screenWidth-5, 25, screenHeight-25);
+        
 		
 		//开始新游戏
 		newGameBtn.setOnClickListener(new View.OnClickListener() {
 		    public void onClick(View v) {
 		    	chessboard.First();
+		    	chessboard.invalidate();
 		    	//to be added
 		    }
 		});

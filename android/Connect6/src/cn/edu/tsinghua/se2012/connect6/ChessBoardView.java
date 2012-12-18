@@ -14,6 +14,11 @@ import android.widget.ImageView;
 public class ChessBoardView extends ImageView {
 	private int screenWidth;
 	private int screenHeight;
+	
+	private int start_x, start_y, end_x, end_y;
+	private int delta_x, delta_y;
+	private int down_x, down_y;
+	private final int Zero = 500;
 
 	private Vector data;
 	private alg kernel;
@@ -43,7 +48,7 @@ public class ChessBoardView extends ImageView {
 	private int X_MIN = 50, X_MAX = 590, Y_MIN = 90, Y_MAX = 630;
 	private final int SIZE_X = 650, SIZE_Y = 680;
 	private final int RECT_X = 20, RECT_Y = 60, RECT_LEN = 600;
-	private final int CENTER_X = (X_MIN + X_MAX) / 2,
+	private  int CENTER_X = (X_MIN + X_MAX) / 2,
 			CENTER_Y = (Y_MIN + Y_MAX) / 2;
 	private int gridLen = 30; // the length of one grid;
 	private int originX = X_MIN, originY = Y_MIN;
@@ -67,7 +72,7 @@ public class ChessBoardView extends ImageView {
 		super(context, attrs, defStyle);
 	}
 
-	public void init() {
+	public void init() { //初始化
 		data = new Vector();
 		kernel = new alg(data);
 		state = 0;
@@ -75,7 +80,7 @@ public class ChessBoardView extends ImageView {
 		computer = true;
 	}
 
-	public void init(Vector _Data, boolean _Computer) {
+	public void init(Vector _Data, boolean _Computer) {//棋谱初始化，computer是否人机对战
 		data = _Data;
 		kernel = new alg(data);
 		state = 0;
@@ -97,13 +102,16 @@ public class ChessBoardView extends ImageView {
 		Paint(canvas);
 	}
 
-	public void SetArea(int xmin, int xmax, int ymin, int ymax) {
+	public void SetArea(int xmin, int xmax, int ymin, int ymax) {//设置显示区域
 		X_MIN = xmin;
 		X_MAX = xmax;
 		Y_MIN = ymin;
 		Y_MAX = ymax;
 		originX = X_MIN;
 		originY = Y_MIN;
+		CENTER_X = (X_MIN + X_MAX) / 2;
+		CENTER_Y = (Y_MIN + Y_MAX) / 2;
+		
 	}
 
 	// Some Helper Func
@@ -232,10 +240,11 @@ public class ChessBoardView extends ImageView {
 					/ gridLen + CENTER_X;
 			originY = (originY - CENTER_Y) * cGridLen[currentSizeLevel]
 					/ gridLen + CENTER_Y;
-			VerifyOrigin();
+			
 			gridLen = cGridLen[currentSizeLevel];
 			signRadius = cSignRadius[currentSizeLevel];
 			chessRadius = cChessRadius[currentSizeLevel];
+			VerifyOrigin();
 		}
 	}
 
@@ -246,28 +255,28 @@ public class ChessBoardView extends ImageView {
 					/ gridLen + CENTER_X;
 			originY = (originY - CENTER_Y) * cGridLen[currentSizeLevel]
 					/ gridLen + CENTER_Y;
-			VerifyOrigin();
 			gridLen = cGridLen[currentSizeLevel];
 			signRadius = cSignRadius[currentSizeLevel];
 			chessRadius = cChessRadius[currentSizeLevel];
+			VerifyOrigin();
 		}
 	}
 
-	public void First() {
+	public void First() {//先手
 		data.clear();
 		state = 1;
 		color = 0;
 		pause = false;
 	}
 
-	public void Last() {
+	public void Last() {//后手
 		data.clear();
 		data.add(new mypoint(9, 9, 0));
 		state = 2;
 		color = 1;
 	}
 
-	public void Restart() {
+	public void Restart() {//重新开始
 		int p;
 		int ccolor;
 		if (computer) {
@@ -303,13 +312,13 @@ public class ChessBoardView extends ImageView {
 		computer = true;
 	}
 
-	public void Comp(boolean _computer) {
+	public void Comp(boolean _computer) {//切换人机对战
 		state = 0;
 		data.clear();
 		computer = _computer;
 	}
 
-	public void Prac() {
+	public void Prac() {//切换练习比赛模式
 		data.clear();
 		state = 0;
 		pause = false;
@@ -317,7 +326,7 @@ public class ChessBoardView extends ImageView {
 
 	}
 
-	public void Back() {
+	public void Back() {//悔棋
 		int i, Size;
 		Size = data.size();
 		if (Size == 0) {
@@ -357,7 +366,7 @@ public class ChessBoardView extends ImageView {
 
 	}
 
-	public void Interrupt() {
+	public void Interrupt() {//暂停游戏
 		if (!pause) {
 			state = 0;
 			pause = true;
@@ -377,22 +386,9 @@ public class ChessBoardView extends ImageView {
 	}
 
 	public void MoveChessBoard(int x, int y) {
-		if (PingPongFlag) {
-			int nowX = x;
-			int nowY = y;
-			int dX = nowX - preX;
-			int dY = nowY - preY;
-			originX = originX + dX;
-			originY = originY + dY;
-			PingPongFlag = false;
-			VerifyOrigin();
-
-		} else {
-			PingPongFlag = true;
-			preX = x;
-			preY = y;
-			VerifyOrigin();
-		}
+		originX = originX + x;
+		originY = originY + y;
+		VerifyOrigin();	
 	}
 
 	private void PlotLastTwoChess(Canvas canvas) {
@@ -546,6 +542,29 @@ public class ChessBoardView extends ImageView {
     	int action = event.getAction();
     	int PosX = (int) event.getX();
     	int PosY = (int) event.getY();
+    	switch(action){
+    	case MotionEvent.ACTION_DOWN:
+    		start_x = PosX;
+    		start_y = PosY;
+    		down_x = PosX;
+    		down_y = PosY;
+    		break;
+    	case MotionEvent.ACTION_MOVE:
+    		delta_x = PosX - start_x;
+    		delta_y = PosY - start_y;
+    		start_x = PosX;
+    		start_y = PosY;
+    		MoveChessBoard(delta_x, delta_y);
+    		invalidate();
+    		break;
+    	case MotionEvent.ACTION_UP:
+    		if(((down_x - PosX) * (down_x - PosX) < Zero)&&
+    				((down_y - PosY) * (down_y - PosY) < Zero)){
+    					Canvas canvas = new Canvas();
+    			PlaceChess(PosX,PosY, canvas);
+    			invalidate();
+    		}
+    	}
     	return true;
     }
 }
