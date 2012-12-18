@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -11,12 +12,14 @@ import android.widget.ImageButton;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 
 @SuppressLint({ "HandlerLeak", "HandlerLeak" })
 public class StartActivity extends Activity {
-	static private boolean isPVE = true;
-	static private boolean isPractice = true;
+	static public boolean isPVE = true;
+	static public boolean isPractice = true;
+	static public boolean isFirst = true;
 	static float screenHeight; // ÆÁÄ»¸ß¶È
 	static float screenWidth; // ÆÁÄ»¿í¶È
 	static boolean flag = false;
@@ -108,7 +111,7 @@ public class StartActivity extends Activity {
 			public void onClick(View v) {
 				Intent intent = new Intent(StartActivity.this,
 						SetModeActivity.class);
-				startActivityForResult(intent, CODE);
+				startActivity(intent);
 			}
 		});
 
@@ -129,5 +132,14 @@ public class StartActivity extends Activity {
 				System.exit(0);
 			}
 		});
+	}
+	
+	public boolean onKeyDown(int keyCode, KeyEvent event){
+		if(KeyEvent.KEYCODE_BACK == keyCode){
+			flag = false;
+			finish();
+			System.exit(0);
+		}
+		return true;
 	}
 }

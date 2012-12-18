@@ -11,6 +11,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ZoomControls;
@@ -25,12 +26,6 @@ public class GameActivity extends Activity{
 	//以下为所有的游戏状态变量的设置
 	private static boolean soundOpen = true;		//声音是否开启
 	private static boolean vibrateOpen = true;		//震动是否开启
-    private boolean computer;
-    //0 = 非人机对战
-    //1 = 人机对战
-    private int mode;
-    //0 = 练习模式
-    //1 = 实战模式
     private int scaleSize = 3;							//当前所处于放大的倍数，分为1-5，默认为3，缩小后为1,2,放大后为4,5
     private int[] scaleArray = new int[5]; 				//存储棋盘图片的5种大小的尺寸
     
@@ -40,6 +35,7 @@ public class GameActivity extends Activity{
 	private Button newGameBtn;
 	private Button undoGameBtn;
 	private Button gameSettingBtn;
+	private Button saveGameBtn;
 	private Button returnmenuBtn;
 	private ZoomControls zoomControls;
 	
@@ -52,8 +48,11 @@ public class GameActivity extends Activity{
 		newGameBtn = (Button)findViewById(R.id.newgame);
 		undoGameBtn = (Button)findViewById(R.id.undogame);
 		gameSettingBtn = (Button)findViewById(R.id.gamesetting);
+		saveGameBtn = (Button) findViewById(R.id.save);
 		returnmenuBtn = (Button)findViewById(R.id.returnmenu);
 		zoomControls = (ZoomControls)findViewById(R.id.zoomControls);
+		if(!StartActivity.isPractice)
+			undoGameBtn.setEnabled(false);
 		
 		//获取屏幕分辨率
 		DisplayMetrics dm = new DisplayMetrics();   
@@ -73,33 +72,34 @@ public class GameActivity extends Activity{
 		chessboard.setImageBitmap(resizeChessBoard);
         
 		//画上棋盘线
-        chessboard.setScreenWidth(screenWidth);
-        chessboard.setScreenHeight(screenHeight);        
-        chessboard.invalidate();     				//重新绘制棋盘
-        
-        //从主菜单获取是否人机对战，为练习模式还是实战模式
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-        computer = bundle.getBoolean("isPVE");
-        mode = bundle.getBoolean("isPractice")?0:1;
+		chessboard.ZoomOut();
+        chessboard.invalidate(); //重新绘制棋盘
         
         Vector data = new Vector();
-        chessboard.init(data, true);
+        chessboard.init(data, StartActivity.isPVE);
+        if(StartActivity.isPVE && (!StartActivity.isFirst)){
+        	chessboard.Last();
+        }else{
+        	chessboard.First();
+        }
         
-		
 		//开始新游戏
 		newGameBtn.setOnClickListener(new View.OnClickListener() {
 		    public void onClick(View v) {
-		    	chessboard.First();
+		    	if(StartActivity.isPVE && (!StartActivity.isFirst)){
+		        	chessboard.Last();
+		        }else{
+		        	chessboard.First();
+		        }
 		    	chessboard.invalidate();
-		    	//to be added
 		    }
 		});
 		
 		//悔棋
 		undoGameBtn.setOnClickListener(new View.OnClickListener() {
 		    public void onClick(View v) {
-		    	//to be added
+		    	chessboard.Back();
+		    	chessboard.invalidate();
 		    }
 		});
 		
@@ -111,6 +111,17 @@ public class GameActivity extends Activity{
 				startActivityForResult(intent, CODE);
 		    }
 		});
+		
+		//保存棋谱
+				saveGameBtn.setOnClickListener(new View.OnClickListener() {
+				    public void onClick(View v) {
+				    	Vector data = chessboard.getData();
+				    	int Size = data.size();
+				    	for(int i = 0; i < Size; i++){
+				    		
+				    	}
+				    }
+				});
 		  
 		//返回主菜单
 		returnmenuBtn.setOnClickListener(new View.OnClickListener() {
@@ -169,5 +180,15 @@ public class GameActivity extends Activity{
 			soundOpen = bundle.getBoolean("soundOpen");
 			vibrateOpen = bundle.getBoolean("vibrateOpen");
 		}
+	}
+	
+	public boolean onKeyDown(int keyCode, KeyEvent event){
+		if(KeyEvent.KEYCODE_BACK == keyCode){
+			Intent intent = new Intent(GameActivity.this,
+					StartActivity.class);
+			startActivity(intent);
+			finish();
+		}
+		return true;
 	}
 }

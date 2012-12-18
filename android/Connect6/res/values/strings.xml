@@ -24,10 +24,11 @@
     <!-- 系统设置 -->
     <string name="PVEmode">对战模式:</string>
     <string name="operationalmode">游戏模式:</string>
+    <string name="firstmode">落子顺序:</string>
     <string name="PVE">人机对战</string>
     <string name="practice">练习模式</string>
+    <string name="first">玩家先手</string>
     <string name="setmodeok">确定</string>
-    <string name="setmodecancel">取消</string>
     
     <!-- 游戏设置 -->
     <string name="sound">声音效果：</string>

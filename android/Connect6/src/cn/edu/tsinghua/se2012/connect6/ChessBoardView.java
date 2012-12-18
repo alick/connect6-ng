@@ -111,7 +111,12 @@ public class ChessBoardView extends ImageView {
 		originY = Y_MIN;
 		CENTER_X = (X_MIN + X_MAX) / 2;
 		CENTER_Y = (Y_MIN + Y_MAX) / 2;
-		
+		int minGrid = (X_MAX - X_MIN) / (boardSize - 1);
+		for(int i = 0; i < 5; i++){
+			cGridLen[i] = i * minGrid / 2 + minGrid;
+			cChessRadius[i] = cGridLen[i] *3 / 10;
+			cSignRadius[i] = cGridLen[i] / 5; 
+		}
 	}
 
 	// Some Helper Func
@@ -164,16 +169,16 @@ public class ChessBoardView extends ImageView {
 	}
 
 	private void VerifyOrigin() {
+		
+		if (originX + gridLen * boardSize - gridLen <= X_MAX)
+			originX = X_MAX + gridLen - gridLen * boardSize;
+		if (originY + gridLen * boardSize - gridLen <= Y_MAX)
+			originY = Y_MAX + gridLen - gridLen * boardSize;
+		
 		if (originX > X_MIN)
 			originX = X_MIN;
 		if (originY > Y_MIN)
 			originY = Y_MIN;
-		if (originX + gridLen * boardSize - gridLen <= X_MAX)
-			originX = X_MAX + gridLen - gridLen * boardSize;
-
-		if (originY + gridLen * boardSize - gridLen <= Y_MAX)
-			originY = Y_MAX + gridLen - gridLen * boardSize;
-
 	}
 
 	public void Paint(Canvas canvas) {
@@ -194,10 +199,10 @@ public class ChessBoardView extends ImageView {
 		// g.fillRect(RECT_X, RECT_Y, RECT_LEN, RECT_LEN); //»æÖÆ±³¾°
 		// g.setColor(Color.darkGray); //»æÖÆÍø¸ñ
 		// »­±³¾°
-		Paint paint = new Paint();
-		paint.setColor(Color.YELLOW);
-		paint.setStyle(Style.FILL);
-		canvas.drawRect(X_MIN, Y_MIN, X_MAX, Y_MAX, paint);
+		//Paint paint = new Paint();
+		//paint.setColor(Color.YELLOW);
+		//paint.setStyle(Style.FILL);
+		//canvas.drawRect(X_MIN, Y_MIN, X_MAX, Y_MAX, paint);
 		//
 		for (i = 0; i < boardSize; i++) {
 			newX = gridLen * i + originX;
@@ -357,12 +362,14 @@ public class ChessBoardView extends ImageView {
 				data.remove(Size - 4);
 			}
 		}
+		/*
 		if (data.size() <= 1) {
 			pause = false;
 		} else {
 			pause = true;
 			state = 0;
 		}
+		*/
 
 	}
 
