@@ -34,8 +34,7 @@
             android:layout_margin="2dp"
             android:layout_toLeftOf="@+id/gamesetting"
             android:text="@string/returnmenu"
-            android:onClick="ReturnClick"
-            android:background="@drawable/buttonstyle" />
+            android:onClick="ReturnClick" />
         <Button
             android:id="@+id/gamesetting"
             android:layout_width="70dp"
@@ -43,8 +42,7 @@
             android:layout_marginTop="5dp"
             android:layout_margin="2dp"
             android:layout_toLeftOf="@+id/save"
-            android:text="@string/gamesetting"
-            android:background="@drawable/buttonstyle" />
+            android:text="@string/gamesetting" />
 
         <Button
             android:id="@+id/save"
@@ -54,8 +52,7 @@
             android:layout_margin="2dp"
             android:layout_toLeftOf="@+id/load"
             android:text="@string/save"
-            android:onClick="SaveClick"
-            android:background="@drawable/buttonstyle" />
+            android:onClick="SaveClick" />
         
         <Button
         	android:id="@+id/load"
@@ -65,8 +62,7 @@
             android:layout_marginTop="5dp"
             android:layout_margin="2dp"
         	android:text="@string/openchessmanual"
-        	android:onClick="LoadClick"
-        	android:background="@drawable/buttonstyle" />
+        	android:onClick="LoadClick" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -84,8 +80,7 @@
             android:layout_marginBottom="5dp"
             android:layout_margin="2dp"
             android:text="@string/newgame"
-            android:onClick="NewgameClick"
-            android:background="@drawable/buttonstyle" />
+            android:onClick="NewgameClick" />
 
         <Button
             android:id="@+id/undogame"
@@ -94,8 +89,7 @@
             android:layout_marginBottom="5dp"
             android:layout_margin="2dp"
             android:layout_toRightOf="@+id/newgame"
-            android:text="@string/undogame"
-            android:background="@drawable/buttonstyle" />
+            android:text="@string/undogame" />
         
         <Button 
             android:id="@+id/zoomout"
@@ -104,8 +98,7 @@
             android:layout_marginBottom="5dp"
             android:layout_margin="2dp"
             android:layout_toRightOf="@+id/undogame"
-            android:text="@string/zoomout"
-            android:background="@drawable/buttonstyle" />
+            android:text="@string/zoomout" />
         
         <Button 
             android:id="@+id/zoomin"
@@ -114,8 +107,7 @@
             android:layout_marginBottom="5dp"
             android:layout_margin="2dp"
             android:layout_toRightOf="@+id/zoomout"
-            android:text="@string/zoomin"
-            android:background="@drawable/buttonstyle" />
+            android:text="@string/zoomin" />
 
     </RelativeLayout>
 

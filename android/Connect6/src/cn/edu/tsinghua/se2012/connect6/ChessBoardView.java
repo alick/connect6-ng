@@ -590,6 +590,10 @@ public class ChessBoardView extends ImageView implements OnGestureListener{
 	public int getScreenHeight() {
 		return screenHeight;
 	}
+	
+	public int getCurrentSizeLevel(){
+		return currentSizeLevel;
+	}
 
 	public void setScreenHeight(int screenHeight) {
 		this.screenHeight = screenHeight;
@@ -659,7 +663,7 @@ public class ChessBoardView extends ImageView implements OnGestureListener{
 	public boolean onSingleTapUp(MotionEvent arg0) {
 		PlaceChess((int)arg0.getX(), (int)arg0.getY(), new Canvas());
 		invalidate();
-		if((!StartActivity.isPractice) || (0 == data.size()) || ((1 == data.size()) && StartActivity.isPVE)){
+		if((0 == data.size()) || ((1 == data.size()) && StartActivity.isPVE)){
 			GameActivity.undoGameBtn.setEnabled(false);
 			GameActivity.newGameBtn.setEnabled(false);
 			GameActivity.saveGameBtn.setEnabled(false);
@@ -670,6 +674,8 @@ public class ChessBoardView extends ImageView implements OnGestureListener{
 			GameActivity.saveGameBtn.setEnabled(true);
 			GameActivity.undoEnable = true;
 		}
+		if(!StartActivity.isPractice)
+			GameActivity.undoGameBtn.setEnabled(false);
 		return false;
 	};
     

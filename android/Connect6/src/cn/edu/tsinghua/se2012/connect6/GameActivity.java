@@ -66,6 +66,7 @@ public class GameActivity extends Activity{
 		returnmenuBtn = (Button)findViewById(R.id.returnmenu);
 		zoomOut = (Button) findViewById(R.id.zoomout);
 		zoomIn = (Button) findViewById(R.id.zoomin);
+		zoomOut.setEnabled(false);
 
 		//获取屏幕分辨率
 		DisplayMetrics dm = new DisplayMetrics();   
@@ -117,7 +118,7 @@ public class GameActivity extends Activity{
 		    }
 		});
 		
-		//棋盘放大   
+		//棋盘缩小
 		zoomOut.setOnClickListener(new View.OnClickListener()   
         {   
             public void onClick(View v)   
@@ -133,10 +134,14 @@ public class GameActivity extends Activity{
 //                }
             	chessboard.ZoomOut();
             	chessboard.invalidate();
+            	if(0 == chessboard.getCurrentSizeLevel())
+            		zoomOut.setEnabled(false);
+            	if(3 == chessboard.getCurrentSizeLevel())
+            		zoomIn.setEnabled(true);
             }   
         });
 		
-        //棋盘减小   
+        //棋盘放大
 		zoomIn.setOnClickListener(new View.OnClickListener()   
         {   
             public void onClick(View v) {   
@@ -151,6 +156,10 @@ public class GameActivity extends Activity{
 //                } 
             	chessboard.ZoomIn();
             	chessboard.invalidate();
+            	if(4 == chessboard.getCurrentSizeLevel())
+            		zoomIn.setEnabled(false);
+            	if(1 == chessboard.getCurrentSizeLevel())
+            		zoomOut.setEnabled(true);
             }   
                
         }); 
@@ -319,7 +328,7 @@ public class GameActivity extends Activity{
 	
 	public void CheckUndo(){
 		int Size = chessboard.getData().size();
-		if((!StartActivity.isPractice) || (0 == Size) || ((1 == Size) && StartActivity.isPVE && (!StartActivity.isFirst))){
+		if((0 == Size) || ((1 == Size) && StartActivity.isPVE && (!StartActivity.isFirst))){
 			undoGameBtn.setEnabled(false);
 			newGameBtn.setEnabled(false);
 			saveGameBtn.setEnabled(false);
@@ -330,6 +339,8 @@ public class GameActivity extends Activity{
 			saveGameBtn.setEnabled(true);
 			undoEnable = true;
 		}
+		if(!StartActivity.isPractice)
+			undoGameBtn.setEnabled(false);
 	}
 	
 	public boolean onKeyDown(int keyCode, KeyEvent event){
