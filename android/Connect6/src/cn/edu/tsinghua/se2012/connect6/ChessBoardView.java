@@ -7,13 +7,19 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
+import android.os.Bundle;
 import android.util.AttributeSet;
+import android.view.GestureDetector;
+import android.view.GestureDetector.OnGestureListener;
+import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 
-public class ChessBoardView extends ImageView {
+public class ChessBoardView extends ImageView implements OnGestureListener{
 	private int screenWidth;
 	private int screenHeight;
+	
+	private GestureDetector mGestureDetector = new GestureDetector(this);
 	
 	private int start_x, start_y, end_x, end_y;
 	private int delta_x, delta_y;
@@ -588,8 +594,10 @@ public class ChessBoardView extends ImageView {
 	public void setScreenHeight(int screenHeight) {
 		this.screenHeight = screenHeight;
 	}
-    
+	
     public boolean onTouchEvent(MotionEvent event){
+    	mGestureDetector.onTouchEvent(event);
+    	/*
     	int action = event.getAction();
     	int PosX = (int) event.getX();
     	int PosY = (int) event.getY();
@@ -616,8 +624,47 @@ public class ChessBoardView extends ImageView {
     			invalidate();
     		}
     	}
+    	*/
     	return true;
     }
     
+	public boolean onDown(MotionEvent arg0) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean onFling(MotionEvent arg0, MotionEvent arg1, float arg2,
+			float arg3) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public void onLongPress(MotionEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public boolean onScroll(MotionEvent arg0, MotionEvent arg1, float arg2,
+			float arg3) {
+		MoveChessBoard((int)(0 - arg2), (int)(0 - arg3));
+		invalidate();
+		return false;
+	}
+
+	public void onShowPress(MotionEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public boolean onSingleTapUp(MotionEvent arg0) {
+		PlaceChess((int)arg0.getX(), (int)arg0.getY(), new Canvas());
+		invalidate();
+		if((!StartActivity.isPractice) || (0 == data.size()) || ((1 == data.size()) && StartActivity.isPVE)){
+			GameActivity.undoGameBtn.setEnabled(false);
+		}else{
+			GameActivity.undoGameBtn.setEnabled(true);
+		}
+		return false;
+	};
     
 }

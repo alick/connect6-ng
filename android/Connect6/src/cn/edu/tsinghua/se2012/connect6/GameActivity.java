@@ -9,12 +9,15 @@ import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ZoomControls;
@@ -38,12 +41,13 @@ public class GameActivity extends Activity{
 	
 	private ChessBoardView chessboard;
 	private Button newGameBtn;
-	private Button undoGameBtn;
+	static public Button undoGameBtn;
 	private Button gameSettingBtn;
 	private Button saveGameBtn;
 	private Button loadGameBtn;
 	private Button returnmenuBtn;
-	private ZoomControls zoomControls;
+	private Button zoomOut;
+	private Button zoomIn;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -57,15 +61,20 @@ public class GameActivity extends Activity{
 		saveGameBtn = (Button) findViewById(R.id.save);
 		loadGameBtn = (Button) findViewById(R.id.load);
 		returnmenuBtn = (Button)findViewById(R.id.returnmenu);
-		zoomControls = (ZoomControls)findViewById(R.id.zoomControls);
-		if(!StartActivity.isPractice)
+		zoomOut = (Button) findViewById(R.id.zoomout);
+		zoomIn = (Button) findViewById(R.id.zoomin);
+		if((!StartActivity.isPractice) || (0 == data.size()) || ((1 == data.size()) && StartActivity.isPVE)){
 			undoGameBtn.setEnabled(false);
-		
+		}else{
+			undoGameBtn.setEnabled(true);
+		}
+
 		//获取屏幕分辨率
 		DisplayMetrics dm = new DisplayMetrics();   
         getWindowManager().getDefaultDisplay().getMetrics(dm);
         int screenWidth = dm.widthPixels;
         int screenHeight = dm.heightPixels;
+        int barHeight = (int) (40.0f * dm.density + 0.5f);
         
         //得到棋盘图片的5种大小的尺寸
 //        for (int i = 0; i < 5; i++){
@@ -75,7 +84,8 @@ public class GameActivity extends Activity{
         //布置好棋盘背景图片
 //        originalChessBoard = BitmapFactory.decodeResource(getResources(), R.drawable.chessboard); 
 //		resizeChessBoard = Bitmap.createScaledBitmap(originalChessBoard, scaleArray[2], scaleArray[2], true);
-		chessboard.SetArea(5, screenWidth-5, 5, screenWidth-5);
+        //ChessBoardView c = (ChessboardView) FindViewById(R.id.chessborad);
+		chessboard.SetArea(0, screenWidth, 0, screenHeight - barHeight * 2);
 //		chessboard.setImageBitmap(resizeChessBoard);
         
 		//画上棋盘线
@@ -107,6 +117,12 @@ public class GameActivity extends Activity{
 		    public void onClick(View v) {
 		    	chessboard.Back();
 		    	chessboard.invalidate();
+		    	int Size = chessboard.getData().size();
+	    		if((!StartActivity.isPractice) || (0 == Size) || ((1 == Size) && StartActivity.isPVE)){
+	    			undoGameBtn.setEnabled(false);
+	    		}else{
+	    			undoGameBtn.setEnabled(true);
+	    		}
 		    }
 		});
 		
@@ -168,7 +184,7 @@ public class GameActivity extends Activity{
 		});
 		
 		//棋盘放大   
-		zoomControls.setOnZoomInClickListener(new View.OnClickListener()   
+		zoomOut.setOnClickListener(new View.OnClickListener()   
         {   
             public void onClick(View v)   
             {    
@@ -181,13 +197,13 @@ public class GameActivity extends Activity{
 //                if (scaleSize == 5){
 //                	zoomControls.setIsZoomInEnabled(false);
 //                }
-            	chessboard.ZoomIn();
+            	chessboard.ZoomOut();
             	chessboard.invalidate();
             }   
         });
 		
         //棋盘减小   
-		zoomControls.setOnZoomOutClickListener(new View.OnClickListener()   
+		zoomIn.setOnClickListener(new View.OnClickListener()   
         {   
             public void onClick(View v) {   
 //            	scaleSize = scaleSize - 1;
@@ -199,7 +215,7 @@ public class GameActivity extends Activity{
 //                if (scaleSize == 1){
 //                	zoomControls.setIsZoomOutEnabled(false);
 //                } 
-            	chessboard.ZoomOut();
+            	chessboard.ZoomIn();
             	chessboard.invalidate();
             }   
                
@@ -226,4 +242,5 @@ public class GameActivity extends Activity{
 		}
 		return true;
 	}
+	
 }
