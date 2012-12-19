@@ -22,9 +22,9 @@ import cn.edu.tsinghua.se2012.connect6.ChessBoardView;;
 
 public class GameActivity extends Activity{
 	//棋盘背景图片的原始Bitmap对象
-	private Bitmap originalChessBoard;
+//	private Bitmap originalChessBoard;
 	//棋盘背景图片的调整后的并用于实际显示的Bitmap对象
-	private Bitmap resizeChessBoard;
+//	private Bitmap resizeChessBoard;
 	
 	//以下为所有的游戏状态变量的设置
 	private static boolean soundOpen = true;		//声音是否开启
@@ -68,15 +68,15 @@ public class GameActivity extends Activity{
         int screenHeight = dm.heightPixels;
         
         //得到棋盘图片的5种大小的尺寸
-        for (int i = 0; i < 5; i++){
-        	scaleArray[i] = (int)((screenWidth-10) * Math.pow(1.25,i-2));
-        }
+//        for (int i = 0; i < 5; i++){
+//        	scaleArray[i] = (int)((screenWidth-10) * Math.pow(1.25,i-2));
+//        }
         
         //布置好棋盘背景图片
-        originalChessBoard = BitmapFactory.decodeResource(getResources(), R.drawable.chessboard); 
-		resizeChessBoard = Bitmap.createScaledBitmap(originalChessBoard, scaleArray[2], scaleArray[2], true);
+//        originalChessBoard = BitmapFactory.decodeResource(getResources(), R.drawable.chessboard); 
+//		resizeChessBoard = Bitmap.createScaledBitmap(originalChessBoard, scaleArray[2], scaleArray[2], true);
 		chessboard.SetArea(5, screenWidth-5, 5, screenWidth-5);
-		chessboard.setImageBitmap(resizeChessBoard);
+//		chessboard.setImageBitmap(resizeChessBoard);
         
 		//画上棋盘线
 		chessboard.ZoomOut();

@@ -10,13 +10,13 @@
         android:layout_below="@+id/gamemenuabove"
         android:layout_above="@+id/gamemenubelow" >
 
-        <cn.edu.tsinghua.se2012.connect6.ChessBoardView
+		<cn.edu.tsinghua.se2012.connect6.ChessBoardView
             android:id="@+id/chessborad"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
-            android:scaleType="matrix"
+            android:scaleType="centerInside"
             android:src="@drawable/chessboard" />
     </LinearLayout>
 
@@ -29,36 +29,40 @@
 
         <Button
             android:id="@+id/returnmenu"
-            android:layout_width="80dp"
+            android:layout_width="70dp"
             android:layout_height="40dp"
             android:layout_marginTop="5dp"
+            android:layout_margin="2dp"
             android:layout_toLeftOf="@+id/gamesetting"
             android:text="@string/returnmenu"
             android:background="@drawable/buttonstyle" />
         <Button
             android:id="@+id/gamesetting"
-            android:layout_width="80dp"
+            android:layout_width="70dp"
             android:layout_height="40dp"
             android:layout_marginTop="5dp"
+            android:layout_margin="2dp"
             android:layout_toLeftOf="@+id/save"
             android:text="@string/gamesetting"
             android:background="@drawable/buttonstyle" />
 
         <Button
             android:id="@+id/save"
-            android:layout_width="80dp"
+            android:layout_width="70dp"
             android:layout_height="40dp"
             android:layout_marginTop="5dp"
+            android:layout_margin="2dp"
             android:layout_toLeftOf="@+id/load"
             android:text="@string/save"
             android:background="@drawable/buttonstyle" />
         
         <Button
         	android:id="@+id/load"
-        	android:layout_width="80dp"
+        	android:layout_width="70dp"
         	android:layout_height="40dp"
         	android:layout_alignParentRight="true"
             android:layout_marginTop="5dp"
+            android:layout_margin="2dp"
         	android:text="@string/openchessmanual"
         	android:background="@drawable/buttonstyle" />
     </RelativeLayout>
@@ -72,17 +76,19 @@
 
         <Button
             android:id="@+id/newgame"
-            android:layout_width="80dp"
+            android:layout_width="50dp"
             android:layout_height="40dp"
             android:layout_marginTop="5dp"
+            android:layout_margin="2dp"
             android:text="@string/newgame"
             android:background="@drawable/buttonstyle" />
 
         <Button
             android:id="@+id/undogame"
-            android:layout_width="80dp"
+            android:layout_width="50dp"
             android:layout_height="40dp"
             android:layout_marginTop="5dp"
+            android:layout_margin="2dp"
             android:text="@string/undogame"
             android:background="@drawable/buttonstyle" />
 

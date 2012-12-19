@@ -71,15 +71,15 @@ public class StartActivity extends Activity {
 		}
 	}
 	
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data){
-		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == CODE && resultCode == CODE){
-			Bundle bundle = data.getExtras();
-			isPVE = bundle.getBoolean("isPVE");
-			isPractice = bundle.getBoolean("isPractice");
-		}
-	}
+//	@Override
+//	protected void onActivityResult(int requestCode, int resultCode, Intent data){
+//		super.onActivityResult(requestCode, resultCode, data);
+//		if (requestCode == CODE && resultCode == CODE){
+//			Bundle bundle = data.getExtras();
+//			isPVE = bundle.getBoolean("isPVE");
+//			isPractice = bundle.getBoolean("isPractice");
+//		}
+//	}
 
 	// ª∂”≠ΩÁ√Ê
 	public void gotoWelcomeView() {
