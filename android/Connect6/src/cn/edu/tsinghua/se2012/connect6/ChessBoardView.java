@@ -661,8 +661,14 @@ public class ChessBoardView extends ImageView implements OnGestureListener{
 		invalidate();
 		if((!StartActivity.isPractice) || (0 == data.size()) || ((1 == data.size()) && StartActivity.isPVE)){
 			GameActivity.undoGameBtn.setEnabled(false);
+			GameActivity.newGameBtn.setEnabled(false);
+			GameActivity.saveGameBtn.setEnabled(false);
+			GameActivity.undoEnable = false;
 		}else{
 			GameActivity.undoGameBtn.setEnabled(true);
+			GameActivity.newGameBtn.setEnabled(true);
+			GameActivity.saveGameBtn.setEnabled(true);
+			GameActivity.undoEnable = true;
 		}
 		return false;
 	};

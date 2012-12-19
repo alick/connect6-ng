@@ -79,7 +79,7 @@
         </TableRow>
     </TableLayout>
 
-    <LinearLayout
+    <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -93,16 +93,9 @@
             android:text="@string/gamesettingok"
             android:layout_marginLeft="20dp"
             android:gravity="center"
+            android:layout_centerHorizontal="true"
             android:textSize="15dp"/>
-
-        <Button
-            android:id="@+id/gamesettingcancel"
-            android:layout_width="120dp"
-            android:layout_height="40dp"
-            android:text="@string/gamesettingcancel"
-            android:textSize="15dp"
-            android:gravity="center"
-            android:layout_marginLeft="20dp"/>
-    </LinearLayout>
+        
+    </RelativeLayout>
 
 </LinearLayout>

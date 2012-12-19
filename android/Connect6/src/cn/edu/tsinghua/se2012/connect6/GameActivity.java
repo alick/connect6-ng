@@ -3,7 +3,10 @@ package cn.edu.tsinghua.se2012.connect6;
 import java.util.Vector;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
@@ -30,8 +33,6 @@ public class GameActivity extends Activity{
 //	private Bitmap resizeChessBoard;
 	
 	//以下为所有的游戏状态变量的设置
-	private static boolean soundOpen = true;		//声音是否开启
-	private static boolean vibrateOpen = true;		//震动是否开启
     private int scaleSize = 3;							//当前所处于放大的倍数，分为1-5，默认为3，缩小后为1,2,放大后为4,5
     private int[] scaleArray = new int[5]; 				//存储棋盘图片的5种大小的尺寸
     
@@ -40,14 +41,16 @@ public class GameActivity extends Activity{
 	private static Vector data = new Vector();
 	
 	private ChessBoardView chessboard;
-	private Button newGameBtn;
+	static public Button newGameBtn;
 	static public Button undoGameBtn;
 	private Button gameSettingBtn;
-	private Button saveGameBtn;
+	static public Button saveGameBtn;
 	private Button loadGameBtn;
 	private Button returnmenuBtn;
 	private Button zoomOut;
 	private Button zoomIn;
+	
+	static public boolean undoEnable = true;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -63,11 +66,6 @@ public class GameActivity extends Activity{
 		returnmenuBtn = (Button)findViewById(R.id.returnmenu);
 		zoomOut = (Button) findViewById(R.id.zoomout);
 		zoomIn = (Button) findViewById(R.id.zoomin);
-		if((!StartActivity.isPractice) || (0 == data.size()) || ((1 == data.size()) && StartActivity.isPVE)){
-			undoGameBtn.setEnabled(false);
-		}else{
-			undoGameBtn.setEnabled(true);
-		}
 
 		//获取屏幕分辨率
 		DisplayMetrics dm = new DisplayMetrics();   
@@ -99,30 +97,14 @@ public class GameActivity extends Activity{
         }else{
         	chessboard.First();
         }
-        
-		//开始新游戏
-		newGameBtn.setOnClickListener(new View.OnClickListener() {
-		    public void onClick(View v) {
-		    	if(StartActivity.isPVE && (!StartActivity.isFirst)){
-		        	chessboard.Last();
-		        }else{
-		        	chessboard.First();
-		        }
-		    	chessboard.invalidate();
-		    }
-		});
+        CheckUndo();
 		
 		//悔棋
 		undoGameBtn.setOnClickListener(new View.OnClickListener() {
 		    public void onClick(View v) {
 		    	chessboard.Back();
 		    	chessboard.invalidate();
-		    	int Size = chessboard.getData().size();
-	    		if((!StartActivity.isPractice) || (0 == Size) || ((1 == Size) && StartActivity.isPVE)){
-	    			undoGameBtn.setEnabled(false);
-	    		}else{
-	    			undoGameBtn.setEnabled(true);
-	    		}
+		    	CheckUndo();
 		    }
 		});
 		
@@ -131,55 +113,7 @@ public class GameActivity extends Activity{
 		    public void onClick(View v) {
 		    	Intent intent = new Intent(GameActivity.this,
 						GameSettingActivity.class);
-				startActivityForResult(intent, CODE);
-		    }
-		});
-		
-		//保存棋谱
-		saveGameBtn.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				Vector tempdata = chessboard.getData();
-				mypoint p;
-				int x, y, color;
-				SharedPreferences preferences = getSharedPreferences("Data", MODE_PRIVATE);
-				SharedPreferences.Editor editor = preferences.edit();
-				int Size = tempdata.size();
-				editor.putInt("Size", Size);
-				for(int i = 0; i < Size; i++){
-					p = (mypoint) tempdata.elementAt(i);
-					editor.putInt("x" + i, p.getx());
-					editor.putInt("y" + i, p.gety());
-					editor.putInt("color" + i, p.getcolor());
-				}
-				editor.commit();
-			}
-		});
-		
-		//载入棋谱
-		loadGameBtn.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View v) {
-				SharedPreferences preferences = getSharedPreferences("Data", MODE_PRIVATE);
-				int Size = preferences.getInt("Size", 0);
-				for(int i = 0; i < Size; i++){
-					mypoint p = new mypoint(preferences.getInt("x" + i, 0), 
-							preferences.getInt("y" + i, 0), 
-							preferences.getInt("color" + i, 0));
-					data.add(p);
-				}
-				chessboard.init(data, StartActivity.isPVE);
-				chessboard.Open();
-				chessboard.invalidate();
-			}
-		});
-		  
-		//返回主菜单
-		returnmenuBtn.setOnClickListener(new View.OnClickListener() {
-		    public void onClick(View v) {
-		    	data.clear();
-		    	Intent intent = new Intent(GameActivity.this,
-						StartActivity.class);
 				startActivity(intent);
-				finish();
 		    }
 		});
 		
@@ -222,24 +156,214 @@ public class GameActivity extends Activity{
         }); 
 	}
 	
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data){
-		super.onActivityResult(requestCode, resultCode, data);
-		if (requestCode == CODE && resultCode == CODE){
-			Bundle bundle = data.getExtras();
-			soundOpen = bundle.getBoolean("soundOpen");
-			vibrateOpen = bundle.getBoolean("vibrateOpen");
+	//开始新游戏
+	public void NewgameClick(View v) {
+		Dialog alertDialog = new AlertDialog.Builder(this).
+				setTitle("是否保存棋谱？").
+				setMessage("是否保存棋谱？（如果不保存谱则当前进行的游戏将丢失，如果保存棋谱则之前保存的棋谱将被覆盖）").
+				setPositiveButton("保存", new DialogInterface.OnClickListener() {
+					
+					public void onClick(DialogInterface dialog, int which) {
+						SaveChess();
+						if(StartActivity.isPVE && (!StartActivity.isFirst)){
+							chessboard.Last();
+						}else{
+							chessboard.First();
+						}
+						chessboard.invalidate();
+						CheckUndo();
+					}
+				}).
+				setNeutralButton("不保存", new DialogInterface.OnClickListener() {
+					
+					public void onClick(DialogInterface dialog, int which) {
+						if(StartActivity.isPVE && (!StartActivity.isFirst)){
+							chessboard.Last();
+						}else{
+							chessboard.First();
+						}
+						chessboard.invalidate();
+						CheckUndo();
+					}
+				}).
+				setNegativeButton("取消", new DialogInterface.OnClickListener() {
+					
+					public void onClick(DialogInterface dialog, int which) {
+						
+					}
+				}).
+				setCancelable(false).create();
+		alertDialog.show();
+	}
+	
+	//保存棋谱
+	public void SaveClick(View v){
+		Dialog alertDialog = new AlertDialog.Builder(this).
+				setTitle("确定保存棋谱？").
+				setMessage("确定保存棋谱吗？（之前保存的棋谱将被覆盖）").
+				setPositiveButton("确定", new DialogInterface.OnClickListener() {
+					
+					public void onClick(DialogInterface dialog, int which) {
+						SaveChess();
+					}
+				}).
+				setNegativeButton("取消", new DialogInterface.OnClickListener() {
+					
+					public void onClick(DialogInterface dialog, int which) {
+						
+					}
+				}).
+				setCancelable(false).create();
+		alertDialog.show();
+	}
+	
+	//载入棋谱
+	public void LoadClick(View v) {
+		if(!undoEnable){
+			SharedPreferences preferences = getSharedPreferences("Data", MODE_PRIVATE);
+			int Size = preferences.getInt("Size", 0);
+			data.clear();
+			for(int i = 0; i < Size; i++){
+				mypoint p = new mypoint(preferences.getInt("x" + i, 0), 
+						preferences.getInt("y" + i, 0), 
+						preferences.getInt("color" + i, 0));
+				data.add(p);
+			}
+			chessboard.init(data, StartActivity.isPVE);
+			chessboard.Open();
+			chessboard.invalidate();
+			CheckUndo();
+			return;
+		}
+		Dialog alertDialog = new AlertDialog.Builder(this).
+				setTitle("确定载入棋谱？").
+				setMessage("确定载入棋谱吗？（当前进行的游戏将丢失）").
+				setPositiveButton("确定", new DialogInterface.OnClickListener() {
+					
+					public void onClick(DialogInterface dialog, int which) {
+						SharedPreferences preferences = getSharedPreferences("Data", MODE_PRIVATE);
+						int Size = preferences.getInt("Size", 0);
+						data.clear();
+						for(int i = 0; i < Size; i++){
+							mypoint p = new mypoint(preferences.getInt("x" + i, 0), 
+									preferences.getInt("y" + i, 0), 
+									preferences.getInt("color" + i, 0));
+							data.add(p);
+						}
+						chessboard.init(data, StartActivity.isPVE);
+						chessboard.Open();
+						chessboard.invalidate();
+						CheckUndo();
+					}
+				}).
+				setNegativeButton("取消", new DialogInterface.OnClickListener() {
+					
+					public void onClick(DialogInterface dialog, int which) {
+						
+					}
+				}).
+				setCancelable(false).create();
+		alertDialog.show();
+	}
+	
+	//返回主菜单
+	public void ReturnClick(View v) {
+		if(!undoEnable){
+			data.clear();
+			finish();
+			return;
+		}
+		Dialog alertDialog = new AlertDialog.Builder(this).
+				setTitle("是否保存棋谱？").
+				setMessage("是否保存棋谱？（如果不保存谱则当前进行的游戏将丢失，如果保存棋谱则之前保存的棋谱将被覆盖）").
+				setPositiveButton("保存", new DialogInterface.OnClickListener() {
+					
+					public void onClick(DialogInterface dialog, int which) {
+						SaveChess();
+						data.clear();
+						finish();
+					}
+				}).
+				setNeutralButton("不保存", new DialogInterface.OnClickListener() {
+					
+					public void onClick(DialogInterface dialog, int which) {
+						data.clear();
+						finish();
+					}
+				}).
+				setNegativeButton("取消", new DialogInterface.OnClickListener() {
+					
+					public void onClick(DialogInterface dialog, int which) {
+						
+					}
+				}).
+				setCancelable(false).create();
+		alertDialog.show();
+	}
+	
+	public void SaveChess(){
+		Vector tempdata = chessboard.getData();
+		mypoint p;
+		SharedPreferences preferences = getSharedPreferences("Data", MODE_PRIVATE);
+		SharedPreferences.Editor editor = preferences.edit();
+		int Size = tempdata.size();
+		editor.putInt("Size", Size);
+		for(int i = 0; i < Size; i++){
+			p = (mypoint) tempdata.elementAt(i);
+			editor.putInt("x" + i, p.getx());
+			editor.putInt("y" + i, p.gety());
+			editor.putInt("color" + i, p.getcolor());
+		}
+		editor.commit();
+	}
+	
+	public void CheckUndo(){
+		int Size = chessboard.getData().size();
+		if((!StartActivity.isPractice) || (0 == Size) || ((1 == Size) && StartActivity.isPVE && (!StartActivity.isFirst))){
+			undoGameBtn.setEnabled(false);
+			newGameBtn.setEnabled(false);
+			saveGameBtn.setEnabled(false);
+			undoEnable = false;
+		}else{
+			undoGameBtn.setEnabled(true);
+			newGameBtn.setEnabled(true);
+			saveGameBtn.setEnabled(true);
+			undoEnable = true;
 		}
 	}
 	
 	public boolean onKeyDown(int keyCode, KeyEvent event){
-		if(KeyEvent.KEYCODE_BACK == keyCode){
+		if(!undoEnable){
 			data.clear();
-			Intent intent = new Intent(GameActivity.this,
-					StartActivity.class);
-			startActivity(intent);
 			finish();
+			return true;
 		}
+		Dialog alertDialog = new AlertDialog.Builder(this).
+				setTitle("是否保存棋谱？").
+				setMessage("是否保存棋谱？（如果不保存谱则当前进行的游戏将丢失，如果保存棋谱则之前保存的棋谱将被覆盖）").
+				setPositiveButton("保存", new DialogInterface.OnClickListener() {
+					
+					public void onClick(DialogInterface dialog, int which) {
+						SaveChess();
+						data.clear();
+						finish();
+					}
+				}).
+				setNeutralButton("不保存", new DialogInterface.OnClickListener() {
+					
+					public void onClick(DialogInterface dialog, int which) {
+						data.clear();
+						finish();
+					}
+				}).
+				setNegativeButton("取消", new DialogInterface.OnClickListener() {
+					
+					public void onClick(DialogInterface dialog, int which) {
+						
+					}
+				}).
+				setCancelable(false).create();
+		alertDialog.show();
 		return true;
 	}
 	

@@ -19,7 +19,7 @@
     <string name="gamesetting">游戏设置</string>
     <string name="save">保存棋谱</string>   
     <string name="returnmenu">返回菜单</string>
-    <string name="openchessmanual">打开棋谱</string>
+    <string name="openchessmanual">载入棋谱</string>
     <string name="zoomout">缩小</string>
     <string name="zoomin">放大</string>
     

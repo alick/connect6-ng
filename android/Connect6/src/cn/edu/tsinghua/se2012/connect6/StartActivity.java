@@ -22,7 +22,8 @@ public class StartActivity extends Activity {
 	static public boolean isPVE = true;
 	static public boolean isPractice = true;
 	static public boolean isFirst = true;
-	static public Vector data = new Vector();
+	static public boolean soundOpen = true;
+	static public boolean vibrateOpen = true;
 	
 	static float screenHeight; // 屏幕高度
 	static float screenWidth; // 屏幕宽度
@@ -103,11 +104,9 @@ public class StartActivity extends Activity {
 		// 开始游戏按钮
 		startGameBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				writePreferences();
 				Intent intent = new Intent(StartActivity.this,
 						GameActivity.class);
 				startActivity(intent);
-				finish();
 			}
 		});
 
@@ -155,6 +154,8 @@ public class StartActivity extends Activity {
 		isPVE = preferences.getBoolean("PVE", true);
 		isPractice = preferences.getBoolean("Practice", true);
 		isFirst = preferences.getBoolean("First", true);
+		soundOpen = preferences.getBoolean("sound", true);
+		vibrateOpen = preferences.getBoolean("vibrate", true);
 	}
 	
 	public void writePreferences(){
@@ -163,6 +164,8 @@ public class StartActivity extends Activity {
 		editor.putBoolean("PVE", isPVE);
 		editor.putBoolean("Practice", isPractice);
 		editor.putBoolean("First", isFirst);
+		editor.putBoolean("sound", soundOpen);
+		editor.putBoolean("vibrate", vibrateOpen);
 		editor.commit();
 	}
 }
