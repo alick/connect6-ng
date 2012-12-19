@@ -32,22 +32,12 @@
         android:contentDescription="@string/setmode" />
 
     <ImageButton
-        android:id="@+id/openchessmanual"
-        android:layout_width="200dp"
-        android:layout_height="60dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:layout_below="@+id/setmode"
-        android:background="@drawable/openchessmanual"
-        android:contentDescription="@string/startgame" />
-
-    <ImageButton
         android:id="@+id/aboutus"
         android:layout_width="200dp"
         android:layout_height="60dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:layout_below="@+id/openchessmanual"
+        android:layout_below="@+id/setmode"
         android:background="@drawable/aboutus"
         android:contentDescription="@string/aboutus" />
 

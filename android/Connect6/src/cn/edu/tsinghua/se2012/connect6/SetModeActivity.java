@@ -30,8 +30,10 @@ public class SetModeActivity extends Activity{
 		
 		if (StartActivity.isPVE){
 			PVEmodeBtn.setText("人机对战");
+			firstModeBtn.setEnabled(true);
 		}else{
 			PVEmodeBtn.setText("人人对战");
+			firstModeBtn.setEnabled(false);
 		}
 		if (StartActivity.isPractice){
 			operationalModeBtn.setText("练习模式");
@@ -48,23 +50,29 @@ public class SetModeActivity extends Activity{
 		PVEmodeBtn.setOnClickListener(new View.OnClickListener() {
 					public void onClick(View v) {
 						StartActivity.isPVE = !StartActivity.isPVE;
-						PVEmodeBtn.setText(PVEArray[(StartActivity.isPVE?0:1)]);		
+						if (StartActivity.isPVE){
+							PVEmodeBtn.setText("人机对战");
+							firstModeBtn.setEnabled(true);
+						}else{
+							PVEmodeBtn.setText("人人对战");
+							firstModeBtn.setEnabled(false);
+						}
 					}
 				});
 		// 游戏模式按钮
 		operationalModeBtn.setOnClickListener(new View.OnClickListener() {
 					public void onClick(View v) {
 						StartActivity.isPractice = !StartActivity.isPractice;
-						operationalModeBtn.setText(PracticeArray[(StartActivity.isPractice?0:1)]);		
+						operationalModeBtn.setText(PracticeArray[(StartActivity.isPractice?0:1)]);
 					}
 				});
 		// 落子顺序设置
-				firstModeBtn.setOnClickListener(new View.OnClickListener() {
-							public void onClick(View v) {
-								StartActivity.isFirst = !StartActivity.isFirst;
-								firstModeBtn.setText(FirstArray[(StartActivity.isFirst?0:1)]);	
-							}
-						});
+		firstModeBtn.setOnClickListener(new View.OnClickListener() {
+					public void onClick(View v) {
+						StartActivity.isFirst = !StartActivity.isFirst;
+						firstModeBtn.setText(FirstArray[(StartActivity.isFirst?0:1)]);
+					}
+				});
 		// 确定按钮
 		okBtn.setOnClickListener(new View.OnClickListener() {
 					public void onClick(View v) {

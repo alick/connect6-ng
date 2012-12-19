@@ -3,7 +3,10 @@ package cn.edu.tsinghua.se2012.connect6;
 import java.util.Vector;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -31,11 +34,14 @@ public class GameActivity extends Activity{
     
 	final int CODE = 0x717;				//开启游戏设置界面请求码
 	
+	private static Vector data = new Vector();
+	
 	private ChessBoardView chessboard;
 	private Button newGameBtn;
 	private Button undoGameBtn;
 	private Button gameSettingBtn;
 	private Button saveGameBtn;
+	private Button loadGameBtn;
 	private Button returnmenuBtn;
 	private ZoomControls zoomControls;
 	
@@ -49,6 +55,7 @@ public class GameActivity extends Activity{
 		undoGameBtn = (Button)findViewById(R.id.undogame);
 		gameSettingBtn = (Button)findViewById(R.id.gamesetting);
 		saveGameBtn = (Button) findViewById(R.id.save);
+		loadGameBtn = (Button) findViewById(R.id.load);
 		returnmenuBtn = (Button)findViewById(R.id.returnmenu);
 		zoomControls = (ZoomControls)findViewById(R.id.zoomControls);
 		if(!StartActivity.isPractice)
@@ -75,7 +82,7 @@ public class GameActivity extends Activity{
 		chessboard.ZoomOut();
         chessboard.invalidate(); //重新绘制棋盘
         
-        Vector data = new Vector();
+        //Vector data = new Vector();
         chessboard.init(data, StartActivity.isPVE);
         if(StartActivity.isPVE && (!StartActivity.isFirst)){
         	chessboard.Last();
@@ -113,19 +120,46 @@ public class GameActivity extends Activity{
 		});
 		
 		//保存棋谱
-				saveGameBtn.setOnClickListener(new View.OnClickListener() {
-				    public void onClick(View v) {
-				    	Vector data = chessboard.getData();
-				    	int Size = data.size();
-				    	for(int i = 0; i < Size; i++){
-				    		
-				    	}
-				    }
-				});
+		saveGameBtn.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				Vector tempdata = chessboard.getData();
+				mypoint p;
+				int x, y, color;
+				SharedPreferences preferences = getSharedPreferences("Data", MODE_PRIVATE);
+				SharedPreferences.Editor editor = preferences.edit();
+				int Size = tempdata.size();
+				editor.putInt("Size", Size);
+				for(int i = 0; i < Size; i++){
+					p = (mypoint) tempdata.elementAt(i);
+					editor.putInt("x" + i, p.getx());
+					editor.putInt("y" + i, p.gety());
+					editor.putInt("color" + i, p.getcolor());
+				}
+				editor.commit();
+			}
+		});
+		
+		//载入棋谱
+		loadGameBtn.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				SharedPreferences preferences = getSharedPreferences("Data", MODE_PRIVATE);
+				int Size = preferences.getInt("Size", 0);
+				for(int i = 0; i < Size; i++){
+					mypoint p = new mypoint(preferences.getInt("x" + i, 0), 
+							preferences.getInt("y" + i, 0), 
+							preferences.getInt("color" + i, 0));
+					data.add(p);
+				}
+				chessboard.init(data, StartActivity.isPVE);
+				chessboard.Open();
+				chessboard.invalidate();
+			}
+		});
 		  
 		//返回主菜单
 		returnmenuBtn.setOnClickListener(new View.OnClickListener() {
 		    public void onClick(View v) {
+		    	data.clear();
 		    	Intent intent = new Intent(GameActivity.this,
 						StartActivity.class);
 				startActivity(intent);
@@ -184,6 +218,7 @@ public class GameActivity extends Activity{
 	
 	public boolean onKeyDown(int keyCode, KeyEvent event){
 		if(KeyEvent.KEYCODE_BACK == keyCode){
+			data.clear();
 			Intent intent = new Intent(GameActivity.this,
 					StartActivity.class);
 			startActivity(intent);

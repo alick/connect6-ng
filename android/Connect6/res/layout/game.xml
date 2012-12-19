@@ -30,25 +30,37 @@
         <Button
             android:id="@+id/returnmenu"
             android:layout_width="80dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_marginTop="5dp"
             android:layout_toLeftOf="@+id/gamesetting"
-            android:text="@string/returnmenu" />
+            android:text="@string/returnmenu"
+            android:background="@drawable/buttonstyle" />
         <Button
             android:id="@+id/gamesetting"
             android:layout_width="80dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_marginTop="5dp"
             android:layout_toLeftOf="@+id/save"
-            android:text="@string/gamesetting" />
+            android:text="@string/gamesetting"
+            android:background="@drawable/buttonstyle" />
 
         <Button
             android:id="@+id/save"
             android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
+            android:layout_height="40dp"
             android:layout_marginTop="5dp"
-            android:text="@string/save" />
+            android:layout_toLeftOf="@+id/load"
+            android:text="@string/save"
+            android:background="@drawable/buttonstyle" />
+        
+        <Button
+        	android:id="@+id/load"
+        	android:layout_width="80dp"
+        	android:layout_height="40dp"
+        	android:layout_alignParentRight="true"
+            android:layout_marginTop="5dp"
+        	android:text="@string/openchessmanual"
+        	android:background="@drawable/buttonstyle" />
     </RelativeLayout>
 
     <LinearLayout
@@ -60,17 +72,19 @@
 
         <Button
             android:id="@+id/newgame"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
             android:layout_marginTop="5dp"
-            android:text="@string/newgame" />
+            android:text="@string/newgame"
+            android:background="@drawable/buttonstyle" />
 
         <Button
             android:id="@+id/undogame"
-            android:layout_width="60dp"
-            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
             android:layout_marginTop="5dp"
-            android:text="@string/undogame" />
+            android:text="@string/undogame"
+            android:background="@drawable/buttonstyle" />
 
         <ZoomControls
             android:id="@+id/zoomControls"

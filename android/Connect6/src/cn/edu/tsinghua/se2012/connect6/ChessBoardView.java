@@ -111,7 +111,7 @@ public class ChessBoardView extends ImageView {
 		originY = Y_MIN;
 		CENTER_X = (X_MIN + X_MAX) / 2;
 		CENTER_Y = (Y_MIN + Y_MAX) / 2;
-		int minGrid = (X_MAX - X_MIN) / (boardSize - 1);
+		int minGrid = (X_MAX - X_MIN) * 10 / 186;     // fix me for not follow the boardSize
 		for(int i = 0; i < 5; i++){
 			cGridLen[i] = i * minGrid / 2 + minGrid;
 			cChessRadius[i] = cGridLen[i] *3 / 10;
@@ -120,6 +120,16 @@ public class ChessBoardView extends ImageView {
 	}
 
 	// Some Helper Func
+	private boolean CheckX(int x, int r)  // 121812
+	{
+	    return (x <= X_MAX + r) && (x >= X_MIN - r);
+	}
+	
+	private boolean CheckY(int y, int r)
+	{
+	    return (y <= Y_MAX + r) && (y >= Y_MIN - r);
+	}
+	
 	private boolean CheckX(int x) {
 		return (x <= X_MAX) && (x >= X_MIN);
 	}
@@ -152,7 +162,7 @@ public class ChessBoardView extends ImageView {
 		int newX = x * gridLen + originX;
 		int newY = y * gridLen + originY;
 		int ovalSize = 2 * signRadius + 1;
-		if (CheckX(newX) && CheckY(newY)) {
+		if (CheckX(newX, signRadius) && CheckY(newY, signRadius)) {
 			// g.fillOval(newX - signRadius, newY - signRadius, ovalSize,
 			// ovalSize);
 			DrawCircle(canvas, newX, newY, signRadius, 0);
@@ -168,17 +178,24 @@ public class ChessBoardView extends ImageView {
 		return a < b ? b : a;
 	}
 
-	private void VerifyOrigin() {
+	private void VerifyOrigin() {   // 121812
+	    int shiftLen = gridLen * 8 / 10; 
 		
-		if (originX + gridLen * boardSize - gridLen <= X_MAX)
-			originX = X_MAX + gridLen - gridLen * boardSize;
-		if (originY + gridLen * boardSize - gridLen <= Y_MAX)
-			originY = Y_MAX + gridLen - gridLen * boardSize;
+		if (originX + gridLen * boardSize - gridLen <= X_MAX - shiftLen)
+			originX = X_MAX - shiftLen + gridLen - gridLen * boardSize;
+		if (originY + gridLen * boardSize - gridLen <= Y_MAX - shiftLen)
+			originY = Y_MAX - shiftLen + gridLen - gridLen * boardSize;
 		
-		if (originX > X_MIN)
-			originX = X_MIN;
-		if (originY > Y_MIN)
-			originY = Y_MIN;
+		if (originX > X_MIN + shiftLen)
+			originX = X_MIN + shiftLen;
+		if (originY > Y_MIN + shiftLen)
+			originY = Y_MIN + shiftLen;
+		
+		if (currentSizeLevel == 0)
+		{
+			originX = CENTER_X - gridLen * 9;
+			originY = CENTER_Y - gridLen * 9;
+		}
 	}
 
 	public void Paint(Canvas canvas) {
@@ -230,7 +247,7 @@ public class ChessBoardView extends ImageView {
 			newX = gridLen * p.getx() + originX;
 			newY = gridLen * p.gety() + originY;
 
-			if (CheckX(newX) && CheckY(newY)) {
+			if (CheckX(newX, chessRadius) && CheckY(newY, chessRadius)) {
 				DrawCircle(canvas, newX, newY, chessRadius, p.getcolor());
 			}
 
@@ -341,7 +358,12 @@ public class ChessBoardView extends ImageView {
 		if (!computer) {
 			data.remove(Size - 1);
 			Size--;
-			if (Size % 2 == 0) {
+			if (Size == 0)
+			{
+			    color = 1 - color;
+			    state = 1;
+			} 
+			else if (Size % 2 == 0) {
 				state = 1;
 				color = ((mypoint) data.elementAt(Size - 1)).getcolor();
 			} else {
@@ -349,6 +371,9 @@ public class ChessBoardView extends ImageView {
 				color = 1 - ((mypoint) data.elementAt(Size - 1)).getcolor();
 			}
 		} else {
+			 if (Size == 1) {  // 121812
+				    return;
+			}
 			if (Size % 2 == 0) {
 				data.remove(Size - 1);
 				state++;
@@ -393,6 +418,8 @@ public class ChessBoardView extends ImageView {
 	}
 
 	public void MoveChessBoard(int x, int y) {
+		if (currentSizeLevel == 0)
+			return;
 		originX = originX + x;
 		originY = originY + y;
 		VerifyOrigin();	
@@ -413,6 +440,23 @@ public class ChessBoardView extends ImageView {
 		}
 
 	}
+	
+	public void Open()
+	{
+		int Size;
+        Size = data.size();
+        
+        if (Size % 2 == 0) {
+            state = 1;
+            color = ((mypoint)data.elementAt(Size-1)).getcolor();
+        } else {
+            state = 2;
+            color = 1 - ((mypoint)data.elementAt(Size-1)).getcolor();
+        }
+
+        pause = false;
+        
+	}
 
 	public int PlaceChess(int mouseX, int mouseY, Canvas canvas) {
 		// / 0 --- do nothing
@@ -426,8 +470,8 @@ public class ChessBoardView extends ImageView {
 		// /{
 		// / menu_back.setEnabled(true);
 		// /}
-		if (!CheckX(mouseX) || !CheckY(mouseY))
-			return 0;
+		//if (!CheckX(mouseX) || !CheckY(mouseY))
+		//	return 0;
 		if (state == 0 || pause)
 			return 0;
 		int result = 0;
@@ -574,4 +618,6 @@ public class ChessBoardView extends ImageView {
     	}
     	return true;
     }
+    
+    
 }

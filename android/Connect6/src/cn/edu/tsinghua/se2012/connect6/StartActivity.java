@@ -1,5 +1,7 @@
 package cn.edu.tsinghua.se2012.connect6;
 
+import java.util.Vector;
+
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -20,6 +22,8 @@ public class StartActivity extends Activity {
 	static public boolean isPVE = true;
 	static public boolean isPractice = true;
 	static public boolean isFirst = true;
+	static public Vector data = new Vector();
+	
 	static float screenHeight; // 屏幕高度
 	static float screenWidth; // 屏幕宽度
 	static boolean flag = false;
@@ -28,6 +32,7 @@ public class StartActivity extends Activity {
 
 	ImageButton startGameBtn;
 	ImageButton setModeBtn;
+	ImageButton loadBtn;
 	ImageButton aboutUsBtn;
 	ImageButton exitBtn;
 
@@ -56,6 +61,8 @@ public class StartActivity extends Activity {
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
 		screenHeight = dm.heightPixels;
 		screenWidth = dm.widthPixels;
+		
+		readPreferences();
 
 		if (flag == false) {
 			gotoWelcomeView();
@@ -90,6 +97,7 @@ public class StartActivity extends Activity {
 		aboutUsBtn = (ImageButton) findViewById(R.id.aboutus);
 		startGameBtn = (ImageButton) findViewById(R.id.startgame);
 		setModeBtn = (ImageButton) findViewById(R.id.setmode);
+		//loadBtn = (ImageButton) findViewById(R.id.openchessmanual);
 		exitBtn = (ImageButton) findViewById(R.id.exit);
 
 		// 开始游戏按钮
@@ -114,6 +122,22 @@ public class StartActivity extends Activity {
 				startActivity(intent);
 			}
 		});
+		
+		// 导入棋谱按钮
+		/*
+		loadBtn.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View v) {
+				SharedPreferences preferences = getSharedPreferences("Data", MODE_PRIVATE);
+				int Size = preferences.getInt("Size", 0);
+				for(int i = 0; i < Size; i++){
+					mypoint p = new mypoint(preferences.getInt("x" + i, 0), 
+							preferences.getInt("y" + i, 0), 
+							preferences.getInt("color" + i, 0));
+					data.add(p);
+				}
+			}
+		});
+		*/
 
 		// 关于我们按钮
 		aboutUsBtn.setOnClickListener(new View.OnClickListener() {
@@ -127,6 +151,7 @@ public class StartActivity extends Activity {
 		//退出按钮
 		exitBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				writePreferences();
 				flag = false;
 				finish();
 				System.exit(0);
@@ -136,10 +161,27 @@ public class StartActivity extends Activity {
 	
 	public boolean onKeyDown(int keyCode, KeyEvent event){
 		if(KeyEvent.KEYCODE_BACK == keyCode){
+			writePreferences();
 			flag = false;
 			finish();
 			System.exit(0);
 		}
 		return true;
+	}
+	
+	public void readPreferences(){
+		SharedPreferences preferences = getSharedPreferences("Pref", MODE_PRIVATE);
+		isPVE = preferences.getBoolean("PVE", true);
+		isPractice = preferences.getBoolean("Practice", true);
+		isFirst = preferences.getBoolean("First", true);
+	}
+	
+	public void writePreferences(){
+		SharedPreferences preferences = getSharedPreferences("Pref", MODE_PRIVATE);
+		SharedPreferences.Editor editor = preferences.edit();
+		editor.putBoolean("PVE", isPVE);
+		editor.putBoolean("Practice", isPractice);
+		editor.putBoolean("First", isFirst);
+		editor.commit();
 	}
 }
