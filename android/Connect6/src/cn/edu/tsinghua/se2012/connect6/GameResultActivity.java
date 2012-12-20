@@ -2,11 +2,13 @@ package cn.edu.tsinghua.se2012.connect6;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -34,8 +36,9 @@ public class GameResultActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.result);
-		
+				
 		gameSuccess = (ImageView)findViewById(R.id.gamesuccess);
 		gameFail = (ImageView)findViewById(R.id.gamefail);
 		doubleGame = (RelativeLayout)findViewById(R.id.doublegame);
@@ -46,6 +49,12 @@ public class GameResultActivity extends Activity {
 		okButton = (Button)findViewById(R.id.gameresultok);
 		soundpool = new SoundPool(3, AudioManager.STREAM_SYSTEM, 0);
 		vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+		
+		Intent intent = getIntent();
+		Bundle bundle = intent.getExtras();
+		result = bundle.getInt("result");
+		
+		System.out.println("result"+result);
 		
 		switch(result){
 		case 1:

@@ -36,12 +36,14 @@
         <ImageView
             android:id="@+id/gamesuccess"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
+            android:layout_height="fill_parent"
+            android:background="@drawable/success" />
 
         <ImageView
             android:id="@+id/gamefail"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
+            android:layout_height="fill_parent"
+            android:background="@drawable/fail" />
 
         <RelativeLayout
             android:id="@+id/doublegame"
