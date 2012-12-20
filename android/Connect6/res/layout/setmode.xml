@@ -12,12 +12,16 @@
         android:orientation="horizontal" >
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="2dp"
+            android:background="@drawable/mode" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="2dp"
             android:text="@string/setmode"
             android:textSize="20dp" />
     </LinearLayout>

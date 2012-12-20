@@ -1,7 +1,6 @@
 package cn.edu.tsinghua.se2012.connect6;
 
 import java.util.*;
-import java.awt.*;
 import java.io.*;
 
 class alg {

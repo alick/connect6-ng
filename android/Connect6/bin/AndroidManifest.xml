@@ -33,6 +33,10 @@
         <activity 
             android:name=".GameActivity" >
         </activity>
+        <activity 
+            android:name=".GameResultActivity" 
+			android:theme="@style/Theme.GameResultActivity" >            
+        </activity>
     </application>
 
 </manifest>

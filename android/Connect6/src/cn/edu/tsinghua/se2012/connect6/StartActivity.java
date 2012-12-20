@@ -2,6 +2,8 @@ package cn.edu.tsinghua.se2012.connect6;
 
 import java.util.Vector;
 
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -10,6 +12,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -24,18 +28,20 @@ public class StartActivity extends Activity {
 	static public boolean isFirst = true;
 	static public boolean soundOpen = true;
 	static public boolean vibrateOpen = true;
-	
+	static public boolean hasChessManual = false;
+
 	static float screenHeight; // 屏幕高度
 	static float screenWidth; // 屏幕宽度
 	static boolean flag = false;
-	
-	final int CODE = 0x717;			//启动设置模式活动的请求码
 
-	ImageButton startGameBtn;
-	ImageButton setModeBtn;
-	ImageButton loadBtn;
-	ImageButton aboutUsBtn;
-	ImageButton exitBtn;
+	final int CODE = 0x717; // 启动设置模式活动的请求码
+
+	private ImageButton startGameBtn;
+	private ImageButton setModeBtn;
+	private ImageButton loadBtn;
+	private ImageButton aboutUsBtn;
+	private ImageButton exitBtn;
+	private SoundPool soundpool;
 
 	// 接受信息界面跳转
 	Handler hd = new Handler() {
@@ -62,7 +68,7 @@ public class StartActivity extends Activity {
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
 		screenHeight = dm.heightPixels;
 		screenWidth = dm.widthPixels;
-		
+
 		readPreferences();
 
 		if (flag == false) {
@@ -71,16 +77,6 @@ public class StartActivity extends Activity {
 			gotoMainView();
 		}
 	}
-	
-//	@Override
-//	protected void onActivityResult(int requestCode, int resultCode, Intent data){
-//		super.onActivityResult(requestCode, resultCode, data);
-//		if (requestCode == CODE && resultCode == CODE){
-//			Bundle bundle = data.getExtras();
-//			isPVE = bundle.getBoolean("isPVE");
-//			isPractice = bundle.getBoolean("isPractice");
-//		}
-//	}
 
 	// 欢迎界面
 	public void gotoWelcomeView() {
@@ -98,12 +94,15 @@ public class StartActivity extends Activity {
 		aboutUsBtn = (ImageButton) findViewById(R.id.aboutus);
 		startGameBtn = (ImageButton) findViewById(R.id.startgame);
 		setModeBtn = (ImageButton) findViewById(R.id.setmode);
-		//loadBtn = (ImageButton) findViewById(R.id.openchessmanual);
+		// loadBtn = (ImageButton) findViewById(R.id.openchessmanual);
 		exitBtn = (ImageButton) findViewById(R.id.exit);
+		soundpool = new SoundPool(1, AudioManager.STREAM_SYSTEM, 0);
 
 		// 开始游戏按钮
 		startGameBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				playSound();
+
 				Intent intent = new Intent(StartActivity.this,
 						GameActivity.class);
 				startActivity(intent);
@@ -113,24 +112,30 @@ public class StartActivity extends Activity {
 		// 设置模式按钮
 		setModeBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				playSound();
+				
 				Intent intent = new Intent(StartActivity.this,
 						SetModeActivity.class);
 				startActivity(intent);
 			}
 		});
-		
+
 		// 关于我们按钮
 		aboutUsBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				playSound();
+				
 				Intent intent = new Intent(StartActivity.this,
 						AboutUsActivity.class);
 				startActivity(intent);
 			}
 		});
-		
-		//退出按钮
+
+		// 退出按钮
 		exitBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				playSound();
+				
 				writePreferences();
 				flag = false;
 				finish();
@@ -138,9 +143,9 @@ public class StartActivity extends Activity {
 			}
 		});
 	}
-	
-	public boolean onKeyDown(int keyCode, KeyEvent event){
-		if(KeyEvent.KEYCODE_BACK == keyCode){
+
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (KeyEvent.KEYCODE_BACK == keyCode) {
 			writePreferences();
 			flag = false;
 			finish();
@@ -148,24 +153,42 @@ public class StartActivity extends Activity {
 		}
 		return true;
 	}
-	
-	public void readPreferences(){
-		SharedPreferences preferences = getSharedPreferences("Pref", MODE_PRIVATE);
+
+	public void readPreferences() {
+		SharedPreferences preferences = getSharedPreferences("Pref",
+				MODE_PRIVATE);
 		isPVE = preferences.getBoolean("PVE", true);
 		isPractice = preferences.getBoolean("Practice", true);
 		isFirst = preferences.getBoolean("First", true);
 		soundOpen = preferences.getBoolean("sound", true);
 		vibrateOpen = preferences.getBoolean("vibrate", true);
+		hasChessManual = preferences.getBoolean("haschessmanual", false);
 	}
-	
-	public void writePreferences(){
-		SharedPreferences preferences = getSharedPreferences("Pref", MODE_PRIVATE);
+
+	public void writePreferences() {
+		SharedPreferences preferences = getSharedPreferences("Pref",
+				MODE_PRIVATE);
 		SharedPreferences.Editor editor = preferences.edit();
 		editor.putBoolean("PVE", isPVE);
 		editor.putBoolean("Practice", isPractice);
 		editor.putBoolean("First", isFirst);
 		editor.putBoolean("sound", soundOpen);
 		editor.putBoolean("vibrate", vibrateOpen);
+		editor.putBoolean("haschessmanual", hasChessManual);
 		editor.commit();
+	}
+	
+	public void playSound(){
+		if (soundOpen) {
+			final int sourceId = soundpool.load(StartActivity.this,
+					R.raw.startbutton, 1);
+			soundpool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+						public void onLoadComplete(SoundPool soundPool,
+								int sampleId, int status) {
+							soundPool.play(sourceId, 1, 1, 0,
+									0, 1);
+						}
+					});
+		}
 	}
 }

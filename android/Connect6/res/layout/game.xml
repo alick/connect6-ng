@@ -16,7 +16,8 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="2dp"
             android:layout_marginRight="2dp"
-            android:scaleType="centerInside" />
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"/>
     </LinearLayout>
 
     <RelativeLayout
@@ -30,26 +31,29 @@
             android:id="@+id/returnmenu"
             android:layout_width="70dp"
             android:layout_height="40dp"
-            android:layout_marginTop="5dp"
             android:layout_margin="2dp"
+            android:layout_centerInParent="true"
             android:layout_toLeftOf="@+id/gamesetting"
             android:text="@string/returnmenu"
+            android:background="@drawable/buttonstyle"
             android:onClick="ReturnClick" />
         <Button
             android:id="@+id/gamesetting"
             android:layout_width="70dp"
             android:layout_height="40dp"
-            android:layout_marginTop="5dp"
             android:layout_margin="2dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/buttonstyle"
             android:layout_toLeftOf="@+id/save"
-            android:text="@string/gamesetting" />
+            android:text="@string/gamesetting"/>
 
         <Button
             android:id="@+id/save"
             android:layout_width="70dp"
             android:layout_height="40dp"
-            android:layout_marginTop="5dp"
             android:layout_margin="2dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/buttonstyle"
             android:layout_toLeftOf="@+id/load"
             android:text="@string/save"
             android:onClick="SaveClick" />
@@ -59,8 +63,9 @@
         	android:layout_width="70dp"
         	android:layout_height="40dp"
         	android:layout_alignParentRight="true"
-            android:layout_marginTop="5dp"
             android:layout_margin="2dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/buttonstyle"
         	android:text="@string/openchessmanual"
         	android:onClick="LoadClick" />
     </RelativeLayout>
@@ -75,37 +80,41 @@
         <Button
             android:id="@+id/newgame"
             android:layout_width="70dp"
-            android:layout_height="40dp"
+            android:layout_height="35dp"
             android:layout_alignParentLeft="true"
-            android:layout_marginBottom="5dp"
+            android:layout_centerInParent="true"
             android:layout_margin="2dp"
+            android:background="@drawable/buttonstyle"
             android:text="@string/newgame"
             android:onClick="NewgameClick" />
 
         <Button
             android:id="@+id/undogame"
             android:layout_width="70dp"
-            android:layout_height="40dp"
-            android:layout_marginBottom="5dp"
+            android:layout_height="35dp"
             android:layout_margin="2dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/buttonstyle"
             android:layout_toRightOf="@+id/newgame"
             android:text="@string/undogame" />
         
         <Button 
             android:id="@+id/zoomout"
             android:layout_width="70dp"
-            android:layout_height="40dp"
-            android:layout_marginBottom="5dp"
+            android:layout_height="35dp"
             android:layout_margin="2dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/buttonstyle"
             android:layout_toRightOf="@+id/undogame"
             android:text="@string/zoomout" />
         
         <Button 
             android:id="@+id/zoomin"
             android:layout_width="70dp"
-            android:layout_height="40dp"
-            android:layout_marginBottom="5dp"
+            android:layout_height="35dp"
             android:layout_margin="2dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/buttonstyle"
             android:layout_toRightOf="@+id/zoomout"
             android:text="@string/zoomin" />
 

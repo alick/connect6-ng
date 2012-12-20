@@ -7,24 +7,22 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
-import android.os.Bundle;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.GestureDetector.OnGestureListener;
-import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 
+@SuppressWarnings({"deprecation", "rawtypes"})
 public class ChessBoardView extends ImageView implements OnGestureListener{
 	private int screenWidth;
 	private int screenHeight;
-	
+		
+	private Context context;
+	private SoundPool soundpool;
 	private GestureDetector mGestureDetector = new GestureDetector(this);
-	
-	private int start_x, start_y, end_x, end_y;
-	private int delta_x, delta_y;
-	private int down_x, down_y;
-	private final int Zero = 500;
 
 	private Vector data;
 	private alg kernel;
@@ -45,7 +43,9 @@ public class ChessBoardView extends ImageView implements OnGestureListener{
 	private int mode;
 	// 0 = 练习模式
 	// 1 = 实战模式
-	private int screenX, screenY; // The size of mobile screen
+	private boolean AIRunOnce =false;             //122012-MYP
+	private boolean TellAIRunOnce = false;
+	private boolean ComputerWin = false;          //122012-MYP
 
 	private int[] cGridLen = { 10, 25, 30, 35, 40, 45 }; // 格子的长度
 	private int[] cChessRadius = { 3, 8, 10, 12, 13, 15 };// 棋子的半径
@@ -53,7 +53,6 @@ public class ChessBoardView extends ImageView implements OnGestureListener{
 	private final int SIZE_COUNT = 5;
 	private int X_MIN = 50, X_MAX = 590, Y_MIN = 90, Y_MAX = 630;
 	private final int SIZE_X = 650, SIZE_Y = 680;
-	private final int RECT_X = 20, RECT_Y = 60, RECT_LEN = 600;
 	private  int CENTER_X = (X_MIN + X_MAX) / 2,
 			CENTER_Y = (Y_MIN + Y_MAX) / 2;
 	private int gridLen = 30; // the length of one grid;
@@ -62,23 +61,28 @@ public class ChessBoardView extends ImageView implements OnGestureListener{
 	private int chessRadius = 10; //
 	private int signRadius = 3;
 	private int currentSizeLevel = 1;
-	private boolean PingPongFlag = false;
-	private int preX = 0, preY = 0;
 
 	// 构造函数
 	public ChessBoardView(Context context) {
 		super(context);
+		this.context = context;
+		soundpool = new SoundPool(1, AudioManager.STREAM_SYSTEM, 0);
 	}
 
 	public ChessBoardView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		this.context = context;
+		soundpool = new SoundPool(1, AudioManager.STREAM_SYSTEM, 0);
 	}
 
 	public ChessBoardView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
+		this.context = context;
+		soundpool = new SoundPool(1, AudioManager.STREAM_SYSTEM, 0);
 	}
 
-	public void init() { //初始化
+	//初始化
+	public void init() { 
 		data = new Vector();
 		kernel = new alg(data);
 		state = 0;
@@ -86,7 +90,8 @@ public class ChessBoardView extends ImageView implements OnGestureListener{
 		computer = true;
 	}
 
-	public void init(Vector _Data, boolean _Computer) {//棋谱初始化，computer是否人机对战
+	//棋谱初始化，computer是否人机对战
+	public void init(Vector _Data, boolean _Computer) {
 		data = _Data;
 		kernel = new alg(data);
 		state = 0;
@@ -99,12 +104,6 @@ public class ChessBoardView extends ImageView implements OnGestureListener{
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
-		// Paint paint = new Paint();
-		// paint.setAntiAlias(true);
-		// paint.setColor(Color.BLACK);
-		// paint.setStrokeWidth(2);
-		// //画出棋盘线
-		// canvas.drawLine(6, screenHeight/2, 6, screenHeight/2+50, paint);
 		Paint(canvas);
 	}
 
@@ -167,7 +166,6 @@ public class ChessBoardView extends ImageView implements OnGestureListener{
 	private void PlotSign(int x, int y, Canvas canvas) {
 		int newX = x * gridLen + originX;
 		int newY = y * gridLen + originY;
-		int ovalSize = 2 * signRadius + 1;
 		if (CheckX(newX, signRadius) && CheckY(newY, signRadius)) {
 			// g.fillOval(newX - signRadius, newY - signRadius, ovalSize,
 			// ovalSize);
@@ -215,18 +213,7 @@ public class ChessBoardView extends ImageView implements OnGestureListener{
 		int newYMin = Max(Y_MIN, originY), newYMax = Min(Y_MAX, originY
 				+ gridLen * (boardSize - 1));
 
-		// MYP
-
 		mypoint p;
-		// g.setColor(new Color(240, 120, 20));
-		// g.fillRect(RECT_X, RECT_Y, RECT_LEN, RECT_LEN); //绘制背景
-		// g.setColor(Color.darkGray); //绘制网格
-		// 画背景
-		//Paint paint = new Paint();
-		//paint.setColor(Color.YELLOW);
-		//paint.setStyle(Style.FILL);
-		//canvas.drawRect(X_MIN, Y_MIN, X_MAX, Y_MAX, paint);
-		//
 		for (i = 0; i < boardSize; i++) {
 			newX = gridLen * i + originX;
 			newY = gridLen * i + originY;
@@ -246,7 +233,6 @@ public class ChessBoardView extends ImageView implements OnGestureListener{
 		PlotSign(16 - 1, 16 - 1, canvas);
 
 		Size = data.size(); // 绘制棋子
-		int ovalSize = 2 * chessRadius + 1;
 		for (i = 0; i < Size; i++) {
 			p = (mypoint) data.elementAt(i);
 
@@ -258,6 +244,36 @@ public class ChessBoardView extends ImageView implements OnGestureListener{
 			}
 
 		}
+
+		// 122012-MYP
+		if (ComputerWin)
+		{
+		    // Fix me： The computer win, here need call a function to show the msg" the computer win. "
+			ComputerWin = false;
+		}
+
+		
+		if (AIRunOnce)
+		{
+		        AIRunOnce = false;
+		        kernel.cal(1 - color);
+	            if (kernel.hadsix()) {
+				  ComputerWin = true;
+				} else {
+					state = 2;
+				}
+				invalidate();
+		}
+
+		if (TellAIRunOnce)
+		{
+		    TellAIRunOnce = false;
+			AIRunOnce = true;
+			invalidate();
+		}
+		// 122012-MYP
+
+		
 
 	}
 
@@ -520,6 +536,21 @@ public class ChessBoardView extends ImageView implements OnGestureListener{
 		data.add(p);
 
 		state--;
+		//122012-MYP
+//		if (computer && state == 0){
+//			invalidate();
+//			//122012-MYP
+
+			//return 0;
+			//122012-MYP
+//			try {
+//				Thread myThread = new Thread();
+//				myThread.setPriority(Thread.MAX_PRIORITY);
+//				myThread.sleep(1000);
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+//		}
 		if (computer) {
 			if (kernel.hadsix()) {
 				result = 1;
@@ -527,14 +558,9 @@ public class ChessBoardView extends ImageView implements OnGestureListener{
 
 			} else if (state == 0) {
 
-				kernel.cal(1 - color);
-				PlotLastTwoChess(canvas);
-				// Paint(g);
-				if (kernel.hadsix()) {
-					result = 2;
-				} else {
-					state = 2;
-				}
+			    TellAIRunOnce = true;    // 122012-MYP
+
+				
 			}
 		} else {
 			if (kernel.hadsix()) {
@@ -678,5 +704,20 @@ public class ChessBoardView extends ImageView implements OnGestureListener{
 			GameActivity.undoGameBtn.setEnabled(false);
 		return false;
 	};
+	
+	//播放下子声音
+	public void playSound(){
+		if (StartActivity.soundOpen) {
+			final int sourceId = soundpool.load(this.context,
+					R.raw.chesssound, 1);
+			soundpool.setOnLoadCompleteListener(new SoundPool.OnLoadCompleteListener() {
+						public void onLoadComplete(SoundPool soundPool,
+								int sampleId, int status) {
+							soundPool.play(sourceId, 1, 1, 0,
+									0, 1);
+						}
+					});
+		}
+	}
     
 }
