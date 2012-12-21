@@ -107,7 +107,6 @@ public class ChessBoardView extends ImageView implements OnGestureListener {
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		Paint(canvas);
-		setWillNotDraw(false);
 	}
 
 	public void SetArea(int xmin, int xmax, int ymin, int ymax) {// …Ë÷√œ‘ æ«¯”Ú

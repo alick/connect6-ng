@@ -2,6 +2,7 @@ package cn.edu.tsinghua.se2012.connect6;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ public class SetModeActivity extends Activity{
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); // …Ë÷√Œ™ ˙∆¡∆¡
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.setmode);
 		

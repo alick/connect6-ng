@@ -42,6 +42,8 @@ public class StartActivity extends Activity {
 	private ImageButton aboutUsBtn;
 	private ImageButton exitBtn;
 	private SoundPool soundpool;
+	
+	private boolean isExit = false;
 
 	// 接受信息界面跳转
 	Handler hd = new Handler() {
@@ -134,12 +136,8 @@ public class StartActivity extends Activity {
 		// 退出按钮
 		exitBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				isExit = true;
 				playSound();
-				
-				writePreferences();
-				flag = false;
-				finish();
-				System.exit(0);
 			}
 		});
 	}
@@ -178,6 +176,14 @@ public class StartActivity extends Activity {
 		editor.commit();
 	}
 	
+	//退出游戏
+	public void exitGame(){
+		writePreferences();
+		flag = false;
+		finish();
+		System.exit(0);
+	}
+	
 	public void playSound(){
 		if (soundOpen) {
 			final int sourceId = soundpool.load(StartActivity.this,
@@ -187,6 +193,9 @@ public class StartActivity extends Activity {
 								int sampleId, int status) {
 							soundPool.play(sourceId, 1, 1, 0,
 									0, 1);
+							if (isExit){
+								exitGame();
+							}
 						}
 					});
 		}

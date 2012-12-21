@@ -27,7 +27,7 @@ public class GameSettingActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); // 设置为竖屏屏
-		requestWindowFeature(Window.FEATURE_NO_TITLE);// 设置全屏
+		requestWindowFeature(Window.FEATURE_NO_TITLE);// 设置无标题
 		setContentView(R.layout.gamesetting);
 		
 		soundOpenBtn = (Button)findViewById(R.id.soundOpen);

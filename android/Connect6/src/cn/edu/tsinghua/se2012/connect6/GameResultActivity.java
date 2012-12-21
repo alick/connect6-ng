@@ -3,6 +3,7 @@ package cn.edu.tsinghua.se2012.connect6;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
@@ -20,7 +21,7 @@ public class GameResultActivity extends Activity {
 	private final int SUCCESS = 0;
 	private final int FAIL = 1;
 	private final int GAMEOVER = 2;
-	private final int vibrateTime = 100;
+	private final int vibrateTime = 2000;
 	
 	private ImageView gameSuccess;
 	private ImageView gameFail;
@@ -36,6 +37,7 @@ public class GameResultActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); // …Ë÷√Œ™ ˙∆¡∆¡
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.result);
 				
@@ -54,26 +56,30 @@ public class GameResultActivity extends Activity {
 		Bundle bundle = intent.getExtras();
 		result = bundle.getInt("result");
 		
-		System.out.println("result"+result);
-		
 		switch(result){
 		case 1:
 			playSound(SUCCESS);
-			vibrator.vibrate(vibrateTime);
+			if (StartActivity.vibrateOpen){
+				vibrator.vibrate(vibrateTime);
+			}			
 			gameSuccess.setVisibility(View.VISIBLE);
 			gameFail.setVisibility(View.GONE);
 			doubleGame.setVisibility(View.GONE);
 			break;
 		case 2:
 			playSound(FAIL);
-			vibrator.vibrate(vibrateTime);
+			if (StartActivity.vibrateOpen){
+				vibrator.vibrate(vibrateTime);
+			}
 			gameSuccess.setVisibility(View.GONE);
 			gameFail.setVisibility(View.VISIBLE);
 			doubleGame.setVisibility(View.GONE);
 			break;
 		case 3:
 			playSound(GAMEOVER);
-			vibrator.vibrate(vibrateTime);
+			if (StartActivity.vibrateOpen){
+				vibrator.vibrate(vibrateTime);
+			}
 			gameSuccess.setVisibility(View.GONE);
 			gameFail.setVisibility(View.GONE);
 			doubleGame.setVisibility(View.VISIBLE);
@@ -84,7 +90,9 @@ public class GameResultActivity extends Activity {
 			break;
 		case 4:
 			playSound(GAMEOVER);
-			vibrator.vibrate(vibrateTime);
+			if (StartActivity.vibrateOpen){
+				vibrator.vibrate(vibrateTime);
+			}
 			gameSuccess.setVisibility(View.GONE);
 			gameFail.setVisibility(View.GONE);
 			doubleGame.setVisibility(View.VISIBLE);
