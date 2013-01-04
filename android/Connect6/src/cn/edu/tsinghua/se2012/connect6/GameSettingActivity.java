@@ -1,7 +1,6 @@
 package cn.edu.tsinghua.se2012.connect6;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
 import android.media.SoundPool;

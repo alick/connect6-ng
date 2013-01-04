@@ -3,11 +3,11 @@ package cn.edu.tsinghua.se2012.connect6;
 import java.util.*;
 import java.io.*;
 
+@SuppressWarnings({"rawtypes", "unchecked"})
 class alg {
+	
 	private Vector data;
 	// IO共享内存部分，储存每一个棋子的位置与颜色
-	private Vector line;
-	// O共享内存部分，储存每一条线的位置与颜色
 	private int ChessBoard[][];
 
 	static int[] os = new int[] { 0, 0, 2, 20, 65535, 65535, 65535 };
@@ -101,8 +101,7 @@ class alg {
 		y = Math.min(y, 16);
 		x = Math.max(x, 2);
 		y = Math.max(y, 2);
-		int i;
-		i = 1;
+
 		if ((ChessBoard[x - 1][y - 1] + ChessBoard[x][y - 1]
 				+ ChessBoard[x + 1][y - 1] + ChessBoard[x - 1][y]
 				+ ChessBoard[x][y] + ChessBoard[x + 1][y]
@@ -300,6 +299,7 @@ class SixPoint {// 棋盘上的连续6个位置队列
 	}
 }
 
+@SuppressWarnings({"serial"})
 class mypoint implements Serializable {// 记录坐标及颜色
 	private int x, y, color;
 

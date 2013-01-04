@@ -9,6 +9,12 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 
+/**
+ * 
+ * @author jsy1992
+ * 关于界面
+ *
+ */
 public class AboutUsActivity extends Activity{
 	Button okBtn;
 	private SoundPool soundpool;
@@ -32,6 +38,9 @@ public class AboutUsActivity extends Activity{
 		});
     }
 
+	/**
+	 * 播放声音
+	 */
 	public void playSound(){
 		if (StartActivity.soundOpen) {
 			final int sourceId = soundpool.load(AboutUsActivity.this,

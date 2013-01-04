@@ -1,7 +1,6 @@
 package cn.edu.tsinghua.se2012.connect6;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.media.AudioManager;
 import android.media.SoundPool;
@@ -11,7 +10,6 @@ import android.view.Window;
 import android.widget.Button;
 
 public class SetModeActivity extends Activity{
-	private String[] PVEArray = {"人机对战", "人人对战"};
 	private String[] PracticeArray = {"练习模式", "实战模式"};
 	private String[] FirstArray = {"玩家先手", "电脑先手"};
 	

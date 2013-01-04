@@ -1,7 +1,5 @@
 package cn.edu.tsinghua.se2012.connect6;
 
-import java.util.Vector;
-
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
@@ -12,8 +10,6 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.annotation.SuppressLint;
 import android.app.Activity;
