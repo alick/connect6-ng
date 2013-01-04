@@ -23,6 +23,8 @@ import android.content.pm.ActivityInfo;
 
 @SuppressLint({ "HandlerLeak", "HandlerLeak" })
 public class StartActivity extends Activity {
+	
+	// 游戏设置参数
 	static public boolean isPVE = true;
 	static public boolean isPractice = true;
 	static public boolean isFirst = true;
@@ -38,7 +40,6 @@ public class StartActivity extends Activity {
 
 	private ImageButton startGameBtn;
 	private ImageButton setModeBtn;
-	private ImageButton loadBtn;
 	private ImageButton aboutUsBtn;
 	private ImageButton exitBtn;
 	private SoundPool soundpool;
@@ -142,6 +143,7 @@ public class StartActivity extends Activity {
 		});
 	}
 
+	// 退出按钮重载
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (KeyEvent.KEYCODE_BACK == keyCode) {
 			writePreferences();
@@ -152,6 +154,7 @@ public class StartActivity extends Activity {
 		return true;
 	}
 
+	// 读取游戏参数
 	public void readPreferences() {
 		SharedPreferences preferences = getSharedPreferences("Pref",
 				MODE_PRIVATE);
@@ -163,6 +166,7 @@ public class StartActivity extends Activity {
 		hasChessManual = preferences.getBoolean("haschessmanual", false);
 	}
 
+	// 保存游戏参数
 	public void writePreferences() {
 		SharedPreferences preferences = getSharedPreferences("Pref",
 				MODE_PRIVATE);
@@ -184,6 +188,7 @@ public class StartActivity extends Activity {
 		System.exit(0);
 	}
 	
+	// 播放声音
 	public void playSound(){
 		if (soundOpen) {
 			final int sourceId = soundpool.load(StartActivity.this,

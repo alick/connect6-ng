@@ -21,6 +21,7 @@ import cn.edu.tsinghua.se2012.connect6.ChessBoardView;
 
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class GameActivity extends Activity {	
+	// 存储棋子位置
 	private static Vector data = new Vector();
 
 	private ChessBoardView chessboard;
@@ -64,8 +65,6 @@ public class GameActivity extends Activity {
 		// 画上棋盘线
 		chessboard.ZoomOut();
 		chessboard.invalidate(); // 重新绘制棋盘
-
-		// Vector data = new Vector();
 		chessboard.init(data, StartActivity.isPVE);
 		if (StartActivity.isPVE && (!StartActivity.isFirst)) {
 			chessboard.Last();
@@ -184,7 +183,6 @@ public class GameActivity extends Activity {
 	}
 
 	// 载入棋谱
-	
 	public void LoadClick(View v) {
 		playSound();
 		if (StartActivity.hasChessManual == false){
@@ -273,6 +271,7 @@ public class GameActivity extends Activity {
 		alertDialog.show();
 	}
 
+	// 保存棋谱
 	public void SaveChess() {
 		Vector tempdata = chessboard.getData();
 		mypoint p;
@@ -296,6 +295,7 @@ public class GameActivity extends Activity {
 		}
 	}
 
+	// 检查按钮灰化状态
 	public void CheckUndo() {
 		int Size = chessboard.getData().size();
 		if ((0 == Size)
@@ -314,6 +314,7 @@ public class GameActivity extends Activity {
 			undoGameBtn.setEnabled(false);
 	}
 
+	// 退出按钮重载
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (!undoEnable) {
 			data.clear();
@@ -347,6 +348,7 @@ public class GameActivity extends Activity {
 		return true;
 	}
 	
+	// 播放声音
 	public void playSound(){
 		if (StartActivity.soundOpen) {
 			final int sourceId = soundpool.load(GameActivity.this,
