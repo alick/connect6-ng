@@ -54,8 +54,10 @@ public class GameModel extends Observable {
 		color = 0;
 	}
 
-	public boolean enable() {
-		return getColor() == getCurrentColor();
+	public boolean playerTurn() {
+		if( getComputer() == true )
+			return getColor() == getCurrentColor();
+		return true;
 	}
 
 	public void AddChessman(MyPoint p) {
@@ -76,11 +78,11 @@ public class GameModel extends Observable {
 		this.mode = mode;
 	}
 
-	public boolean getRival() {
+	public boolean getComputer() {
 		return computer;
 	}
 
-	public void setRival(boolean rival) {
+	public void setComputer(boolean rival) {
 		this.computer = rival;
 	}
 
@@ -165,6 +167,6 @@ public class GameModel extends Observable {
 		System.out.println("State   : " + getState());
 		System.out.println("Color   : " + getColor());
 		System.out.println("Color cur:" + getColor());
-		System.out.println("Computer :" +          getRival());
+		System.out.println("Computer :" +          getComputer());
 	}
 }

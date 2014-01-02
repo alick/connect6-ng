@@ -7,6 +7,7 @@ class Alg {
     //IO共享内存部分，储存每一个棋子的位置与颜色
     private Vector<MyPoint> data;
     private int ChessBoard[][];
+    private Vector<MyPoint> new_data;
 
     static int[] os = new int[] {0, 0, 2, 20, 65535, 65535, 65535};
     static int[] ms = new int[] {0, 0, 1, 10, 35, 35, 999999};
@@ -15,7 +16,11 @@ class Alg {
      * @param _data the data to be set to
      */
     Alg(Vector<MyPoint> _data) {
+    	if( _data == null ){
+    		_data = new Vector<MyPoint>();
+    	}
         data = _data;
+        new_data = new Vector<MyPoint>();
         ChessBoard = new int[19][];
         for (int i=0; i<19; i++) {
             ChessBoard[i] = new int[19];
@@ -25,16 +30,20 @@ class Alg {
         }
     }
 
-    public Alg(ArrayList<MyPoint> chessmans) {
-		// TODO Auto-generated constructor stub
-	}
-
 	/** Sets internal data to the one specified in input.
      *
      * @param _data the data to be set to
      */
     void setData(Vector<MyPoint> _data) {
+    	if( _data == null ){
+    		_data = new Vector<MyPoint>();
+    	}
         data = _data;
+        new_data.clear();
+    }
+    
+    public Vector<MyPoint> getData(){
+    	return data;
     }
 
     /** Resets chess board to initial state(no stones). */
@@ -114,6 +123,9 @@ class Alg {
 //		System.out.println(vmax);	//TestCode
         data.add(new MyPoint(_x1, _y1, color));
         data.add(new MyPoint(_x2, _y2, color));
+        
+        new_data.add(new MyPoint(_x1, _y1, color));
+        new_data.add(new MyPoint(_x2, _y2, color));
     }
 
     /** Checks whether the point (x, y) has stones around it.

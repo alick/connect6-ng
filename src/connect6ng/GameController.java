@@ -224,8 +224,8 @@ class GameController extends JFrame {
 	 * @param msg
 	 *            the message to be shown in the dialog box
 	 */
-	void popupMessageBox(String msg) {
-		final JDialog myDialog = new JDialog(this, "游戏结束", true);
+	void popupMessageBox(String msg, String title) {
+		final JDialog myDialog = new JDialog(this, title, true);
 		myDialog.setSize(180, 100);
 		myDialog.setLayout(new FlowLayout(FlowLayout.CENTER, 1000, 10));
 		myDialog.add(new JLabel(msg));
@@ -244,7 +244,6 @@ class GameController extends JFrame {
 			}
 		});
 		myDialog.setVisible(true);
-		//		popupMessageBox("游戏结束", msg);
 	}
 
 	class Wclose extends WindowAdapter {
@@ -257,13 +256,14 @@ class GameController extends JFrame {
 	class amouse extends MouseAdapter {
 		// 鼠标在棋盘上点击 事件响应
 		public void mouseClicked(MouseEvent e) {
-			System.out.println("click here");
 
 			// 分析无效操作，包括非法点击，点击不可靠等
-			// if ( !game_model.enable() ) {
-			// return;
-			// }
-			game_model.display();
+			 if ( !game_model.playerTurn() ) {
+				 // TODO
+				 // add error music here
+				 System.out.println("Not your turn");
+				 return;
+			 }
 
 			int x, y;
 			x = e.getX();
@@ -280,14 +280,32 @@ class GameController extends JFrame {
 				return;
 			}
 
+			// 玩家turn
 			game_model.getClickedAt(x, y);
+			setEnabled(false);
 			
-			Vector<MyPoint> data = game_model.getChessmans();
-			kernel.setData(data);
+			kernel.setData(game_model.getChessmans());
 			if( kernel.hasSix() ){
-                popupMessageBox("恭喜你战胜了电脑！！！");
+                popupMessageBox("恭喜你战胜了电脑！！！", "游戏胜利");
                 game_model.newGame();
 			}
+			
+			if( game_model.getComputer() == true && !game_model.playerTurn() ){
+				
+				// 电脑turn
+				kernel.placeTwoStones( game_model.getCurrentColor() );
+				
+				game_model.setChessMan( kernel.getData() );
+				// TODO
+				// draw hint
+				
+				if( kernel.hasSix() ){
+	                popupMessageBox("你失败了，再接再厉！！！", "游戏失败");
+	                game_model.newGame();
+				}
+				setEnabled(true);
+			}
+			setEnabled(true);
 			
 		}
 	}
