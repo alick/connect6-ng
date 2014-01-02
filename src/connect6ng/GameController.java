@@ -34,6 +34,11 @@ class GameController extends JFrame {
 	JMenu menu_file = new JMenu("游戏战绩");
 	JMenuItem menu_open = new JMenuItem("打开游戏战绩");
 	JMenuItem menu_save = new JMenuItem("保存游戏战绩");
+	
+	JMenu menu_about = new JMenu("帮助");
+	JMenuItem menu_author = new JMenuItem("关于作者");
+	JMenuItem menu_software = new JMenuItem("关于游戏");
+	JMenuItem menu_update = new JMenuItem("软件升级");
 
 	/** Class constructor. */
 	GameController() {
@@ -92,6 +97,11 @@ class GameController extends JFrame {
 		menu_save.addActionListener(new ack_menu_save());
 		menu_save.setAccelerator(KeyStroke.getKeyStroke('S',
 				java.awt.Event.CTRL_MASK, false));
+		
+		menu_about.add(menu_author);
+		menu_about.add(menu_software);
+		menu_about.add(menu_update);
+		menu_JMenuBar.add(menu_about);
 
 		// 窗口监听
 		addWindowListener(new Wclose());
@@ -108,6 +118,7 @@ class GameController extends JFrame {
 
 		repaint();
 		setTitle();
+		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 
@@ -146,8 +157,13 @@ class GameController extends JFrame {
 
 	class ack_menu_comp implements ItemListener {
 		// 选择或取消人机对战功能 事件响应
-		public void itemStateChanged(ItemEvent e) {
-		}
+		 //选择或取消人机对战功能 事件响应
+        public void itemStateChanged(ItemEvent e) {
+            Boolean computer = menu_comp.getState();
+            game_model.setComputer(computer);
+            game_model.newGame();
+            menu_last.setEnabled(computer);
+        }
 	}
 
 	class ack_menu_prac implements ActionListener {
@@ -165,6 +181,9 @@ class GameController extends JFrame {
 	class ack_menu_exit implements ActionListener {
 		// 退出 事件响应
 		public void actionPerformed(ActionEvent e) {
+			// TODO
+			// history
+			System.exit(0);
 		}
 	}
 
@@ -200,7 +219,7 @@ class GameController extends JFrame {
 				} catch (IOException ex) {
 					fLogger.log(Level.WARNING,
 							"Failed to perform output when saving.", ex);
-//					popupMessageBox("文件打开失败", "请确保有足够权限。");
+					popupMessageBox("文件打开失败", "请确保有足够权限。");
 				}
 			}
 		}
@@ -281,29 +300,38 @@ class GameController extends JFrame {
 			}
 
 			// 玩家turn
+			int color = game_model.getCurrentColor();
 			game_model.getClickedAt(x, y);
 			setEnabled(false);
-			
-			kernel.setData(game_model.getChessmans());
+
 			if( kernel.hasSix() ){
-                popupMessageBox("恭喜你战胜了电脑！！！", "游戏胜利");
-                game_model.newGame();
-			}
-			
-			if( game_model.getComputer() == true && !game_model.playerTurn() ){
-				
-				// 电脑turn
-				kernel.placeTwoStones( game_model.getCurrentColor() );
-				
-				game_model.setChessMan( kernel.getData() );
-				// TODO
-				// draw hint
-				
-				if( kernel.hasSix() ){
-	                popupMessageBox("你失败了，再接再厉！！！", "游戏失败");
+				if( game_model.getComputer() ){
+					popupMessageBox("恭喜你战胜了电脑！！！", "游戏胜利");
+	                game_model.newGame();
+				}else{
+					String [] winner = {"黑子", "白子"};
+					popupMessageBox(winner[color] + "获胜！！！", "游戏结束");
 	                game_model.newGame();
 				}
-				setEnabled(true);
+			}
+			
+			if( game_model.getComputer() ){
+				
+				if( !game_model.playerTurn() ){
+				
+					// 电脑turn
+					kernel.placeTwoStones( game_model.getCurrentColor() );
+					
+					game_model.setChessMan( kernel.getData() );
+					// TODO
+					// draw hint
+					
+					if( kernel.hasSix() ){
+		                popupMessageBox("你失败了，再接再厉！！！", "游戏失败");
+		                game_model.newGame();
+					}
+					setEnabled(true);
+				}
 			}
 			setEnabled(true);
 			
