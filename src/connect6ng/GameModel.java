@@ -7,11 +7,6 @@ public class GameModel extends Observable {
 
 	private Vector<MyPoint> Chessmans;
 
-	private int State;
-	// 0 = 初始、游戏暂停状态
-	// 1 = 用户还须下1子
-	// 2 = 用户还须下2子
-
 	private boolean pause;
 	// 游戏是否处于暂停状态
 
@@ -25,7 +20,6 @@ public class GameModel extends Observable {
 	// 1 = 人机对战
 
 	private int mode;
-
 	// 0 = 练习模式
 	// 1 = 实战模式
 
@@ -43,6 +37,9 @@ public class GameModel extends Observable {
 
 	public void newGame() {
 		Chessmans.clear();
+		if( getComputer() && getColor() == 1 ){
+			Chessmans.add(new MyPoint(9, 9, 0));
+		}
 		setChanged();
 		notifyObservers(this);
 	}
@@ -50,7 +47,6 @@ public class GameModel extends Observable {
 	public void resetState() {
 		pause = true;
 		computer = true;
-		State = 0;
 		color = 0;
 	}
 
@@ -102,14 +98,6 @@ public class GameModel extends Observable {
 		this.color = color;
 	}
 
-	public int getState() {
-		return State;
-	}
-
-	public void setState(int state) {
-		this.State = state;
-	}
-
 	public int getSize() {
 		return Chessmans.size();
 	}
@@ -147,14 +135,16 @@ public class GameModel extends Observable {
 			return -1;
 		}		
 		
-		int color = getCurrentColor();
-		AddChessman(new MyPoint(x, y, color));
-		State--;
+		AddChessman(new MyPoint(x, y, getCurrentColor()));
 		
 		setChanged();
 		notifyObservers(this);
 		
 		return 0;
+	}
+	
+	public int getLastColor(){
+		return (getSize()%4)/2;
 	}
 	
 	public int getCurrentColor(){
@@ -164,9 +154,8 @@ public class GameModel extends Observable {
 	public void display(){
 		System.out.println("Current state : ");
 		System.out.println("Chesses : " + getSize());
-		System.out.println("State   : " + getState());
 		System.out.println("Color   : " + getColor());
-		System.out.println("Color cur:" + getColor());
+		System.out.println("Color cur:" + getCurrentColor());
 		System.out.println("Computer :" +          getComputer());
 	}
 }

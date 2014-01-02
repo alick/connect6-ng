@@ -134,12 +134,23 @@ class GameController extends JFrame {
 	class ack_menu_first implements ActionListener {
 		// 新游戏->先手 事件响应
 		public void actionPerformed(ActionEvent e) {
+			menu_first.setEnabled(false);
+			menu_last.setEnabled(true);
+			game_model.setColor(0);
+			game_model.newGame();
 		}
 	}
 
 	class ack_menu_last implements ActionListener {
 		// 新游戏->后手 事件响应
 		public void actionPerformed(ActionEvent e) {
+			menu_first.setEnabled(true);
+			menu_last.setEnabled(false);
+			game_model.setColor(1);
+			game_model.newGame();
+			if( game_model.getComputer() ){
+				game_model.AddChessman(new MyPoint(9, 9, 0));
+			}
 		}
 	}
 
@@ -159,10 +170,14 @@ class GameController extends JFrame {
 		// 选择或取消人机对战功能 事件响应
 		 //选择或取消人机对战功能 事件响应
         public void itemStateChanged(ItemEvent e) {
+        	int color = game_model.getColor();
+        	menu_first.setEnabled( color == 1 );
+        	menu_last.setEnabled( color == 0 );
+        	System.out.println("first : " + (color==1) + "  last : " + (color==0) );
+        	
             Boolean computer = menu_comp.getState();
             game_model.setComputer(computer);
             game_model.newGame();
-            menu_last.setEnabled(computer);
         }
 	}
 
@@ -281,6 +296,7 @@ class GameController extends JFrame {
 				 // TODO
 				 // add error music here
 				 System.out.println("Not your turn");
+				 game_model.display();
 				 return;
 			 }
 
