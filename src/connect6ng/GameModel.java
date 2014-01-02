@@ -43,6 +43,8 @@ public class GameModel extends Observable {
 
 	public void newGame() {
 		Chessmans.clear();
+		setChanged();
+		notifyObservers(this);
 	}
 
 	public void resetState() {

@@ -17,8 +17,6 @@ class GameController extends JFrame {
 
 	// Vector<MyPoint> data;
 	Alg kernel;
-	Dialog myDialog;
-	Button myDialogBotton;
 
 	// 菜单栏
 	JMenuBar menu_JMenuBar = new JMenuBar();
@@ -179,8 +177,8 @@ class GameController extends JFrame {
 	class ack_menu_save implements ActionListener {
 		// 保存 事件响应
 		public void actionPerformed(ActionEvent e) {
-			FileDialog myFileDialog = new FileDialog(GameController.this, "save",
-					FileDialog.SAVE);
+			FileDialog myFileDialog = new FileDialog(GameController.this,
+					"save", FileDialog.SAVE);
 			myFileDialog.setVisible(true);
 			String dir = myFileDialog.getDirectory();
 			String fname = myFileDialog.getFile();
@@ -202,7 +200,7 @@ class GameController extends JFrame {
 				} catch (IOException ex) {
 					fLogger.log(Level.WARNING,
 							"Failed to perform output when saving.", ex);
-					popupMessageBox("文件打开失败", "请确保有足够权限。");
+//					popupMessageBox("文件打开失败", "请确保有足够权限。");
 				}
 			}
 		}
@@ -227,43 +225,26 @@ class GameController extends JFrame {
 	 *            the message to be shown in the dialog box
 	 */
 	void popupMessageBox(String msg) {
-		popupMessageBox("游戏结束", msg);
-	}
-
-	/**
-	 * Popup a dialog box to show informative message.
-	 * 
-	 * @param title
-	 *            the title of the dialog box
-	 * @param msg
-	 *            the message to be shown in the dialog box
-	 */
-	void popupMessageBox(String title, String msg) {
-		Point position = GameController.this.getLocation();
-		GameController.this.setEnabled(false);
-		position.translate(250, 300);
-		myDialog = new Dialog(GameController.this, title);
+		final JDialog myDialog = new JDialog(this, "游戏结束", true);
 		myDialog.setSize(180, 100);
 		myDialog.setLayout(new FlowLayout(FlowLayout.CENTER, 1000, 10));
-		myDialog.add(new Label(msg));
-		myDialogBotton = new Button("确定");
-		myDialog.add(myDialogBotton);
-		myDialog.setLocation(position);
-		myDialog.setResizable(false);
-		myDialog.setVisible(true);
-		myDialogBotton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				GameController.this.setEnabled(true);
-				GameController.this.myDialog.dispose();
-			}
-		});
+		myDialog.add(new JLabel(msg));
+		JButton myDialogBotton = new JButton("确定");
 		myDialog.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				GameController.this.setEnabled(true);
-				GameController.this.myDialog.dispose();
+				myDialog.dispose();
 			}
 		});
-		return;
+		myDialog.add(myDialogBotton);
+		myDialog.setLocationRelativeTo(null);
+		myDialog.setResizable(false);
+		myDialogBotton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				myDialog.dispose();
+			}
+		});
+		myDialog.setVisible(true);
+		//		popupMessageBox("游戏结束", msg);
 	}
 
 	class Wclose extends WindowAdapter {
@@ -277,31 +258,37 @@ class GameController extends JFrame {
 		// 鼠标在棋盘上点击 事件响应
 		public void mouseClicked(MouseEvent e) {
 			System.out.println("click here");
-			
-			//分析无效操作，包括非法点击，点击不可靠等
-//            if ( !game_model.enable() ) {
-//                return;
-//            }
+
+			// 分析无效操作，包括非法点击，点击不可靠等
+			// if ( !game_model.enable() ) {
+			// return;
+			// }
 			game_model.display();
 
-            int x, y;
-            x = e.getX();
-            y = e.getY();
-            System.out.println("clicked at : " + x + "," + y);
-            if (  ((x - 35) % 30 > 25)
-                    ||((y - 75) % 30 > 25) ) {
-                return;
-            }
+			int x, y;
+			x = e.getX();
+			y = e.getY();
+			System.out.println("clicked at : " + x + "," + y);
+			if (((x - 35) % 30 > 25) || ((y - 75) % 30 > 25)) {
+				return;
+			}
 
-            x = (x - 35)/30;
-            y = (y - 75)/30;
-            System.out.println("clicked at point : " + x + "," + y);
-            if (  (x < 0)||(x > 18)
-                    ||(y < 0)||(y > 18) ) {
-                return;
-            }
-            
-            game_model.getClickedAt(x, y);
+			x = (x - 35) / 30;
+			y = (y - 75) / 30;
+			System.out.println("clicked at point : " + x + "," + y);
+			if ((x < 0) || (x > 18) || (y < 0) || (y > 18)) {
+				return;
+			}
+
+			game_model.getClickedAt(x, y);
+			
+			Vector<MyPoint> data = game_model.getChessmans();
+			kernel.setData(data);
+			if( kernel.hasSix() ){
+                popupMessageBox("恭喜你战胜了电脑！！！");
+                game_model.newGame();
+			}
+			
 		}
 	}
 
