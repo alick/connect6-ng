@@ -141,10 +141,9 @@ public class GameModel extends Observable {
 		if( !isEmpty(x, y) ){
 			//TODO
 			return -1;
-		}
+		}		
 		
-		
-		
+		int color = getCurrentColor();
 		AddChessman(new MyPoint(x, y, color));
 		State--;
 		
