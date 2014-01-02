@@ -304,6 +304,7 @@ class GameController extends JFrame {
 			game_model.getClickedAt(x, y);
 			setEnabled(false);
 
+			kernel.setData( game_model.getChessmans() );
 			if( kernel.hasSix() ){
 				if( game_model.getComputer() ){
 					popupMessageBox("恭喜你战胜了电脑！！！", "游戏胜利");
