@@ -154,7 +154,7 @@ public class GameModel extends Observable {
 	}
 	
 	public int getCurrentColor(){
-		return (getSize()%4)/2;
+		return ((getSize()+1)%4)/2;
 	}
 	
 	public void display(){
@@ -163,6 +163,6 @@ public class GameModel extends Observable {
 		System.out.println("State   : " + getState());
 		System.out.println("Color   : " + getColor());
 		System.out.println("Color cur:" + getColor());
-		System.out.println("Computer :" + getRival());
+		System.out.println("Computer :" +          getRival());
 	}
 }
