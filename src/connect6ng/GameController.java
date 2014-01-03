@@ -14,10 +14,13 @@ import javax.swing.*;
  */
 @SuppressWarnings("serial")
 class GameController extends JFrame {
+	ConfigModel config_model;
+	ConfigView config_view;
+	
 	GameModel game_model;
 	GameView game_view;
 	
-	MusicPlayer playBackground;
+	MusicPlayer music_player;
 
 	// Vector<MyPoint> data;
 	Alg kernel;
@@ -143,18 +146,12 @@ class GameController extends JFrame {
 		setLocationRelativeTo(null);
 		setVisible(true);
 
+		config_model = new ConfigModel();
+		
+		
 		// 背景音乐播放：
-		String music_state = "play_loop";
-		playBackground = new MusicPlayer(music_state , "background.wav");
-	}
-
-	/**
-	 * 界面绘制。
-	 * 
-	 * @param g
-	 */
-	public void paint(Graphics g) {
-		super.paint(g);
+		String music_state = config_model.getMusicState();
+		music_player = new MusicPlayer(music_state);
 	}
 
 	class ack_menu_first implements ActionListener {
@@ -199,8 +196,6 @@ class GameController extends JFrame {
 			int color = game_model.getColor();
 			menu_first.setEnabled(color == 1);
 			menu_last.setEnabled(color == 0);
-			System.out.println("first : " + (color == 1) + "  last : "
-					+ (color == 0));
 
 			Boolean computer = menu_comp.getState();
 			game_model.setComputer(computer);
@@ -259,7 +254,7 @@ class GameController extends JFrame {
 						output.close();
 					}
 				} catch (IOException ex) {
-					fLogger.log(Level.WARNING,
+					Flogger.getLogger().log(Level.WARNING,
 							"Failed to perform output when saving.", ex);
 					popupMessageBox("文件打开失败", "请确保有足够权限。");
 				}
@@ -366,8 +361,10 @@ class GameController extends JFrame {
 			if (!game_model.playerTurn()) {
 				// TODO
 				// add error music here
+				if( config_model.getMusicState().equals("on") ){
+					music_player.playSound(-1);
+				}
 				System.out.println("Not your turn");
-				game_model.display();
 				return;
 			}
 
@@ -387,26 +384,36 @@ class GameController extends JFrame {
 			y = y - y_start;
 			if ((x % 30) > 25 || (y % 30) > 25) {
 				// TODO
+				if( config_model.getMusicState().equals("on") ){
+					music_player.playSound(-1);
+				}
 				return;
 			}
 
 			if ((x < 0) || (x > 18*chess_size) || (y < 0) || (y > 18*chess_size)) {
 				// TODO
+				if( config_model.getMusicState().equals("on") ){
+					music_player.playSound(-1);
+				}
 				return;
 			}
-			System.out.println("clicked at point : " + x + "," + y);
 
 			x = x / chess_size;
 			y = y / chess_size;
-			System.out.println("clicked at chess : " + x + "," + y);
 
 			// 玩家turn
 			int color = game_model.getCurrentColor();
 			game_model.getClickedAt(x, y);
+			if( config_model.getMusicState().equals("on") ){
+				music_player.playSound(3);
+			}
 			setEnabled(false);
 
 			kernel.setData(game_model.getChessmans());
 			if (kernel.hasSix()) {
+				if( config_model.getMusicState().equals("on") ){
+					music_player.playSound(0);
+				}
 				if (game_model.getComputer()) {
 					popupMessageBox("恭喜你战胜了电脑！！！", "游戏胜利");
 					game_model.newGame();
@@ -429,6 +436,11 @@ class GameController extends JFrame {
 					// draw hint
 
 					if (kernel.hasSix()) {
+						// TODO
+						// play lose music
+						if( config_model.getMusicState().equals("on") ){
+							music_player.playSound(1);
+						}
 						popupMessageBox("你失败了，再接再厉！！！", "游戏失败");
 						game_model.newGame();
 					}
@@ -440,6 +452,4 @@ class GameController extends JFrame {
 		}
 	}
 
-	private static final Logger fLogger = Logger.getLogger(GameController.class
-			.getPackage().getName());
 }
