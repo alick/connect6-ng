@@ -49,7 +49,7 @@ class GameController extends JFrame {
 	/** Class constructor. */
 	GameController() {
 		super("Connect 6 - 游戏尚未开始 - 练习模式");
-		setSize(620, 660);
+		setSize(622, 665);
 		setResizable(false);
 
 		// 初始化数据
@@ -82,6 +82,11 @@ class GameController extends JFrame {
 		menu_game.add(menu_music);
 		menu_music.addActionListener(new ack_menu_music());
 		menu_back.setAccelerator(KeyStroke.getKeyStroke('M',
+				java.awt.Event.CTRL_MASK, false));
+		
+		menu_game.add(menu_hist);
+		menu_hist.addActionListener(new ack_menu_hist() );
+		menu_hist.setAccelerator(KeyStroke.getKeyStroke('L',
 				java.awt.Event.CTRL_MASK, false));
 		
 		menu_game.add(menu_exit);
@@ -177,18 +182,18 @@ class GameController extends JFrame {
 		}
 
 	}
-//
-//	class ack_menu_restart implements ActionListener {
-//		// 重新开始游戏 事件响应
-//		public void actionPerformed(ActionEvent e) {
-//		}
-//	}
-//
-//	class ack_menu_reset implements ActionListener {
-//		// 重置游戏 事件响应
-//		public void actionPerformed(ActionEvent e) {
-//		}
-//	}
+	
+	public class ack_menu_hist implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			HistDialog d = new HistDialog(GameController.this, true);
+			d.setLocationRelativeTo(null);
+			d.setVisible(true);
+		}
+
+	}
+
 
 	class ack_menu_comp implements ItemListener {
 		// 选择或取消人机对战功能 事件响应
@@ -385,9 +390,9 @@ class GameController extends JFrame {
 	class ack_menu_SeekHelp implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			SeekHelpDialog d = new SeekHelpDialog(GameController.this);
-			d.dialog.setLocationRelativeTo(null);
-			d.dialog.setVisible(true);
+			HelpDialog d = new HelpDialog(GameController.this, true);
+			d.setLocationRelativeTo(null);
+			d.setVisible(true);
 		}
 	}
 
