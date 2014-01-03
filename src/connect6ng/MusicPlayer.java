@@ -64,9 +64,9 @@ public class MusicPlayer {
 			// System.out.println("音乐开始播放");
 			System.out.println(state);
 			if (state.equals("off")) {
-				background.loop();
+				background.stop();
 			}else {
-				background.stop();// 其他情况音乐不播放
+				background.loop();// 其他情况音乐不播放
 			}
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block
@@ -94,7 +94,7 @@ public class MusicPlayer {
 	 *  2-9 for chess down
 	 */
 	public void playSound(int type){
-		if( type == -1 ){
+		if( type < 0 ){
 			error_tip.play();
 		}else if( type <= 1 ){
 			gameover[type].play();

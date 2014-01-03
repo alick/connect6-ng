@@ -361,9 +361,7 @@ class GameController extends JFrame {
 			if (!game_model.playerTurn()) {
 				// TODO
 				// add error music here
-				if( config_model.getMusicState().equals("on") ){
-					music_player.playSound(-1);
-				}
+				playSound(-1);
 				System.out.println("Not your turn");
 				return;
 			}
@@ -384,17 +382,13 @@ class GameController extends JFrame {
 			y = y - y_start;
 			if ((x % 30) > 25 || (y % 30) > 25) {
 				// TODO
-				if( config_model.getMusicState().equals("on") ){
-					music_player.playSound(-1);
-				}
+				playSound(-1);
 				return;
 			}
 
 			if ((x < 0) || (x > 18*chess_size) || (y < 0) || (y > 18*chess_size)) {
 				// TODO
-				if( config_model.getMusicState().equals("on") ){
-					music_player.playSound(-1);
-				}
+				playSound(-1);
 				return;
 			}
 
@@ -403,17 +397,18 @@ class GameController extends JFrame {
 
 			// 玩家turn
 			int color = game_model.getCurrentColor();
-			game_model.getClickedAt(x, y);
-			if( config_model.getMusicState().equals("on") ){
-				music_player.playSound(3);
+			int result = game_model.getClickedAt(x, y);
+			if( result < 0 ){
+				playSound(-1);
+				return;
 			}
+			
+			playSound(3);
 			setEnabled(false);
 
 			kernel.setData(game_model.getChessmans());
 			if (kernel.hasSix()) {
-				if( config_model.getMusicState().equals("on") ){
-					music_player.playSound(0);
-				}
+				playSound(0);
 				if (game_model.getComputer()) {
 					popupMessageBox("恭喜你战胜了电脑！！！", "游戏胜利");
 					game_model.newGame();
@@ -438,9 +433,7 @@ class GameController extends JFrame {
 					if (kernel.hasSix()) {
 						// TODO
 						// play lose music
-						if( config_model.getMusicState().equals("on") ){
-							music_player.playSound(1);
-						}
+						playSound(1);
 						popupMessageBox("你失败了，再接再厉！！！", "游戏失败");
 						game_model.newGame();
 					}
@@ -449,6 +442,12 @@ class GameController extends JFrame {
 			}
 			setEnabled(true);
 
+		}
+	}
+	
+	private void playSound(int type){
+		if( config_model.getMusicState().equals("on") ){
+			music_player.playSound(type);
 		}
 	}
 
