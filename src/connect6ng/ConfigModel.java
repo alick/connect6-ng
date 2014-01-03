@@ -1,3 +1,15 @@
+/**
+ * @file __FILE__
+ * @brief  配置文件的管理类
+ * @author 侯奇
+ * @author 卢嘉勋
+ * @author 刘菁菁
+ * @date 2014-01-01
+ * @version v 1.0.0
+ * 
+ * 管理配置文件
+ * 当前用来管理音效
+ */
 package connect6ng;
 
 import java.io.FileInputStream;
@@ -7,9 +19,15 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.logging.Level;
 
+/** @brief 管理配置文件爱你
+ * 
+ */
 public class ConfigModel {
 	private String musicState;
 	
+	/** @brief 构造函数
+	 * 
+	 */
 	public ConfigModel(){
 		Properties pro = new Properties();
 		try {
@@ -23,6 +41,10 @@ public class ConfigModel {
 		musicState = musicState.trim();
 	}
 	
+	/** @brief 设置音效开关
+	 * 
+	 * @param state 音效的开关
+	 */
 	public void setMusic(String state){
 		state = state.trim();
 		if( state.equals("on") || state.equals("off") ){
@@ -43,6 +65,10 @@ public class ConfigModel {
 		}
 	}
 	
+	/** @brief 赶回音效的结果
+	 * 
+	 * @return 音效的开关
+	 */
 	public String getMusicState(){
 		return musicState;
 	}

@@ -1,21 +1,33 @@
+/**
+ /** @file __FILE__
+ * @brief AboutDialog : "关于六子棋"菜单的弹出界面
+ * @author 侯奇
+ * @author 卢嘉勋
+ * @author 刘菁菁
+ * @date 2014-01-01
+ * @version v 1.0.0
+ * 
+ */
+
 package connect6ng;
 
-
-/**
- *
- * @author houqi1993
- */
 @SuppressWarnings("serial")
 public class AboutDialog extends javax.swing.JDialog {
 
-    /**
-     * Creates new form AboutDialog
+    /** 初始化函数
+     * 
+     * @param parent 父部件
+     * @param modal 是否为模态窗口
      */
     public AboutDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
 
+    /** @brief 初始化部件
+     * 
+     * 初始化一些部件
+     */
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -115,14 +127,12 @@ public class AboutDialog extends javax.swing.JDialog {
         layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {author_label, copyright_label, version_label});
 
         pack();
-    }// </editor-fold>//GEN-END:initComponents
+    }
 
-    private void OK_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OK_btnActionPerformed
-        // TODO add your handling code here:
+    private void OK_btnActionPerformed(java.awt.event.ActionEvent evt) {
         AboutDialog.this.dispose();
-    }//GEN-LAST:event_OK_btnActionPerformed
+    }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton OK_btn;
     private javax.swing.JLabel author_label;
     private javax.swing.JLabel copyright_label;
@@ -132,5 +142,4 @@ public class AboutDialog extends javax.swing.JDialog {
     private javax.swing.JLabel title_label;
     private javax.swing.JLabel version_label;
     private javax.swing.JLabel version_label1;
-    // End of variables declaration//GEN-END:variables
 }

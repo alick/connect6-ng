@@ -1,9 +1,11 @@
-/** @file __FILE__
- * @brief CheckUpdateDialog : 程序的"检查更新"菜单的弹出界面的类.
+/**
+ * @file __FILE__
+ * @brief  "关于六子棋"菜单的弹出界面
  * @author 侯奇
  * @author 卢嘉勋
- * @date 2013-12-16
- * @version v0.1.0
+ * @author 刘菁菁
+ * @date 2014-01-01
+ * @version v 1.0.0
  * 
  * 此页面为检查更新页面，挂载GitHub的链接。
  */
@@ -11,18 +13,18 @@ package connect6ng;
 
 import java.awt.*;
 import java.awt.event.*;
-
 import javax.swing.*;
 
-
+/** @brief 检查更新的Dialog
+ * 
+ * @todo 需要完善
+ */
 public class CheckUpdateDialog {
 	JDialog dialog;
 	
-	/**
-	 * @brief 构造函数
+	/** @brief 构造函数
 	 * 
-	 * @param f
-	 *            父构件 JFrame
+	 * @param f 父部件
 	 */
 	public CheckUpdateDialog(JFrame f) {
 		dialog = new JDialog(f, "帮助文档", true);

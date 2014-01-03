@@ -24,11 +24,18 @@ public class GameView extends JPanel implements Observer {
 	int chess_size = 30;
 	int chess_num = 19;
 
+	/**@brief 构造函数
+	 * 
+	 */
 	public GameView() {
 		
 		game_model = new GameModel();
 	}
 
+	/**@brief构造函数
+	 * 
+	 * @param model Model
+	 */
 	public GameView(GameModel model) {
 
 		if (model == null)
@@ -37,6 +44,10 @@ public class GameView extends JPanel implements Observer {
 		
 	}
 
+	/** @brief 重绘函数
+	 * 
+	 * 用于绘制棋盘区域
+	 */
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -75,6 +86,10 @@ public class GameView extends JPanel implements Observer {
 		}
 	}
 
+	/** @brief 用于监听事件的变化
+	 * 
+	 * 一旦事件发生变化，重绘
+	 */
 	@Override
 	public void update(Observable obs, Object obj) {
 		game_model = (GameModel) obs;

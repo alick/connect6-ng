@@ -1,8 +1,23 @@
+/**
+ * @file __FILE__
+ * @brief Alg : 六子棋的AI模块
+ * @author 侯奇
+ * @author 卢嘉勋
+ * @author 刘菁菁
+ * @date 2014-01-01
+ * @version v 1.0.0
+ * 
+ * 算法的实现模块，输入棋盘的布局，输出棋盘的落子
+ */
+
 package connect6ng;
 
 import java.util.*;
 
-/** This class implements the core algorithm. */
+/** @brief AI算法的实现模块
+ * 
+ * 输入棋盘的布局，输出最后的结果
+ */
 class Alg {
     //IO共享内存部分，储存每一个棋子的位置与颜色
     private Vector<MyPoint> data;
@@ -11,9 +26,10 @@ class Alg {
 
     static int[] os = new int[] {0, 0, 2, 20, 65535, 65535, 65535};
     static int[] ms = new int[] {0, 0, 1, 10, 35, 35, 999999};
-    /** Class constructor.
+    
+    /** 构造函数
      *
-     * @param _data the data to be set to
+     * @param _data 棋盘布局
      */
     Alg(Vector<MyPoint> _data) {
     	if( _data == null ){
@@ -42,11 +58,16 @@ class Alg {
         new_data.clear();
     }
     
+    /** @brief 返回棋盘的布局
+     * 
+     * @return 棋盘布局
+     */
     public Vector<MyPoint> getData(){
     	return data;
     }
 
-    /** Resets chess board to initial state(no stones). */
+    /** @brief 重置棋盘的布局
+     */
     void resetChessBoard() {
         for (int i=0; i<19; i++) {
             for (int j=0; j<19; j++) {

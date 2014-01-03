@@ -1,3 +1,14 @@
+/**
+ * @file __FILE__
+ * @brief MVC 架构的controller结构
+ * @author 侯奇
+ * @author 卢嘉勋
+ * @author 刘菁菁
+ * @date 2014-01-01
+ * @version v 1.0.0
+ * 
+ * 作为MVC 架构的controller，用来处理和分发事件
+ */
 package connect6ng;
 
 import java.awt.*;
@@ -7,21 +18,25 @@ import java.util.*;
 import java.util.logging.*;
 
 import javax.swing.*;
-
-/**
- * The main window with AI kernel.
+/** @brief MVC 架构的controller结构
+ * 
+ * 用来管理程序的数据和视图
  */
 @SuppressWarnings("serial")
 class GameController extends JFrame {
+	/// 配置文件的Model
 	ConfigModel config_model;
+	/// 配置文件的 View
 	ConfigView config_view;
-
+	/// 游戏数据的Model
 	GameModel game_model;
+	/// 游戏数据的View
 	GameView game_view;
 
+	/// 音乐播放模块
 	MusicPlayer music_player;
 
-	// Vector<MyPoint> data;
+	/// AI模块
 	Alg kernel;
 
 	// 菜单栏
@@ -46,7 +61,10 @@ class GameController extends JFrame {
 	JMenuItem menu_SeekHelp = new JMenuItem("查看帮助");
 	JMenuItem menu_CheckUpdate = new JMenuItem("检查更新");
 
-	/** Class constructor. */
+	/** @brief 构造函数
+	 * 
+	 * 构造函数中初始化菜单栏、游戏的显示区域栏等，以及音乐模块等
+	 */
 	GameController() {
 		super("Connect 6 - 游戏尚未开始 - 练习模式");
 		setSize(622, 665);
@@ -151,6 +169,10 @@ class GameController extends JFrame {
 		music_player = new MusicPlayer(music_state);
 	}
 
+	/** @brief 先手事件 的监听类
+	 * 
+	 * 内部类，用于处理“先手”事件
+	 */
 	class ack_menu_first implements ActionListener {
 		// 新游戏->先手 事件响应
 		public void actionPerformed(ActionEvent e) {
@@ -159,6 +181,10 @@ class GameController extends JFrame {
 		}
 	}
 
+	/** @brief 后手事件 的监听类
+	 * 
+	 * 内部类，用于处理“后手”事件
+	 */
 	class ack_menu_last implements ActionListener {
 		// 新游戏->后手 事件响应
 		public void actionPerformed(ActionEvent e) {
@@ -167,6 +193,10 @@ class GameController extends JFrame {
 		}
 	}
 	
+	/** @brief 音乐播放 的监听类
+	 * 
+	 * 内部类，用于处理“音效开关”的事件
+	 */
 	public class ack_menu_music implements ActionListener {
 
 		@Override
@@ -183,6 +213,10 @@ class GameController extends JFrame {
 
 	}
 	
+	/** @brief 历史记录 的监听类
+	 * 
+	 * 内部类，用于处理“历史记录”事件
+	 */
 	public class ack_menu_hist implements ActionListener {
 
 		@Override
@@ -194,7 +228,10 @@ class GameController extends JFrame {
 
 	}
 
-
+	/** @brief 人机对战/人人对战 的监听类
+	 * 
+	 * 内部类，用于处理“人机对战/人人对战”事件
+	 */
 	class ack_menu_comp implements ItemListener {
 		// 选择或取消人机对战功能 事件响应
 		// 选择或取消人机对战功能 事件响应
@@ -205,6 +242,10 @@ class GameController extends JFrame {
 		}
 	}
 
+	/** @brief 训练模式/实战模式 的监听类
+	 * 
+	 * 内部类，用于处理“训练模式/实战模式”事件
+	 */
 	class ack_menu_prac implements ActionListener {
 		// 模式选择 事件响应
 		public void actionPerformed(ActionEvent e) {
@@ -219,6 +260,10 @@ class GameController extends JFrame {
 		}
 	}
 
+	/** @brief 悔棋 的监听类
+	 * 
+	 * 内部类，用于处理“悔棋”事件
+	 */
 	class ack_menu_back implements ActionListener {
 		// 悔棋 事件响应
 		public void actionPerformed(ActionEvent e) {
@@ -227,6 +272,10 @@ class GameController extends JFrame {
 		}
 	}
 
+	/** @brief 退出 的监听类
+	 * 
+	 * 内部类，用于处理“退出”事件
+	 */
 	class ack_menu_exit implements ActionListener {
 		// 退出 事件响应
 		public void actionPerformed(ActionEvent e) {
@@ -236,12 +285,10 @@ class GameController extends JFrame {
 		}
 	}
 
-//	class ack_menu_int implements ActionListener {
-//		// 暂停游戏事件响应
-//		public void actionPerformed(ActionEvent e) {
-//		}
-//	}
-
+	/** @brief 保存 的监听类
+	 * 
+	 * 内部类，用于处理“保存现有棋局”事件
+	 */
 	class ack_menu_save implements ActionListener {
 		// 保存 事件响应
 		public void actionPerformed(ActionEvent e) {
@@ -300,6 +347,10 @@ class GameController extends JFrame {
 		}
 	}
 
+	/** @brief 打开已有棋局 的监听类
+	 * 
+	 * 内部类，用于处理“打开已有棋局”事件
+	 */
 	class ack_menu_open implements ActionListener {
 		// 打开 事件响应
 		public void actionPerformed(ActionEvent e) {
@@ -343,6 +394,12 @@ class GameController extends JFrame {
 		}
 	}
 	
+	/** @brief 电脑的turn
+	 * 
+	 * 电脑走棋；
+	 * 如果人机对战，并且轮到电脑走棋，则进行处理
+	 * 否则，不进行任何处理
+	 */
 	private void computer_turn(){
 		if (game_model.getComputer() && !game_model.playerTurn()) {
 			System.out.println("here computer turn");
@@ -366,10 +423,9 @@ class GameController extends JFrame {
 	}
 
 	/**
-	 * 关于六子棋
+	 * @brief 关于六子棋
 	 * 
-	 * @author lujx
-	 * 
+	 * 弹出六子棋的“关于”界面
 	 */
 	class ack_menu_AboutSixChess implements ActionListener {
 		@Override
@@ -382,10 +438,9 @@ class GameController extends JFrame {
 	}
 
 	/**
-	 * 查看帮助
+	 * @brief 查看帮助界面的监听类
 	 * 
-	 * @author lujx
-	 * 
+	 * 帮助界面的监听 
 	 */
 	class ack_menu_SeekHelp implements ActionListener {
 		@Override
@@ -397,10 +452,9 @@ class GameController extends JFrame {
 	}
 
 	/**
-	 * 软件更新
+	 * 软件更新的监听
 	 * 
-	 * @author lujx
-	 * 
+	 * 软件更新的监听 
 	 */
 	class ack_menu_CheckUpdate implements ActionListener {
 		@Override
@@ -411,18 +465,22 @@ class GameController extends JFrame {
 		}
 	}
 
-	/**
-	 * Sets the title of the frame window to reflect different status.
+	/** @brief 更新状态
+	 * 
+	 * 更新游戏的状态：是否允许悔棋等
 	 */
 	void updateStatus() {
-		menu_back.setEnabled( !game_model.getChessmans().isEmpty() );
+		if( game_model.getChessmans().isEmpty() || game_model.getMode() == 1 ){
+			menu_back.setEnabled( false );
+		}else{
+			menu_back.setEnabled( true );
+		}
 	}
 
-	/**
-	 * Popup a dialog box to show result message.
+	/** brief 弹出错误消息的提示框
 	 * 
-	 * @param msg
-	 *            the message to be shown in the dialog box
+	 * @param msg 错误消息内容
+	 * @param title 错误消息的标题
 	 */
 	void popupMessageBox(String msg, String title) {
 		final JDialog myDialog = new JDialog(this, title, true);
@@ -446,6 +504,9 @@ class GameController extends JFrame {
 		myDialog.setVisible(true);
 	}
 
+	/** @brief 窗体关闭的监听
+	 * 
+	 */
 	class Wclose extends WindowAdapter {
 		// 窗口关闭
 		public void windowClosing(WindowEvent e) {
@@ -453,6 +514,10 @@ class GameController extends JFrame {
 		}
 	}
 
+	/** @brief 鼠标事件的监听
+	 * 
+	 * 用于监听鼠标事件
+	 */
 	class amouse extends MouseAdapter {
 		// 鼠标在棋盘上点击 事件响应
 		public void mouseClicked(MouseEvent e) {
@@ -527,6 +592,10 @@ class GameController extends JFrame {
 		}
 	}
 
+	/** @brief 播放音乐
+	 * 
+	 * @param type 播放音乐的类型
+	 */
 	private void playSound(int type) {
 		if (config_model.getMusicState().equals("on")) {
 			music_player.playSound(type);

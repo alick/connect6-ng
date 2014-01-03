@@ -1,15 +1,24 @@
+/**
+ * @file __FILE__
+ * @brief 程序的入口
+ * @author 侯奇
+ * @author 卢嘉勋
+ * @author 刘菁菁
+ * @date 2014-01-01
+ * @version v 1.0.0
+ * 
+ * 程序的入口
+ */
+
 package connect6ng;
 
-/** This is the top level class of connect6.
- * It consists of just main routine.
+/**
+ * @brief 程序的入口类
+ * 
  */
 public class Connect6 {
-    /** This is the main routine.
-     * It creates the main frame and start the game.
-     */
-    @SuppressWarnings("unused")
 	public static void main(String[] args) {
-        GameController form = new GameController();
-        
-    }
+		@SuppressWarnings("unused")
+		GameController form = new GameController();
+	}
 }
