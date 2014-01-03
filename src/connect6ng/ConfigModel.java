@@ -35,8 +35,9 @@ public class ConfigModel {
 		Properties pro = new Properties();
 		try {
 			pro.load(new FileInputStream("./config/configure"));
-			pro.store(new FileOutputStream("./config/configure"), "music");
 			pro.setProperty("music", state);
+			pro.store(new FileOutputStream("./config/configure"), "music");
+			System.out.println("state : " + state);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

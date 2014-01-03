@@ -30,11 +30,10 @@ class GameController extends JFrame {
 	JMenu menu_ngame = new JMenu("开始新游戏");
 	JMenuItem menu_first = new JMenuItem("先手(玩家黑棋先行)");
 	JMenuItem menu_last = new JMenuItem("后手(玩家白棋后行)");
-	JMenuItem menu_restart = new JMenuItem("重新开始游戏");
-	JMenuItem menu_reset = new JMenuItem("重置游戏");
+	JMenuItem menu_music = new JMenuItem("音效开/关");
+	JMenuItem menu_hist = new JMenuItem("历史记录");
 	JCheckBoxMenuItem menu_comp = new JCheckBoxMenuItem("人机对战");
 	JMenuItem menu_prac = new JMenuItem("切换为实战模式");
-	JMenuItem menu_int = new JMenuItem("暂停游戏");
 	JMenuItem menu_exit = new JMenuItem("退出");
 	JMenuItem menu_back = new JMenuItem("悔棋");
 	JMenu menu_file = new JMenu("游戏战绩");
@@ -50,7 +49,7 @@ class GameController extends JFrame {
 	/** Class constructor. */
 	GameController() {
 		super("Connect 6 - 游戏尚未开始 - 练习模式");
-		setSize(650, 680);
+		setSize(620, 660);
 		setResizable(false);
 
 		// 初始化数据
@@ -64,42 +63,38 @@ class GameController extends JFrame {
 		menu_game.add(menu_ngame);
 		menu_ngame.add(menu_first);
 		menu_first.addActionListener(new ack_menu_first());
-		// menu_first.setAccelerator( KeyStroke.getKeyStroke((char)
-		// KeyEvent.VK_F2) );
+
 		menu_ngame.add(menu_last);
 		menu_last.addActionListener(new ack_menu_last());
-		// menu_last.setShortcut(new JMenuShortcut(KeyEvent.VK_F3));
-		menu_game.add(menu_restart);
-		menu_restart.addActionListener(new ack_menu_restart());
-		menu_restart.setEnabled(false);
-		// menu_restart.setShortcut(new JMenuShortcut(KeyEvent.VK_F5));
-		menu_game.add(menu_reset);
-		menu_reset.addActionListener(new ack_menu_reset());
-		// menu_reset.setShortcut(new JMenuShortcut(KeyEvent.VK_F1));
+
 		menu_game.add(menu_comp);
 		menu_comp.addItemListener(new ack_menu_comp());
 		menu_comp.setState(true);
 		menu_game.add(menu_prac);
 		menu_prac.addActionListener(new ack_menu_prac());
-		menu_game.add(menu_int);
-		menu_int.addActionListener(new ack_menu_int());
-		menu_int.setEnabled(false);
-		menu_int.setAccelerator(KeyStroke.getKeyStroke('I',
-				java.awt.Event.CTRL_MASK, false));
+
 		menu_game.add(menu_back);
 		menu_back.addActionListener(new ack_menu_back());
 		menu_back.setEnabled(false);
 		menu_back.setAccelerator(KeyStroke.getKeyStroke('B',
 				java.awt.Event.CTRL_MASK, false));
+		
+		menu_game.add(menu_music);
+		menu_music.addActionListener(new ack_menu_music());
+		menu_back.setAccelerator(KeyStroke.getKeyStroke('M',
+				java.awt.Event.CTRL_MASK, false));
+		
 		menu_game.add(menu_exit);
 		menu_exit.addActionListener(new ack_menu_exit());
 		menu_exit.setAccelerator(KeyStroke.getKeyStroke('E',
 				java.awt.Event.CTRL_MASK, false));
 		menu_JMenuBar.add(menu_file);
+		
 		menu_file.add(menu_open);
 		menu_open.addActionListener(new ack_menu_open());
 		menu_open.setAccelerator(KeyStroke.getKeyStroke('O',
 				java.awt.Event.CTRL_MASK, false));
+		
 		menu_file.add(menu_save);
 		menu_save.addActionListener(new ack_menu_save());
 		menu_save.setAccelerator(KeyStroke.getKeyStroke('S',
@@ -166,18 +161,34 @@ class GameController extends JFrame {
 			game_model.newGame(1);
 		}
 	}
+	
+	public class ack_menu_music implements ActionListener {
 
-	class ack_menu_restart implements ActionListener {
-		// 重新开始游戏 事件响应
+		@Override
 		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			if( config_model.getMusicState().equals("on") ){
+				config_model.setMusic("off");
+				music_player.setState("off");
+			}else{
+				config_model.setMusic("on");
+				music_player.setState("on");
+			}
 		}
-	}
 
-	class ack_menu_reset implements ActionListener {
-		// 重置游戏 事件响应
-		public void actionPerformed(ActionEvent e) {
-		}
 	}
+//
+//	class ack_menu_restart implements ActionListener {
+//		// 重新开始游戏 事件响应
+//		public void actionPerformed(ActionEvent e) {
+//		}
+//	}
+//
+//	class ack_menu_reset implements ActionListener {
+//		// 重置游戏 事件响应
+//		public void actionPerformed(ActionEvent e) {
+//		}
+//	}
 
 	class ack_menu_comp implements ItemListener {
 		// 选择或取消人机对战功能 事件响应
@@ -220,11 +231,11 @@ class GameController extends JFrame {
 		}
 	}
 
-	class ack_menu_int implements ActionListener {
-		// 暂停游戏事件响应
-		public void actionPerformed(ActionEvent e) {
-		}
-	}
+//	class ack_menu_int implements ActionListener {
+//		// 暂停游戏事件响应
+//		public void actionPerformed(ActionEvent e) {
+//		}
+//	}
 
 	class ack_menu_save implements ActionListener {
 		// 保存 事件响应
@@ -451,6 +462,7 @@ class GameController extends JFrame {
 			}
 
 			int x = e.getX(), y = e.getY();
+			System.out.println("x,y " + x + "," + y);
 			x = (int) (x - getInsets().left - getContentPane().getLocation()
 					.getX());
 			y = (int) (y - getInsets().top - getContentPane().getLocation()
