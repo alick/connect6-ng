@@ -14,6 +14,7 @@ import javax.swing.*;
 @SuppressWarnings("serial")
 class GameController extends JFrame {
 	GameModel game_model;
+	GameView game_view;
 
 	// Vector<MyPoint> data;
 	Alg kernel;
@@ -34,7 +35,7 @@ class GameController extends JFrame {
 	JMenu menu_file = new JMenu("游戏战绩");
 	JMenuItem menu_open = new JMenuItem("打开游戏战绩");
 	JMenuItem menu_save = new JMenuItem("保存游戏战绩");
-	
+
 	JMenu menu_about = new JMenu("帮助");
 	JMenuItem menu_author = new JMenuItem("关于作者");
 	JMenuItem menu_software = new JMenuItem("关于游戏");
@@ -97,7 +98,7 @@ class GameController extends JFrame {
 		menu_save.addActionListener(new ack_menu_save());
 		menu_save.setAccelerator(KeyStroke.getKeyStroke('S',
 				java.awt.Event.CTRL_MASK, false));
-		
+
 		menu_about.add(menu_author);
 		menu_about.add(menu_software);
 		menu_about.add(menu_update);
@@ -108,10 +109,14 @@ class GameController extends JFrame {
 		// 监听鼠标
 		addMouseListener(new amouse());
 
+		Container cont = getContentPane();
+
 		game_model = new GameModel();
-		GameView game_view = new GameView(game_model);
+		game_view = new GameView(game_model);
 		game_model.addObserver(game_view);
-		this.add(game_view);
+		game_view.setVisible(true);
+
+		cont.add(game_view);
 
 		Vector<MyPoint> data = game_model.getChessmans();
 		kernel.setData(data);
@@ -120,6 +125,10 @@ class GameController extends JFrame {
 		setTitle();
 		setLocationRelativeTo(null);
 		setVisible(true);
+
+		System.out.println(getInsets());
+		System.out.println(game_view.getLocation() + ", "
+				+ game_view.getVisibleRect());
 	}
 
 	/**
@@ -148,7 +157,7 @@ class GameController extends JFrame {
 			menu_last.setEnabled(false);
 			game_model.setColor(1);
 			game_model.newGame();
-			if( game_model.getComputer() ){
+			if (game_model.getComputer()) {
 				game_model.AddChessman(new MyPoint(9, 9, 0));
 			}
 		}
@@ -168,17 +177,18 @@ class GameController extends JFrame {
 
 	class ack_menu_comp implements ItemListener {
 		// 选择或取消人机对战功能 事件响应
-		 //选择或取消人机对战功能 事件响应
-        public void itemStateChanged(ItemEvent e) {
-        	int color = game_model.getColor();
-        	menu_first.setEnabled( color == 1 );
-        	menu_last.setEnabled( color == 0 );
-        	System.out.println("first : " + (color==1) + "  last : " + (color==0) );
-        	
-            Boolean computer = menu_comp.getState();
-            game_model.setComputer(computer);
-            game_model.newGame();
-        }
+		// 选择或取消人机对战功能 事件响应
+		public void itemStateChanged(ItemEvent e) {
+			int color = game_model.getColor();
+			menu_first.setEnabled(color == 1);
+			menu_last.setEnabled(color == 0);
+			System.out.println("first : " + (color == 1) + "  last : "
+					+ (color == 0));
+
+			Boolean computer = menu_comp.getState();
+			game_model.setComputer(computer);
+			game_model.newGame();
+		}
 	}
 
 	class ack_menu_prac implements ActionListener {
@@ -292,66 +302,80 @@ class GameController extends JFrame {
 		public void mouseClicked(MouseEvent e) {
 
 			// 分析无效操作，包括非法点击，点击不可靠等
-			 if ( !game_model.playerTurn() ) {
-				 // TODO
-				 // add error music here
-				 System.out.println("Not your turn");
-				 game_model.display();
-				 return;
-			 }
-
-			int x, y;
-			x = e.getX();
-			y = e.getY();
-			System.out.println("clicked at : " + x + "," + y);
-			if (((x - 35) % 30 > 25) || ((y - 75) % 30 > 25)) {
+			if (!game_model.playerTurn()) {
+				// TODO
+				// add error music here
+				System.out.println("Not your turn");
+				game_model.display();
 				return;
 			}
 
-			x = (x - 35) / 30;
-			y = (y - 75) / 30;
+			int x = e.getX(), y = e.getY();
+			x = (int) (x - getInsets().left - getContentPane().getLocation()
+					.getX());
+			y = (int) (y - getInsets().top - getContentPane().getLocation()
+					.getY());
+
 			System.out.println("clicked at point : " + x + "," + y);
-			if ((x < 0) || (x > 18) || (y < 0) || (y > 18)) {
+
+			int x_start = 22;
+			int y_start = 22;
+			int chess_size = 30;
+
+			x = x - x_start;
+			y = y - y_start;
+			if ((x % 30) > 25 || (y % 30) > 25) {
+				// TODO
 				return;
 			}
+
+			if ((x < 0) || (x > 18*chess_size) || (y < 0) || (y > 18*chess_size)) {
+				// TODO
+				return;
+			}
+			System.out.println("clicked at point : " + x + "," + y);
+
+			x = x / chess_size;
+			y = y / chess_size;
+			System.out.println("clicked at chess : " + x + "," + y);
 
 			// 玩家turn
 			int color = game_model.getCurrentColor();
 			game_model.getClickedAt(x, y);
 			setEnabled(false);
 
-			kernel.setData( game_model.getChessmans() );
-			if( kernel.hasSix() ){
-				if( game_model.getComputer() ){
+			kernel.setData(game_model.getChessmans());
+			if (kernel.hasSix()) {
+				if (game_model.getComputer()) {
 					popupMessageBox("恭喜你战胜了电脑！！！", "游戏胜利");
-	                game_model.newGame();
-				}else{
-					String [] winner = {"黑子", "白子"};
+					game_model.newGame();
+				} else {
+					String[] winner = { "黑子", "白子" };
 					popupMessageBox(winner[color] + "获胜！！！", "游戏结束");
-	                game_model.newGame();
+					game_model.newGame();
 				}
 			}
-			
-			if( game_model.getComputer() ){
-				
-				if( !game_model.playerTurn() ){
-				
+
+			if (game_model.getComputer()) {
+
+				if (!game_model.playerTurn()) {
+
 					// 电脑turn
-					kernel.placeTwoStones( game_model.getCurrentColor() );
-					
-					game_model.setChessMan( kernel.getData() );
+					kernel.placeTwoStones(game_model.getCurrentColor());
+
+					game_model.setChessMan(kernel.getData());
 					// TODO
 					// draw hint
-					
-					if( kernel.hasSix() ){
-		                popupMessageBox("你失败了，再接再厉！！！", "游戏失败");
-		                game_model.newGame();
+
+					if (kernel.hasSix()) {
+						popupMessageBox("你失败了，再接再厉！！！", "游戏失败");
+						game_model.newGame();
 					}
 					setEnabled(true);
 				}
 			}
 			setEnabled(true);
-			
+
 		}
 	}
 
