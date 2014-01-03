@@ -1,8 +1,20 @@
 package connect6ng;
 
 
-/** This class describes the line made up of six adjacent points.
- * It is a FIFO queue. It give scores for each color(side) of the game.
+/** @file __FILE__ 
+ * @brief  棋子位置队列操作
+ * @author 侯奇
+ * @author 卢嘉勋
+ * @author 刘菁菁
+ * @date 2013-12-30
+ * @version 1.0.0
+ * 
+ */
+
+/**
+ * @brief 连续六子队列管理
+ * @author lujx
+ *
  */
 class SixPointsLine {
     //棋盘上的连续6个位置队列
@@ -12,7 +24,9 @@ class SixPointsLine {
     // Indicates where to push new element.
     int offset;
 
-    /** Class constructor. */
+    /**@brief  构造函数，构造六子队列
+     * 
+     */
     SixPointsLine() {
         // Init with six points with no stones.
         for (int k = 0; k < 6; k++)
@@ -24,7 +38,7 @@ class SixPointsLine {
         offset = 0;
     }
 
-    /** 在队列中加入一个棋子，同时弹出最后一个。
+    /**@brief  在队列中加入一个棋子，同时弹出最后一个。
      *
      * @param color the color of the stone
      */
@@ -37,7 +51,7 @@ class SixPointsLine {
         cnts[(color + 3) % 3]++;
     }
 
-    /** 返回当前队列相应颜色的得分。
+    /**@brief  返回当前队列相应颜色的得分。
      *
      * @param color the color of the stone
      */

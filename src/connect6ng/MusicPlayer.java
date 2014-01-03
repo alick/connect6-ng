@@ -1,11 +1,11 @@
-/**@brief MusicPlayer : 音效模块
- * @file __FILE__
+/** @file __FILE__ 
+ * @brief  音乐播放模块
  * @author 侯奇
- * @author 汪翔
- * @date 2013年12月16日
- * @version v0.1.0
+ * @author 卢嘉勋
+ * @author 刘菁菁
+ * @date 2013-12-30
+ * @version 1.0.0
  * 
- * 负责背景音乐的播放
  */
 package connect6ng;
 
@@ -24,9 +24,9 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 
 /**
- * @brief MusicPlayer : 音效模块
+ * @brief MusicPlayer : 音效模块，负责背景音乐的播放
  * 
- *        负责背景音乐的播放
+ *        
  */
 public class MusicPlayer {
 	// / 声音流
@@ -36,9 +36,9 @@ public class MusicPlayer {
 	public AudioClip error_tip;
 
 	/**
-	 * 
+	 * @brief 播放音乐文件名 *.wav
 	 * @param state
-	 *            播放音乐文件名 *.wav
+	 * 
 	 */
 	public MusicPlayer(String state) {
 		URL file;
@@ -75,6 +75,10 @@ public class MusicPlayer {
 		}
 	}
 	
+	/**
+	 * @brief 设置播放状态
+	 * @param state
+	 */
 	public void setState(String state){
 		state = state.trim();
 		
@@ -85,7 +89,7 @@ public class MusicPlayer {
 		}
 	}
 	
-	/** 播放音乐
+	/** @brief 播放音乐
 	 * 
 	 * @param type
 	 * 	negative for error tip
@@ -105,6 +109,10 @@ public class MusicPlayer {
 		}
 	}
 	
+	/**
+	 * @brief 输出错误提示
+	 * @param errMsg
+	 */
 	public void pushErrorDialog(String errMsg){
 		final JDialog myDialog = new JDialog();
 		myDialog.setTitle("错误提示");

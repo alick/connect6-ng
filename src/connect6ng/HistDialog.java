@@ -1,21 +1,35 @@
 package connect6ng;
 
 
-/**
- *
- * @author houqi1993
+/** @file __FILE__ 
+ * @brief  历史记录模块
+ * @author 侯奇
+ * @author 卢嘉勋
+ * @author 刘菁菁
+ * @date 2013-12-30
+ * @version 1.0.0
+ * 
  */
 @SuppressWarnings("serial")
+/**
+ * @brief 历史记录类
+ * @author lujx
+ *	用来管理历史记录
+ */
 public class HistDialog extends javax.swing.JDialog {
 
     /**
-     * Creates new form HistJDialog
+     * @brief 构造函数，调用初始化组件函数
+     * @param parent
+     * @param modal
      */
     public HistDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
     }
-
+    /**
+     * @brief 初始化组件
+     */
     private void initComponents() {
 
         icon_label = new javax.swing.JLabel();
@@ -117,7 +131,11 @@ public class HistDialog extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>                        
-
+    
+    /**
+     * @brief 确定按钮回调函数
+     * @param evt
+     */
     private void OK_btnActionPerformed(java.awt.event.ActionEvent evt) {                                       
         // TODO add your handling code here:
         HistDialog.this.dispose();

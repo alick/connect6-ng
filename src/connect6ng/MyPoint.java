@@ -1,16 +1,21 @@
 package connect6ng;
 
 import java.io.Serializable;
-
-
-/** This class records the point with side/color information.
+/** @file __FILE__ 
+ * @brief  记录棋子的位置和颜色
+ * @author 侯奇
+ * @author 卢嘉勋
+ * @author 刘菁菁
+ * @date 2013-12-30
+ * @version 1.0.0
+ * 
  */
 @SuppressWarnings("serial")
 class MyPoint implements Serializable {
     //记录坐标及颜色
     private int x, y, color;
 
-    /** Class constructor.
+    /** @brief Class constructor.
      *
      * @param _x the x-coordinate
      * @param _y the y-coordinate
@@ -21,21 +26,21 @@ class MyPoint implements Serializable {
         y = _y;
         color = _color;
     }
-    /** Gets the x-coordinate.
+    /** @brief Gets the x-coordinate.
      *
      * @return the x-coordinate
      */
     int getX() {
         return x;
     }
-    /** Gets the y-coordinate.
+    /**@brief  Gets the y-coordinate.
      *
      * @return the y-coordinate
      */
     int getY() {
         return y;
     }
-    /** Returns the color of the stone.
+    /** @brief Returns the color of the stone.
      *
      * @return the color of the stone
      */
