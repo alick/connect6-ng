@@ -1,6 +1,5 @@
 package connect6ng;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.util.Vector;
@@ -13,9 +12,10 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class GameView extends JPanel implements Observer {
 
-	Image chess_map;
-	Image black_chess;
-	Image white_chess;
+	Image chess_map = new ImageIcon("./res/chess_map.png").getImage();
+	Image black_chess = new ImageIcon("./res/black_chess.png").getImage();
+	Image white_chess = new ImageIcon("./res/white_chess.png").getImage();
+	Image tip_box = new ImageIcon("./res/tip_box.png").getImage();
 
 	private GameModel game_model;
 
@@ -25,19 +25,11 @@ public class GameView extends JPanel implements Observer {
 	int chess_num = 19;
 
 	public GameView() {
-
-		chess_map = new ImageIcon("./res/chess_map.png").getImage();
-		black_chess = new ImageIcon("./res/black_chess.png").getImage();
-		white_chess = new ImageIcon("./res/white_chess.png").getImage();
 		
 		game_model = new GameModel();
 	}
 
 	public GameView(GameModel model) {
-
-		chess_map = new ImageIcon("res/chess_map.png").getImage();
-		black_chess = new ImageIcon("res/black_chess.png").getImage();
-		white_chess = new ImageIcon("res/white_chess.png").getImage();
 
 		if (model == null)
 			game_model = new GameModel();
@@ -61,6 +53,25 @@ public class GameView extends JPanel implements Observer {
 				g.drawImage(white_chess, p.getX() * chess_size + x_start,
 						p.getY() * chess_size + y_start, this);
 			}
+		}
+		
+		// 练习模式下，绘制提示信息
+		if( game_model.getMode() == 0 ){
+
+			// 绘制电脑落子提示
+			if( game_model.getComputer() ){
+				for( int i = data.size() - 1 ; i >= 0 ; i-- ){
+					MyPoint p = data.get(i);
+					if( p.getColor() != game_model.getColor() ){
+						g.drawImage(tip_box, p.getX() * chess_size + x_start,
+								p.getY() * chess_size + y_start, this);
+					}else{
+						break;
+					}
+				}
+			}
+		}else{
+			
 		}
 	}
 

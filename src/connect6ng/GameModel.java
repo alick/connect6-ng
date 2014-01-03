@@ -45,6 +45,16 @@ public class GameModel extends Observable implements Serializable  {
 		setChanged();
 		notifyObservers(this);
 	}
+	
+	public void newGame(int color){
+		Chessmans.clear();
+		setColor(color);
+		if( getComputer() && getColor() == 1 ){
+			Chessmans.add(new MyPoint(9, 9, 0));
+		}
+		setChanged();
+		notifyObservers(this);
+	}
 
 	public void resetState() {
 		pause = true;

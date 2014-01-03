@@ -155,7 +155,7 @@ class GameController extends JFrame {
 		// 新游戏->先手 事件响应
 		public void actionPerformed(ActionEvent e) {
 			game_model.setColor(0);
-			game_model.newGame();
+			game_model.newGame(0);
 		}
 	}
 
@@ -163,10 +163,7 @@ class GameController extends JFrame {
 		// 新游戏->后手 事件响应
 		public void actionPerformed(ActionEvent e) {
 			game_model.setColor(1);
-			game_model.newGame();
-			if (game_model.getComputer()) {
-				game_model.AddChessman(new MyPoint(9, 9, 0));
-			}
+			game_model.newGame(1);
 		}
 	}
 
@@ -195,6 +192,14 @@ class GameController extends JFrame {
 	class ack_menu_prac implements ActionListener {
 		// 模式选择 事件响应
 		public void actionPerformed(ActionEvent e) {
+			game_model.setMode( 1 - game_model.getMode() );
+			if( game_model.getMode() == 1 ){
+				menu_prac.setText("切换为练习模式");
+			}else{
+				menu_prac.setText("切换为实战模式");
+			}
+			game_model.newGame();
+			updateStatus();
 		}
 	}
 
@@ -324,6 +329,7 @@ class GameController extends JFrame {
 	
 	private void computer_turn(){
 		if (game_model.getComputer() && !game_model.playerTurn()) {
+			System.out.println("here computer turn");
 
 			// 电脑turn
 			kernel.placeTwoStones(game_model.getCurrentColor());
@@ -449,8 +455,6 @@ class GameController extends JFrame {
 					.getX());
 			y = (int) (y - getInsets().top - getContentPane().getLocation()
 					.getY());
-
-			System.out.println("clicked at point : " + x + "," + y);
 
 			int x_start = 22;
 			int y_start = 22;
