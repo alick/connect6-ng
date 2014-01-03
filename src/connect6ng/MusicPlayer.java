@@ -63,10 +63,10 @@ public class MusicPlayer {
 			}
 			// System.out.println("音乐开始播放");
 			System.out.println(state);
-			if (state.equals("off")) {
-				background.stop();
+			if (state.equals("on")) {
+				background.loop();
 			}else {
-				background.loop();// 其他情况音乐不播放
+				background.stop();// 其他情况音乐不播放
 			}
 		} catch (MalformedURLException e) {
 			// TODO Auto-generated catch block

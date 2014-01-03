@@ -8,7 +8,6 @@ import java.util.logging.*;
 
 import javax.swing.*;
 
-
 /**
  * The main window with AI kernel.
  */
@@ -16,10 +15,10 @@ import javax.swing.*;
 class GameController extends JFrame {
 	ConfigModel config_model;
 	ConfigView config_view;
-	
+
 	GameModel game_model;
 	GameView game_view;
-	
+
 	MusicPlayer music_player;
 
 	// Vector<MyPoint> data;
@@ -47,7 +46,7 @@ class GameController extends JFrame {
 	JMenuItem menu_AboutSixChess = new JMenuItem("关于六子棋");
 	JMenuItem menu_SeekHelp = new JMenuItem("查看帮助");
 	JMenuItem menu_CheckUpdate = new JMenuItem("检查更新");
-	
+
 	/** Class constructor. */
 	GameController() {
 		super("Connect 6 - 游戏尚未开始 - 练习模式");
@@ -107,18 +106,18 @@ class GameController extends JFrame {
 				java.awt.Event.CTRL_MASK, false));
 
 		// 帮助：
-		menu_JMenuBar.add(menu_help);		
-		
+		menu_JMenuBar.add(menu_help);
+
 		menu_help.add(menu_AboutSixChess);
 		menu_AboutSixChess.addActionListener(new ack_menu_AboutSixChess());
 		menu_AboutSixChess.setAccelerator(KeyStroke.getKeyStroke('O',
 				java.awt.Event.CTRL_MASK, false));
-		
+
 		menu_help.add(menu_SeekHelp);
 		menu_SeekHelp.addActionListener(new ack_menu_SeekHelp());
 		menu_SeekHelp.setAccelerator(KeyStroke.getKeyStroke('O',
 				java.awt.Event.CTRL_MASK, false));
-		
+
 		menu_help.add(menu_CheckUpdate);
 		menu_CheckUpdate.addActionListener(new ack_menu_CheckUpdate());
 		menu_CheckUpdate.setAccelerator(KeyStroke.getKeyStroke('O',
@@ -147,8 +146,7 @@ class GameController extends JFrame {
 		setVisible(true);
 
 		config_model = new ConfigModel();
-		
-		
+
 		// 背景音乐播放：
 		String music_state = config_model.getMusicState();
 		music_player = new MusicPlayer(music_state);
@@ -233,23 +231,45 @@ class GameController extends JFrame {
 	class ack_menu_save implements ActionListener {
 		// 保存 事件响应
 		public void actionPerformed(ActionEvent e) {
-			FileDialog myFileDialog = new FileDialog(GameController.this,
-					"save", FileDialog.SAVE);
-			myFileDialog.setVisible(true);
-			String dir = myFileDialog.getDirectory();
-			String fname = myFileDialog.getFile();
-			if ((dir != null) && (fname != null)) {
-				String fullFileName = (new String(fname)).toLowerCase();
-				if (!fullFileName.endsWith(".c6db")) {
-					fullFileName = fullFileName + ".c6db";
-				}
-				fullFileName = dir + fullFileName;
+			JFileChooser myFileDialog = new JFileChooser();
+			myFileDialog
+					.setFileFilter(new javax.swing.filechooser.FileFilter() {
 
+						@Override
+						public boolean accept(File f) {
+							if (f.getName().endsWith("c6db") || f.isDirectory())
+								return true;
+							return false;
+						}
+
+						@Override
+						public String getDescription() {
+							return "文件类型(*.c6db)";
+						}
+
+					});
+			int result = myFileDialog.showDialog(GameController.this, "Save");
+			if (result == JFileChooser.APPROVE_OPTION) { // 确认打开
+				File selected = myFileDialog.getSelectedFile();
+
+				if (!selected.getName().endsWith("c6db")) {
+					String file_name = selected.getAbsolutePath() + ".c6db";
+					selected = new File(file_name);
+				}
+
+				if (selected.exists()) {
+					int reply = JOptionPane.showConfirmDialog(
+							GameController.this, "文件已存在，是否覆盖？", "警告",
+							JOptionPane.YES_NO_OPTION); // 提示框
+					if (reply == JOptionPane.CANCEL_OPTION) {
+						return;
+					}
+				}
 				try {
-					FileOutputStream file = new FileOutputStream(fullFileName);
+					FileOutputStream file = new FileOutputStream(selected);
 					ObjectOutputStream output = new ObjectOutputStream(file);
 					try {
-						// output.writeObject(data);
+						output.writeObject(game_model);
 					} finally {
 						output.close();
 					}
@@ -258,6 +278,10 @@ class GameController extends JFrame {
 							"Failed to perform output when saving.", ex);
 					popupMessageBox("文件打开失败", "请确保有足够权限。");
 				}
+			} else if (result == JFileChooser.CANCEL_OPTION) {
+				System.out.println("Save File cancelled");
+			} else if (result == JFileChooser.ERROR_OPTION) {
+				System.err.println("Error Occured");
 			}
 		}
 	}
@@ -265,52 +289,110 @@ class GameController extends JFrame {
 	class ack_menu_open implements ActionListener {
 		// 打开 事件响应
 		public void actionPerformed(ActionEvent e) {
+			JFileChooser myDialog = new JFileChooser();
+			myDialog.setFileFilter(new javax.swing.filechooser.FileFilter(){
+
+				@Override
+				public boolean accept(File f) {
+					if (f.getName().endsWith("c6db") || f.isDirectory())
+						return true;
+					return false;
+				}
+
+				@Override
+				public String getDescription() {
+					return "文件类型(*.c6db)";
+				}
+				
+			});
+			int result = myDialog.showDialog(GameController.this, "Open");
+			if( result == JFileChooser.APPROVE_OPTION ){
+				File selected = myDialog.getSelectedFile();
+				
+				GameModel model;
+				
+				try {
+					FileInputStream istream = new FileInputStream(selected);
+	                ObjectInputStream input = new ObjectInputStream(istream);
+	                model = (GameModel) input.readObject();
+	                game_model.setModel(model);
+	                computer_turn();
+	                input.close();
+				} catch (IOException | ClassNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+					popupMessageBox("文件打开错误", "文件格式损坏！");
+				}
+			}
 		}
 	}
 	
+	private void computer_turn(){
+		if (game_model.getComputer() && !game_model.playerTurn()) {
+
+			// 电脑turn
+			kernel.placeTwoStones(game_model.getCurrentColor());
+
+			game_model.setChessMan(kernel.getData());
+			// TODO
+			// draw hint
+
+			if (kernel.hasSix()) {
+				// TODO
+				// play lose music
+				playSound(1);
+				popupMessageBox("你失败了，再接再厉！！！", "游戏失败");
+				game_model.newGame();
+			}
+			setEnabled(true);
+		}
+	}
+
 	/**
 	 * 关于六子棋
+	 * 
 	 * @author lujx
-	 *
+	 * 
 	 */
-	class ack_menu_AboutSixChess implements ActionListener{		
+	class ack_menu_AboutSixChess implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			
-			AboutDialog d = new AboutDialog( GameController.this, true );
+
+			AboutDialog d = new AboutDialog(GameController.this, true);
 			d.setLocationRelativeTo(null);
 			d.setVisible(true);
 		}
 	}
-	
+
 	/**
-	* 查看帮助
-	* @author lujx
-	*
-	*/
-	class ack_menu_SeekHelp implements ActionListener{
+	 * 查看帮助
+	 * 
+	 * @author lujx
+	 * 
+	 */
+	class ack_menu_SeekHelp implements ActionListener {
 		@Override
-		public void actionPerformed(ActionEvent arg0) {			
-			SeekHelpDialog d = new SeekHelpDialog( GameController.this );
+		public void actionPerformed(ActionEvent arg0) {
+			SeekHelpDialog d = new SeekHelpDialog(GameController.this);
 			d.dialog.setLocationRelativeTo(null);
 			d.dialog.setVisible(true);
 		}
 	}
-	
+
 	/**
-	* 软件更新
-	* @author lujx
-	*
-	*/
-	class ack_menu_CheckUpdate implements ActionListener{
+	 * 软件更新
+	 * 
+	 * @author lujx
+	 * 
+	 */
+	class ack_menu_CheckUpdate implements ActionListener {
 		@Override
-		public void actionPerformed(ActionEvent arg0) {				
-			CheckUpdateDialog d = new CheckUpdateDialog( GameController.this );
+		public void actionPerformed(ActionEvent arg0) {
+			CheckUpdateDialog d = new CheckUpdateDialog(GameController.this);
 			d.dialog.setLocationRelativeTo(null);
 			d.dialog.setVisible(true);
-		}	
+		}
 	}
-
 
 	/**
 	 * Sets the title of the frame window to reflect different status.
@@ -386,7 +468,8 @@ class GameController extends JFrame {
 				return;
 			}
 
-			if ((x < 0) || (x > 18*chess_size) || (y < 0) || (y > 18*chess_size)) {
+			if ((x < 0) || (x > 18 * chess_size) || (y < 0)
+					|| (y > 18 * chess_size)) {
 				// TODO
 				playSound(-1);
 				return;
@@ -398,11 +481,11 @@ class GameController extends JFrame {
 			// 玩家turn
 			int color = game_model.getCurrentColor();
 			int result = game_model.getClickedAt(x, y);
-			if( result < 0 ){
+			if (result < 0) {
 				playSound(-1);
 				return;
 			}
-			
+
 			playSound(3);
 			setEnabled(false);
 
@@ -419,34 +502,15 @@ class GameController extends JFrame {
 				}
 			}
 
-			if (game_model.getComputer()) {
-
-				if (!game_model.playerTurn()) {
-
-					// 电脑turn
-					kernel.placeTwoStones(game_model.getCurrentColor());
-
-					game_model.setChessMan(kernel.getData());
-					// TODO
-					// draw hint
-
-					if (kernel.hasSix()) {
-						// TODO
-						// play lose music
-						playSound(1);
-						popupMessageBox("你失败了，再接再厉！！！", "游戏失败");
-						game_model.newGame();
-					}
-					setEnabled(true);
-				}
-			}
+			computer_turn();
+			
 			setEnabled(true);
 
 		}
 	}
-	
-	private void playSound(int type){
-		if( config_model.getMusicState().equals("on") ){
+
+	private void playSound(int type) {
+		if (config_model.getMusicState().equals("on")) {
 			music_player.playSound(type);
 		}
 	}

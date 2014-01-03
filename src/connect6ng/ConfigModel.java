@@ -2,6 +2,7 @@ package connect6ng;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -28,8 +29,17 @@ public class ConfigModel {
 			musicState = state;
 		}else{
 			Flogger.getLogger().log(Level.SEVERE , "音乐设置错误");
+			return;
+		}		
+
+		Properties pro = new Properties();
+		try {
+			pro.load(new FileInputStream("./config/configure"));
+			pro.store(new FileOutputStream("./config/configure"), "music");
+			pro.setProperty("music", state);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		
 	}
 	
 	public String getMusicState(){

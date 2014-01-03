@@ -1,9 +1,11 @@
 package connect6ng;
 
+import java.io.Serializable;
 import java.util.Vector;
 import java.util.Observable;
 
-public class GameModel extends Observable {
+@SuppressWarnings("serial")
+public class GameModel extends Observable implements Serializable  {
 
 	private Vector<MyPoint> Chessmans;
 
