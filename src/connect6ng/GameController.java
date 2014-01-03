@@ -8,6 +8,7 @@ import java.util.logging.*;
 
 import javax.swing.*;
 
+
 /**
  * The main window with AI kernel.
  */
@@ -15,6 +16,8 @@ import javax.swing.*;
 class GameController extends JFrame {
 	GameModel game_model;
 	GameView game_view;
+	
+	MusicPlayer playBackground;
 
 	// Vector<MyPoint> data;
 	Alg kernel;
@@ -36,11 +39,12 @@ class GameController extends JFrame {
 	JMenuItem menu_open = new JMenuItem("打开游戏战绩");
 	JMenuItem menu_save = new JMenuItem("保存游戏战绩");
 
-	JMenu menu_about = new JMenu("帮助");
-	JMenuItem menu_author = new JMenuItem("关于作者");
-	JMenuItem menu_software = new JMenuItem("关于游戏");
-	JMenuItem menu_update = new JMenuItem("软件升级");
-
+	// 帮助：
+	JMenu menu_help = new JMenu("帮助");
+	JMenuItem menu_AboutSixChess = new JMenuItem("关于六子棋");
+	JMenuItem menu_SeekHelp = new JMenuItem("查看帮助");
+	JMenuItem menu_CheckUpdate = new JMenuItem("检查更新");
+	
 	/** Class constructor. */
 	GameController() {
 		super("Connect 6 - 游戏尚未开始 - 练习模式");
@@ -99,10 +103,23 @@ class GameController extends JFrame {
 		menu_save.setAccelerator(KeyStroke.getKeyStroke('S',
 				java.awt.Event.CTRL_MASK, false));
 
-		menu_about.add(menu_author);
-		menu_about.add(menu_software);
-		menu_about.add(menu_update);
-		menu_JMenuBar.add(menu_about);
+		// 帮助：
+		menu_JMenuBar.add(menu_help);		
+		
+		menu_help.add(menu_AboutSixChess);
+		menu_AboutSixChess.addActionListener(new ack_menu_AboutSixChess());
+		menu_AboutSixChess.setAccelerator(KeyStroke.getKeyStroke('O',
+				java.awt.Event.CTRL_MASK, false));
+		
+		menu_help.add(menu_SeekHelp);
+		menu_SeekHelp.addActionListener(new ack_menu_SeekHelp());
+		menu_SeekHelp.setAccelerator(KeyStroke.getKeyStroke('O',
+				java.awt.Event.CTRL_MASK, false));
+		
+		menu_help.add(menu_CheckUpdate);
+		menu_CheckUpdate.addActionListener(new ack_menu_CheckUpdate());
+		menu_CheckUpdate.setAccelerator(KeyStroke.getKeyStroke('O',
+				java.awt.Event.CTRL_MASK, false));
 
 		// 窗口监听
 		addWindowListener(new Wclose());
@@ -126,9 +143,9 @@ class GameController extends JFrame {
 		setLocationRelativeTo(null);
 		setVisible(true);
 
-		System.out.println(getInsets());
-		System.out.println(game_view.getLocation() + ", "
-				+ game_view.getVisibleRect());
+		// 背景音乐播放：
+		String music_state = "play_loop";
+		playBackground = new MusicPlayer(music_state , "background.wav");
 	}
 
 	/**
@@ -255,6 +272,50 @@ class GameController extends JFrame {
 		public void actionPerformed(ActionEvent e) {
 		}
 	}
+	
+	/**
+	 * 关于六子棋
+	 * @author lujx
+	 *
+	 */
+	class ack_menu_AboutSixChess implements ActionListener{		
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			
+			AboutDialog d = new AboutDialog( GameController.this, true );
+			d.setLocationRelativeTo(null);
+			d.setVisible(true);
+		}
+	}
+	
+	/**
+	* 查看帮助
+	* @author lujx
+	*
+	*/
+	class ack_menu_SeekHelp implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent arg0) {			
+			SeekHelpDialog d = new SeekHelpDialog( GameController.this );
+			d.dialog.setLocationRelativeTo(null);
+			d.dialog.setVisible(true);
+		}
+	}
+	
+	/**
+	* 软件更新
+	* @author lujx
+	*
+	*/
+	class ack_menu_CheckUpdate implements ActionListener{
+		@Override
+		public void actionPerformed(ActionEvent arg0) {				
+			CheckUpdateDialog d = new CheckUpdateDialog( GameController.this );
+			d.dialog.setLocationRelativeTo(null);
+			d.dialog.setVisible(true);
+		}	
+	}
+
 
 	/**
 	 * Sets the title of the frame window to reflect different status.
