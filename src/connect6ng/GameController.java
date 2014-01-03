@@ -141,7 +141,6 @@ class GameController extends JFrame {
 		kernel.setData(data);
 
 		repaint();
-		setTitle();
 		setLocationRelativeTo(null);
 		setVisible(true);
 
@@ -155,8 +154,6 @@ class GameController extends JFrame {
 	class ack_menu_first implements ActionListener {
 		// 新游戏->先手 事件响应
 		public void actionPerformed(ActionEvent e) {
-			menu_first.setEnabled(false);
-			menu_last.setEnabled(true);
 			game_model.setColor(0);
 			game_model.newGame();
 		}
@@ -165,8 +162,6 @@ class GameController extends JFrame {
 	class ack_menu_last implements ActionListener {
 		// 新游戏->后手 事件响应
 		public void actionPerformed(ActionEvent e) {
-			menu_first.setEnabled(true);
-			menu_last.setEnabled(false);
 			game_model.setColor(1);
 			game_model.newGame();
 			if (game_model.getComputer()) {
@@ -191,10 +186,6 @@ class GameController extends JFrame {
 		// 选择或取消人机对战功能 事件响应
 		// 选择或取消人机对战功能 事件响应
 		public void itemStateChanged(ItemEvent e) {
-			int color = game_model.getColor();
-			menu_first.setEnabled(color == 1);
-			menu_last.setEnabled(color == 0);
-
 			Boolean computer = menu_comp.getState();
 			game_model.setComputer(computer);
 			game_model.newGame();
@@ -210,6 +201,8 @@ class GameController extends JFrame {
 	class ack_menu_back implements ActionListener {
 		// 悔棋 事件响应
 		public void actionPerformed(ActionEvent e) {
+			game_model.backStep();
+			updateStatus();
 		}
 	}
 
@@ -318,6 +311,8 @@ class GameController extends JFrame {
 	                game_model.setModel(model);
 	                computer_turn();
 	                input.close();
+					
+					updateStatus();
 				} catch (IOException | ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
@@ -397,7 +392,8 @@ class GameController extends JFrame {
 	/**
 	 * Sets the title of the frame window to reflect different status.
 	 */
-	void setTitle() {
+	void updateStatus() {
+		menu_back.setEnabled( !game_model.getChessmans().isEmpty() );
 	}
 
 	/**
@@ -506,6 +502,7 @@ class GameController extends JFrame {
 			
 			setEnabled(true);
 
+			updateStatus();
 		}
 	}
 

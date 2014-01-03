@@ -130,6 +130,20 @@ public class GameModel extends Observable implements Serializable  {
 		return true;
 	}
 	
+	public int backStep(){
+		if( Chessmans.isEmpty() )
+			return -1;
+		Chessmans.remove( Chessmans.size() - 1 );
+		if( getComputer() ){
+			while( !Chessmans.isEmpty() && getLastColor() != getColor() ){
+				Chessmans.remove( Chessmans.size() - 1 );
+			}
+		}
+		setChanged();
+		notifyObservers(this);
+		return 1;
+	}
+	
 	public int getClickedAt(int x, int y) {
 
 		if( !isEmpty(x, y) ){
