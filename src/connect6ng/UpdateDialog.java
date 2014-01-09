@@ -46,7 +46,7 @@ public class UpdateDialog extends javax.swing.JDialog {
 		google_btn = new javax.swing.JButton();
 
 		icon_label.setIcon(new javax.swing.ImageIcon(
-				"D:\\Study\\WorkSpace\\connect6-ng-dev\\res\\logo_100.png")); // NOI18N
+				"./res/logo_100.png")); // NOI18N
 
 		title_label.setFont(new java.awt.Font("华文行楷", 1, 22)); // NOI18N
 		title_label.setText("六子棋小游戏");
@@ -54,7 +54,7 @@ public class UpdateDialog extends javax.swing.JDialog {
 		setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
 		icon_label1.setIcon(new javax.swing.ImageIcon(
-				"D:\\Study\\WorkSpace\\connect6-ng-dev\\res\\logo_100.png")); // NOI18N
+				"./res/logo_100.png")); // NOI18N
 
 		title_label1.setFont(new java.awt.Font("华文行楷", 1, 22)); // NOI18N
 		title_label1.setText("六子棋小游戏");

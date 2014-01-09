@@ -1,5 +1,4 @@
 # .gitignore
 bin/
-res/
 *.c6db
 .settings/
