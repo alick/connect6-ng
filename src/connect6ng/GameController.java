@@ -18,25 +18,27 @@ import java.util.*;
 import java.util.logging.*;
 
 import javax.swing.*;
-/** @brief MVC 架构的controller结构
+
+/**
+ * @brief MVC 架构的controller结构
  * 
- * 用来管理程序的数据和视图
+ *        用来管理程序的数据和视图
  */
 @SuppressWarnings("serial")
 class GameController extends JFrame {
-	/// 配置文件的Model
+	// / 配置文件的Model
 	ConfigModel config_model;
-	/// 配置文件的 View
+	// / 配置文件的 View
 	ConfigView config_view;
-	/// 游戏数据的Model
+	// / 游戏数据的Model
 	GameModel game_model;
-	/// 游戏数据的View
+	// / 游戏数据的View
 	GameView game_view;
 
-	/// 音乐播放模块
+	// / 音乐播放模块
 	MusicPlayer music_player;
 
-	/// AI模块
+	// / AI模块
 	Alg kernel;
 
 	// 菜单栏
@@ -61,14 +63,17 @@ class GameController extends JFrame {
 	JMenuItem menu_SeekHelp = new JMenuItem("查看帮助");
 	JMenuItem menu_CheckUpdate = new JMenuItem("检查更新");
 
-	/** @brief 构造函数
+	/**
+	 * @brief 构造函数
 	 * 
-	 * 构造函数中初始化菜单栏、游戏的显示区域栏等，以及音乐模块等
+	 *        构造函数中初始化菜单栏、游戏的显示区域栏等，以及音乐模块等
 	 */
 	GameController() {
 		super("Connect 6 - 游戏尚未开始 - 练习模式");
 		setSize(622, 665);
 		setResizable(false);
+		setAlwaysOnTop(true);
+		setIconImage( (new ImageIcon("./res/logo_50.png")).getImage() );
 
 		// 初始化数据
 		game_model = new GameModel();
@@ -79,7 +84,7 @@ class GameController extends JFrame {
 		setJMenuBar(menu_JMenuBar);
 		menu_JMenuBar.add(menu_game);
 		menu_game.add(menu_ngame);
-		
+
 		// first turn (black chess)
 		menu_ngame.add(menu_first);
 		menu_first.addActionListener(new ack_menu_first());
@@ -98,7 +103,7 @@ class GameController extends JFrame {
 		menu_comp.setState(true);
 		menu_comp.setAccelerator(KeyStroke.getKeyStroke('C',
 				java.awt.Event.CTRL_MASK, false));
-		
+
 		// practice or play
 		menu_game.add(menu_prac);
 		menu_prac.addActionListener(new ack_menu_prac());
@@ -108,37 +113,37 @@ class GameController extends JFrame {
 		// back
 		menu_game.add(menu_back);
 		menu_back.addActionListener(new ack_menu_back());
-//		menu_back.setEnabled(false);
+		// menu_back.setEnabled(false);
 		menu_back.setAccelerator(KeyStroke.getKeyStroke('B',
 				java.awt.Event.CTRL_MASK, false));
-		
+
 		// music on/off
 		menu_game.add(menu_music);
 		menu_music.addActionListener(new ack_menu_music());
 		menu_music.setAccelerator(KeyStroke.getKeyStroke('M',
 				java.awt.Event.CTRL_MASK, false));
-		
+
 		// show history
 		menu_game.add(menu_hist);
-		menu_hist.addActionListener(new ack_menu_hist() );
+		menu_hist.addActionListener(new ack_menu_hist());
 		menu_hist.setAccelerator(KeyStroke.getKeyStroke('H',
 				java.awt.Event.CTRL_MASK, false));
-		
+
 		// exit
 		menu_game.add(menu_exit);
 		menu_exit.addActionListener(new ack_menu_exit());
 		menu_exit.setAccelerator(KeyStroke.getKeyStroke('E',
 				java.awt.Event.CTRL_MASK, false));
-		
+
 		// file
 		menu_JMenuBar.add(menu_file);
-		
-		// open 
+
+		// open
 		menu_file.add(menu_open);
 		menu_open.addActionListener(new ack_menu_open());
 		menu_open.setAccelerator(KeyStroke.getKeyStroke('O',
 				java.awt.Event.CTRL_MASK, false));
-		
+
 		// save
 		menu_file.add(menu_save);
 		menu_save.addActionListener(new ack_menu_save());
@@ -191,9 +196,10 @@ class GameController extends JFrame {
 		music_player = new MusicPlayer(music_state);
 	}
 
-	/** @brief 先手事件 的监听类
+	/**
+	 * @brief 先手事件 的监听类
 	 * 
-	 * 内部类，用于处理“先手”事件
+	 *        内部类，用于处理“先手”事件
 	 */
 	class ack_menu_first implements ActionListener {
 		// 新游戏->先手 事件响应
@@ -203,9 +209,10 @@ class GameController extends JFrame {
 		}
 	}
 
-	/** @brief 后手事件 的监听类
+	/**
+	 * @brief 后手事件 的监听类
 	 * 
-	 * 内部类，用于处理“后手”事件
+	 *        内部类，用于处理“后手”事件
 	 */
 	class ack_menu_last implements ActionListener {
 		// 新游戏->后手 事件响应
@@ -214,30 +221,32 @@ class GameController extends JFrame {
 			game_model.newGame(1);
 		}
 	}
-	
-	/** @brief 音乐播放 的监听类
+
+	/**
+	 * @brief 音乐播放 的监听类
 	 * 
-	 * 内部类，用于处理“音效开关”的事件
+	 *        内部类，用于处理“音效开关”的事件
 	 */
 	public class ack_menu_music implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			if( config_model.getMusicState().equals("on") ){
+			if (config_model.getMusicState().equals("on")) {
 				config_model.setMusic("off");
 				music_player.setState("off");
-			}else{
+			} else {
 				config_model.setMusic("on");
 				music_player.setState("on");
 			}
 		}
 
 	}
-	
-	/** @brief 历史记录 的监听类
+
+	/**
+	 * @brief 历史记录 的监听类
 	 * 
-	 * 内部类，用于处理“历史记录”事件
+	 *        内部类，用于处理“历史记录”事件
 	 */
 	public class ack_menu_hist implements ActionListener {
 
@@ -250,9 +259,10 @@ class GameController extends JFrame {
 
 	}
 
-	/** @brief 人机对战/人人对战 的监听类
+	/**
+	 * @brief 人机对战/人人对战 的监听类
 	 * 
-	 * 内部类，用于处理“人机对战/人人对战”事件
+	 *        内部类，用于处理“人机对战/人人对战”事件
 	 */
 	class ack_menu_comp implements ItemListener {
 		// 选择或取消人机对战功能 事件响应
@@ -264,17 +274,18 @@ class GameController extends JFrame {
 		}
 	}
 
-	/** @brief 训练模式/实战模式 的监听类
+	/**
+	 * @brief 训练模式/实战模式 的监听类
 	 * 
-	 * 内部类，用于处理“训练模式/实战模式”事件
+	 *        内部类，用于处理“训练模式/实战模式”事件
 	 */
 	class ack_menu_prac implements ActionListener {
 		// 模式选择 事件响应
 		public void actionPerformed(ActionEvent e) {
-			game_model.setMode( 1 - game_model.getMode() );
-			if( game_model.getMode() == 1 ){
+			game_model.setMode(1 - game_model.getMode());
+			if (game_model.getMode() == 1) {
 				menu_prac.setText("切换为练习模式");
-			}else{
+			} else {
 				menu_prac.setText("切换为实战模式");
 			}
 			game_model.newGame();
@@ -282,9 +293,10 @@ class GameController extends JFrame {
 		}
 	}
 
-	/** @brief 悔棋 的监听类
+	/**
+	 * @brief 悔棋 的监听类
 	 * 
-	 * 内部类，用于处理“悔棋”事件
+	 *        内部类，用于处理“悔棋”事件
 	 */
 	class ack_menu_back implements ActionListener {
 		// 悔棋 事件响应
@@ -294,9 +306,10 @@ class GameController extends JFrame {
 		}
 	}
 
-	/** @brief 退出 的监听类
+	/**
+	 * @brief 退出 的监听类
 	 * 
-	 * 内部类，用于处理“退出”事件
+	 *        内部类，用于处理“退出”事件
 	 */
 	class ack_menu_exit implements ActionListener {
 		// 退出 事件响应
@@ -307,9 +320,10 @@ class GameController extends JFrame {
 		}
 	}
 
-	/** @brief 保存 的监听类
+	/**
+	 * @brief 保存 的监听类
 	 * 
-	 * 内部类，用于处理“保存现有棋局”事件
+	 *        内部类，用于处理“保存现有棋局”事件
 	 */
 	class ack_menu_save implements ActionListener {
 		// 保存 事件响应
@@ -369,15 +383,16 @@ class GameController extends JFrame {
 		}
 	}
 
-	/** @brief 打开已有棋局 的监听类
+	/**
+	 * @brief 打开已有棋局 的监听类
 	 * 
-	 * 内部类，用于处理“打开已有棋局”事件
+	 *        内部类，用于处理“打开已有棋局”事件
 	 */
 	class ack_menu_open implements ActionListener {
 		// 打开 事件响应
 		public void actionPerformed(ActionEvent e) {
 			JFileChooser myDialog = new JFileChooser();
-			myDialog.setFileFilter(new javax.swing.filechooser.FileFilter(){
+			myDialog.setFileFilter(new javax.swing.filechooser.FileFilter() {
 
 				@Override
 				public boolean accept(File f) {
@@ -390,22 +405,22 @@ class GameController extends JFrame {
 				public String getDescription() {
 					return "文件类型(*.c6db)";
 				}
-				
+
 			});
 			int result = myDialog.showDialog(GameController.this, "Open");
-			if( result == JFileChooser.APPROVE_OPTION ){
+			if (result == JFileChooser.APPROVE_OPTION) {
 				File selected = myDialog.getSelectedFile();
-				
+
 				GameModel model;
-				
+
 				try {
 					FileInputStream istream = new FileInputStream(selected);
-	                ObjectInputStream input = new ObjectInputStream(istream);
-	                model = (GameModel) input.readObject();
-	                game_model.setModel(model);
-	                computer_turn();
-	                input.close();
-					
+					ObjectInputStream input = new ObjectInputStream(istream);
+					model = (GameModel) input.readObject();
+					game_model.setModel(model);
+					computer_turn();
+					input.close();
+
 					updateStatus();
 				} catch (IOException | ClassNotFoundException e1) {
 					// TODO Auto-generated catch block
@@ -415,14 +430,14 @@ class GameController extends JFrame {
 			}
 		}
 	}
-	
-	/** @brief 电脑的turn
+
+	/**
+	 * @brief 电脑的turn
 	 * 
-	 * 电脑走棋；
-	 * 如果人机对战，并且轮到电脑走棋，则进行处理
-	 * 否则，不进行任何处理
+	 *        电脑走棋； 如果人机对战，并且轮到电脑走棋，则进行处理 否则，不进行任何处理
 	 */
-	private void computer_turn(){
+	@SuppressWarnings("deprecation")
+	private void computer_turn() {
 		if (game_model.getComputer() && !game_model.playerTurn()) {
 			System.out.println("here computer turn");
 
@@ -430,14 +445,13 @@ class GameController extends JFrame {
 			kernel.placeTwoStones(game_model.getCurrentColor());
 
 			game_model.setChessMan(kernel.getData());
-			// TODO
-			// draw hint
 
 			if (kernel.hasSix()) {
-				// TODO
 				// play lose music
 				playSound(1);
 				popupMessageBox("你失败了，再接再厉！！！", "游戏失败");
+				(new HistoryModel()).insert(-1,
+						(new Date()).toLocaleString());
 				game_model.newGame();
 			}
 			setEnabled(true);
@@ -447,7 +461,7 @@ class GameController extends JFrame {
 	/**
 	 * @brief 关于六子棋
 	 * 
-	 * 弹出六子棋的“关于”界面
+	 *        弹出六子棋的“关于”界面
 	 */
 	class ack_menu_AboutSixChess implements ActionListener {
 		@Override
@@ -462,7 +476,7 @@ class GameController extends JFrame {
 	/**
 	 * @brief 查看帮助界面的监听类
 	 * 
-	 * 帮助界面的监听 
+	 *        帮助界面的监听
 	 */
 	class ack_menu_SeekHelp implements ActionListener {
 		@Override
@@ -476,7 +490,7 @@ class GameController extends JFrame {
 	/**
 	 * 软件更新的监听
 	 * 
-	 * 软件更新的监听 
+	 * 软件更新的监听
 	 */
 	class ack_menu_CheckUpdate implements ActionListener {
 		@Override
@@ -487,22 +501,26 @@ class GameController extends JFrame {
 		}
 	}
 
-	/** @brief 更新状态
+	/**
+	 * @brief 更新状态
 	 * 
-	 * 更新游戏的状态：是否允许悔棋等
+	 *        更新游戏的状态：是否允许悔棋等
 	 */
 	void updateStatus() {
-		if( game_model.getChessmans().isEmpty() || game_model.getMode() == 1 ){
-			menu_back.setEnabled( false );
-		}else{
-			menu_back.setEnabled( true );
+		if (game_model.getChessmans().isEmpty() || game_model.getMode() == 1) {
+			menu_back.setEnabled(false);
+		} else {
+			menu_back.setEnabled(true);
 		}
 	}
 
-	/** brief 弹出错误消息的提示框
+	/**
+	 * brief 弹出错误消息的提示框
 	 * 
-	 * @param msg 错误消息内容
-	 * @param title 错误消息的标题
+	 * @param msg
+	 *            错误消息内容
+	 * @param title
+	 *            错误消息的标题
 	 */
 	void popupMessageBox(String msg, String title) {
 		final JDialog myDialog = new JDialog(this, title, true);
@@ -526,7 +544,8 @@ class GameController extends JFrame {
 		myDialog.setVisible(true);
 	}
 
-	/** @brief 窗体关闭的监听
+	/**
+	 * @brief 窗体关闭的监听
 	 * 
 	 */
 	class Wclose extends WindowAdapter {
@@ -536,12 +555,14 @@ class GameController extends JFrame {
 		}
 	}
 
-	/** @brief 鼠标事件的监听
+	/**
+	 * @brief 鼠标事件的监听
 	 * 
-	 * 用于监听鼠标事件
+	 *        用于监听鼠标事件
 	 */
 	class amouse extends MouseAdapter {
 		// 鼠标在棋盘上点击 事件响应
+		@SuppressWarnings("deprecation")
 		public void mouseClicked(MouseEvent e) {
 
 			// 分析无效操作，包括非法点击，点击不可靠等
@@ -567,14 +588,12 @@ class GameController extends JFrame {
 			x = x - x_start;
 			y = y - y_start;
 			if ((x % 30) > 25 || (y % 30) > 25) {
-				// TODO
 				playSound(-1);
 				return;
 			}
 
 			if ((x < 0) || (x > 18 * chess_size) || (y < 0)
 					|| (y > 18 * chess_size)) {
-				// TODO
 				playSound(-1);
 				return;
 			}
@@ -598,6 +617,8 @@ class GameController extends JFrame {
 				playSound(0);
 				if (game_model.getComputer()) {
 					popupMessageBox("恭喜你战胜了电脑！！！", "游戏胜利");
+					(new HistoryModel()).insert(1,
+							(new Date()).toLocaleString());
 					game_model.newGame();
 				} else {
 					String[] winner = { "黑子", "白子" };
@@ -607,16 +628,18 @@ class GameController extends JFrame {
 			}
 
 			computer_turn();
-			
+
 			setEnabled(true);
 
 			updateStatus();
 		}
 	}
 
-	/** @brief 播放音乐
+	/**
+	 * @brief 播放音乐
 	 * 
-	 * @param type 播放音乐的类型
+	 * @param type
+	 *            播放音乐的类型
 	 */
 	private void playSound(int type) {
 		if (config_model.getMusicState().equals("on")) {

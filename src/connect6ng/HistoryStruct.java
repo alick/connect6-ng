@@ -14,7 +14,7 @@ package connect6ng;
  * @author lujx
  *	
  */
-public class HistResult {
+public class HistoryStruct {
 	private int win;
 	private int all;
 	
@@ -23,7 +23,7 @@ public class HistResult {
 	 * @param win
 	 * @param all
 	 */
-	public HistResult(int win, int all){
+	public HistoryStruct(int win, int all){
 		this.win = win;
 		this.all = all;
 	}

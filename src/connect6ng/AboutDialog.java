@@ -11,6 +11,8 @@
 
 package connect6ng;
 
+import javax.swing.ImageIcon;
+
 @SuppressWarnings("serial")
 public class AboutDialog extends javax.swing.JDialog {
 
@@ -127,6 +129,7 @@ public class AboutDialog extends javax.swing.JDialog {
         layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {author_label, copyright_label, version_label});
 
         setTitle("关于六子棋");
+        setIconImage( (new ImageIcon("./res/logo_50.png")).getImage() );
         pack();
     }
 

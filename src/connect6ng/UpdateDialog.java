@@ -14,6 +14,8 @@ package connect6ng;
 import java.lang.reflect.Method;
 import java.util.logging.Level;
 
+import javax.swing.ImageIcon;
+
 /**
  * 
  * @author houqi1993
@@ -207,6 +209,7 @@ public class UpdateDialog extends javax.swing.JDialog {
 																.addGap(28, 28,
 																		28)))));
 		setTitle("软件升级");
+		setIconImage( (new ImageIcon("./res/logo_50.png")).getImage() );
 		pack();
 	}// </editor-fold>
 

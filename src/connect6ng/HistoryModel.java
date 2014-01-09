@@ -30,7 +30,7 @@ public class HistoryModel {
 	 * 
 	 * @return
 	 */
-	public HistResult DataStatistics() {
+	public HistoryStruct DataStatistics() {
 		try {
 			// 连接SQLite的JDBC
 			Class.forName("org.sqlite.JDBC");
@@ -54,11 +54,11 @@ public class HistoryModel {
 			}
 
 			conn.close(); // 结束数据库的连接
-			return new HistResult(win_games, all_games);
+			return new HistoryStruct(win_games, all_games);
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new HistResult(0, 0);
+			return new HistoryStruct(0, 0);
 		}
 
 	}
