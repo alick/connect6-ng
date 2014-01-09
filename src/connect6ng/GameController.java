@@ -52,8 +52,8 @@ class GameController extends JFrame {
 	JMenuItem menu_exit = new JMenuItem("退出");
 	JMenuItem menu_back = new JMenuItem("悔棋");
 	JMenu menu_file = new JMenu("游戏战绩");
-	JMenuItem menu_open = new JMenuItem("打开游戏战绩");
-	JMenuItem menu_save = new JMenuItem("保存游戏战绩");
+	JMenuItem menu_open = new JMenuItem("打开棋局");
+	JMenuItem menu_save = new JMenuItem("保存棋局");
 
 	// 帮助：
 	JMenu menu_help = new JMenu("帮助");
@@ -79,45 +79,67 @@ class GameController extends JFrame {
 		setJMenuBar(menu_JMenuBar);
 		menu_JMenuBar.add(menu_game);
 		menu_game.add(menu_ngame);
+		
+		// first turn (black chess)
 		menu_ngame.add(menu_first);
 		menu_first.addActionListener(new ack_menu_first());
+		menu_first.setAccelerator(KeyStroke.getKeyStroke('F',
+				java.awt.Event.CTRL_MASK, false));
 
+		// last turn (white chess)
 		menu_ngame.add(menu_last);
 		menu_last.addActionListener(new ack_menu_last());
+		menu_last.setAccelerator(KeyStroke.getKeyStroke('L',
+				java.awt.Event.CTRL_MASK, false));
 
+		// rival : computer or person
 		menu_game.add(menu_comp);
 		menu_comp.addItemListener(new ack_menu_comp());
 		menu_comp.setState(true);
+		menu_comp.setAccelerator(KeyStroke.getKeyStroke('C',
+				java.awt.Event.CTRL_MASK, false));
+		
+		// practice or play
 		menu_game.add(menu_prac);
 		menu_prac.addActionListener(new ack_menu_prac());
+		menu_prac.setAccelerator(KeyStroke.getKeyStroke('P',
+				java.awt.Event.CTRL_MASK, false));
 
+		// back
 		menu_game.add(menu_back);
 		menu_back.addActionListener(new ack_menu_back());
-		menu_back.setEnabled(false);
+//		menu_back.setEnabled(false);
 		menu_back.setAccelerator(KeyStroke.getKeyStroke('B',
 				java.awt.Event.CTRL_MASK, false));
 		
+		// music on/off
 		menu_game.add(menu_music);
 		menu_music.addActionListener(new ack_menu_music());
-		menu_back.setAccelerator(KeyStroke.getKeyStroke('M',
+		menu_music.setAccelerator(KeyStroke.getKeyStroke('M',
 				java.awt.Event.CTRL_MASK, false));
 		
+		// show history
 		menu_game.add(menu_hist);
 		menu_hist.addActionListener(new ack_menu_hist() );
-		menu_hist.setAccelerator(KeyStroke.getKeyStroke('L',
+		menu_hist.setAccelerator(KeyStroke.getKeyStroke('H',
 				java.awt.Event.CTRL_MASK, false));
 		
+		// exit
 		menu_game.add(menu_exit);
 		menu_exit.addActionListener(new ack_menu_exit());
 		menu_exit.setAccelerator(KeyStroke.getKeyStroke('E',
 				java.awt.Event.CTRL_MASK, false));
+		
+		// file
 		menu_JMenuBar.add(menu_file);
 		
+		// open 
 		menu_file.add(menu_open);
 		menu_open.addActionListener(new ack_menu_open());
 		menu_open.setAccelerator(KeyStroke.getKeyStroke('O',
 				java.awt.Event.CTRL_MASK, false));
 		
+		// save
 		menu_file.add(menu_save);
 		menu_save.addActionListener(new ack_menu_save());
 		menu_save.setAccelerator(KeyStroke.getKeyStroke('S',
@@ -128,17 +150,17 @@ class GameController extends JFrame {
 
 		menu_help.add(menu_AboutSixChess);
 		menu_AboutSixChess.addActionListener(new ack_menu_AboutSixChess());
-		menu_AboutSixChess.setAccelerator(KeyStroke.getKeyStroke('O',
+		menu_AboutSixChess.setAccelerator(KeyStroke.getKeyStroke('A',
 				java.awt.Event.CTRL_MASK, false));
 
 		menu_help.add(menu_SeekHelp);
 		menu_SeekHelp.addActionListener(new ack_menu_SeekHelp());
-		menu_SeekHelp.setAccelerator(KeyStroke.getKeyStroke('O',
+		menu_SeekHelp.setAccelerator(KeyStroke.getKeyStroke('H',
 				java.awt.Event.CTRL_MASK, false));
 
 		menu_help.add(menu_CheckUpdate);
 		menu_CheckUpdate.addActionListener(new ack_menu_CheckUpdate());
-		menu_CheckUpdate.setAccelerator(KeyStroke.getKeyStroke('O',
+		menu_CheckUpdate.setAccelerator(KeyStroke.getKeyStroke('U',
 				java.awt.Event.CTRL_MASK, false));
 
 		// 窗口监听

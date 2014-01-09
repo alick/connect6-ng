@@ -13,8 +13,8 @@ package connect6ng;
 @SuppressWarnings("serial")
 /**
  * @brief 历史记录类
- * @author lujx
- *	用来管理历史记录
+ * 
+ *	用来显示历史记录
  */
 public class HistoryView extends javax.swing.JDialog {
 
@@ -62,7 +62,7 @@ public class HistoryView extends javax.swing.JDialog {
             }
         });
 
-        HistResult h = (new Database()).DataStatistics();
+        HistResult h = (new HistoryModel()).DataStatistics();
         all_label.setText(String.valueOf(h.getAll()));
 
         win_label.setText(String.valueOf(h.getWin()));
@@ -138,11 +138,9 @@ public class HistoryView extends javax.swing.JDialog {
      * @param evt
      */
     private void OK_btnActionPerformed(java.awt.event.ActionEvent evt) {                                       
-        // TODO add your handling code here:
         HistoryView.this.dispose();
     }                                      
 
-    // Variables declaration - do not modify                     
     private javax.swing.JButton OK_btn;
     private javax.swing.JLabel all_label;
     private javax.swing.JLabel all_label_text;
@@ -152,6 +150,5 @@ public class HistoryView extends javax.swing.JDialog {
     private javax.swing.JLabel title_label;
     private javax.swing.JLabel win_label;
     private javax.swing.JLabel win_label_text;
-    // End of variables declaration                   
 }
 
