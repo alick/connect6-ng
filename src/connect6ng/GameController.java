@@ -221,7 +221,7 @@ class GameController extends JFrame {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			HistDialog d = new HistDialog(GameController.this, true);
+			HistoryView d = new HistoryView(GameController.this, true);
 			d.setLocationRelativeTo(null);
 			d.setVisible(true);
 		}
@@ -459,9 +459,9 @@ class GameController extends JFrame {
 	class ack_menu_CheckUpdate implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			CheckUpdateDialog d = new CheckUpdateDialog(GameController.this);
-			d.dialog.setLocationRelativeTo(null);
-			d.dialog.setVisible(true);
+			UpdateDialog d = new UpdateDialog(GameController.this, true);
+			d.setLocationRelativeTo(null);
+			d.setVisible(true);
 		}
 	}
 

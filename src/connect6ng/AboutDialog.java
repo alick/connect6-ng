@@ -63,7 +63,7 @@ public class AboutDialog extends javax.swing.JDialog {
         copyright_label.setFont(new java.awt.Font("华文楷体", 1, 14)); // NOI18N
         copyright_label.setText("版权所有归 软件工程六子棋项目组 所有 ");
 
-        icon_label.setIcon(new javax.swing.ImageIcon("D:\\Study\\WorkSpace\\connect6-ng-dev\\res\\logo_100.png")); // NOI18N
+        icon_label.setIcon(new javax.swing.ImageIcon("./res/logo_100.png")); // NOI18N
 
         version_label1.setFont(new java.awt.Font("华文楷体", 1, 14)); // NOI18N
         version_label1.setText("软件源代码参见：http://github.com/HouQi/connect6-ng.git");
@@ -126,6 +126,7 @@ public class AboutDialog extends javax.swing.JDialog {
 
         layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {author_label, copyright_label, version_label});
 
+        setTitle("关于六子棋");
         pack();
     }
 

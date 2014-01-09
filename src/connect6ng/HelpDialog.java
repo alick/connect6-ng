@@ -47,7 +47,16 @@ public class HelpDialog extends javax.swing.JDialog {
 		contentArea.setLineWrap(true);
 		contentArea.setRows(5);
 		contentArea
-				.setText("简介：\n经过证明，传统的五子棋、连珠棋由于棋规的限制，会出现“先手必胜”、“必胜下法”等有碍公平性的现象。为了解决这些问题，六子棋应运而生。六子棋英文名称为connect6，兼顾公平性和可玩性，是一种新的棋盘玩法，发明人为国立交通大学资讯工程系教授吴毅成。\n\n规则：\n六子棋的规则与五子棋非常相似，均有对弈双方轮流落子，先连成6子者获胜。对弈过程中，除了第一次黑方只允许下一颗子外，之后黑白双方每次落子均为两子，在此过程中双方可以对对方进行围堵，同时也可以“明修栈道，暗度陈仓”，对弈双方在方寸间斗智斗勇，最终决出胜利者。");
+				.setText("简介：\n经过证明，传统的五子棋、连珠棋由于棋规的限制" +
+						"，会出现“先手必胜”、“必胜下法”等有碍公平性的现象。" +
+						"为了解决这些问题，六子棋应运而生。六子棋英文名称为conne" +
+						"ct6，兼顾公平性和可玩性，是一种新的棋盘玩法，发明人为" +
+						"国立交通大学资讯工程系教授吴毅成。\n\n规则：\n六子棋的" +
+						"规则与五子棋非常相似，均有对弈双方轮流落子，先连成6子" +
+						"者获胜。对弈过程中，除了第一次黑方只允许下一颗子外，之" +
+						"后黑白双方每次落子均为两子，在此过程中双方可以对对方进" +
+						"行围堵，同时也可以“明修栈道，暗度陈仓”，对弈双方在方" +
+						"寸间斗智斗勇，最终决出胜利者。");
 		jScrollPane1.setViewportView(contentArea);
 
 		icon_label.setIcon(new javax.swing.ImageIcon(
@@ -136,7 +145,8 @@ public class HelpDialog extends javax.swing.JDialog {
 										javax.swing.GroupLayout.PREFERRED_SIZE)
 								.addGap(18, 18, 18).addComponent(OK_btn)
 								.addGap(23, 23, 23)));
-
+		
+		setTitle("六子棋帮助");
 		pack();
 	}// </editor-fold>
 	

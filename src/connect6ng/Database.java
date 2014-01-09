@@ -37,7 +37,7 @@ public class Database {
 
 			// 建立一个数据库名connect6.db的连接，如果不存在就在当前目录下创建之
 			Connection conn = DriverManager
-					.getConnection("jdbc:sqlite:connect6.db");
+					.getConnection("jdbc:sqlite:./res/connect6.db");
 
 			Statement stat = conn.createStatement();
 
@@ -70,7 +70,7 @@ public class Database {
 
 			// 建立一个数据库名connect6.db的连接，如果不存在就在当前目录下创建之
 			Connection conn = DriverManager
-					.getConnection("jdbc:sqlite:connect6.db");
+					.getConnection("jdbc:sqlite:./res/connect6.db");
 
 			Statement stat = conn.createStatement();
 
@@ -97,7 +97,7 @@ public class Database {
 
 			// 建立一个数据库名connect6.db的连接，如果不存在就在当前目录下创建之
 			Connection conn = DriverManager
-					.getConnection("jdbc:sqlite:connect6.db");
+					.getConnection("jdbc:sqlite:./res/connect6.db");
 
 			Statement stat = conn.createStatement();
 
@@ -105,7 +105,7 @@ public class Database {
 			ResultSet rsTables = conn.getMetaData().getTables(null, null,
 					"HistoryLog", null);
 			if (rsTables.next()) {
-				System.out.println("表存在,创建表的事情不要做了");
+				System.out.println("HistoryLog表存在,不需要创建");
 			} else {
 				// 创建表，-1：负；0：平；1胜
 				stat.executeUpdate("create table HistoryLog(results int, hist_time varchar(256));");
@@ -125,7 +125,7 @@ public class Database {
 
 			// 建立一个数据库名connect6.db的连接，如果不存在就在当前目录下创建之
 			Connection conn = DriverManager
-					.getConnection("jdbc:sqlite:connect6.db");
+					.getConnection("jdbc:sqlite:./res/connect6.db");
 
 			Statement stat = conn.createStatement();
 

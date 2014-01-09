@@ -18,6 +18,7 @@ import java.awt.event.WindowEvent;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.logging.Level;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -62,14 +63,12 @@ public class MusicPlayer {
 				chess_down[i-1] = java.applet.Applet.newAudioClip(file);
 			}
 			// System.out.println("音乐开始播放");
-			System.out.println(state);
 			if (state.equals("on")) {
 				background.loop();
 			}else {
 				background.stop();// 其他情况音乐不播放
 			}
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			pushErrorDialog("音乐资源加载错误");
 		}
@@ -105,7 +104,8 @@ public class MusicPlayer {
 		}else if( type <= 9 ){
 			chess_down[ type - 2 ].play();
 		}else{
-			System.out.println("错误的音乐播放类型");
+//			System.out.println("错误的音乐播放类型" + type);
+			Flogger.getLogger().log(Level.SEVERE, "错误的音乐播放类型" + type);
 		}
 	}
 	
