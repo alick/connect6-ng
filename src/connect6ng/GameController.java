@@ -26,19 +26,17 @@ import javax.swing.*;
  */
 @SuppressWarnings("serial")
 class GameController extends JFrame {
-	// / 配置文件的Model
+	/// 配置文件的Model
 	ConfigModel config_model;
-	// / 配置文件的 View
-	ConfigView config_view;
-	// / 游戏数据的Model
+	/// 游戏数据的Model
 	GameModel game_model;
-	// / 游戏数据的View
+	/// 游戏数据的View
 	GameView game_view;
 
-	// / 音乐播放模块
+	/// 音乐播放模块
 	MusicPlayer music_player;
 
-	// / AI模块
+	/// AI模块
 	Alg kernel;
 
 	// 菜单栏
@@ -57,7 +55,7 @@ class GameController extends JFrame {
 	JMenuItem menu_open = new JMenuItem("打开棋局");
 	JMenuItem menu_save = new JMenuItem("保存棋局");
 
-	// 帮助：
+	// 帮助菜单
 	JMenu menu_help = new JMenu("帮助");
 	JMenuItem menu_AboutSixChess = new JMenuItem("关于六子棋");
 	JMenuItem menu_SeekHelp = new JMenuItem("查看帮助");
@@ -69,10 +67,10 @@ class GameController extends JFrame {
 	 *        构造函数中初始化菜单栏、游戏的显示区域栏等，以及音乐模块等
 	 */
 	GameController() {
-		super("Connect 6 - 游戏尚未开始 - 练习模式");
+		super("六子棋小游戏");
 		setSize(622, 665);
 		setResizable(false);
-		setAlwaysOnTop(true);
+//		setAlwaysOnTop(true);
 		setIconImage( (new ImageIcon("./res/logo_50.png")).getImage() );
 
 		// 初始化数据
@@ -175,6 +173,7 @@ class GameController extends JFrame {
 
 		Container cont = getContentPane();
 
+		// 添加Model和View
 		game_model = new GameModel();
 		game_view = new GameView(game_model);
 		game_model.addObserver(game_view);
@@ -182,10 +181,10 @@ class GameController extends JFrame {
 
 		cont.add(game_view);
 
+		// 设置数据
 		Vector<MyPoint> data = game_model.getChessmans();
 		kernel.setData(data);
 
-		repaint();
 		setLocationRelativeTo(null);
 		setVisible(true);
 

@@ -1,11 +1,10 @@
 /**
  * @file __FILE__
- * @brief  "关于六子棋"菜单的弹出界面
+ * @brief  "检查更新"菜单的弹出界面
  * @author 侯奇
  * @author 卢嘉勋
  * @author 刘菁菁
  * @date 2014-01-01
- * @version v 1.0.0
  * 
  * 此页面为检查更新页面，挂载GitHub的链接。
  */
@@ -16,23 +15,27 @@ import java.util.logging.Level;
 
 import javax.swing.ImageIcon;
 
-/**
+/** @brief  "检查更新"菜单的弹出界面
  * 
- * @author houqi1993
+ * 检查软件的更新情况，是否为最新版本
  */
 @SuppressWarnings("serial")
 public class UpdateDialog extends javax.swing.JDialog {
 
-	final int x = 1;
-
-	/**
-	 * Creates new form UpdateDialog
+	/***@brief 构造函数
+	 * 
+	 * @param parent 父构件
+	 * @param modal 是否为模态窗体
 	 */
 	public UpdateDialog(java.awt.Frame parent, boolean modal) {
 		super(parent, modal);
 		initComponents();
 	}
 
+	/**@brief 初始化窗体
+	 * 
+	 * 初始化窗体，完成窗体的布局
+	 */
 	private void initComponents() {
 
 		icon_label = new javax.swing.JLabel();
@@ -213,10 +216,14 @@ public class UpdateDialog extends javax.swing.JDialog {
 		pack();
 	}// </editor-fold>
 
+	/** @brief 确定 按钮的事件监听函数
+	 */
 	private void OK_btnActionPerformed(java.awt.event.ActionEvent evt) {
 		UpdateDialog.this.dispose();
 	}
 
+	/** @brief github按钮的事件监听函数
+	 */
 	private void github_btnActionPerformed(java.awt.event.ActionEvent evt) {
 		try {
 			browse("https://github.com/HouQi/connect6-ng-dev");
@@ -226,7 +233,9 @@ public class UpdateDialog extends javax.swing.JDialog {
 			UpdateDialog.this.dispose();
 		}
 	}
-
+	
+	/** @brief bitbucket按钮的事件监听函数
+	 */
 	private void bitbucket_btnActionPerformed(java.awt.event.ActionEvent evt) {
 		try {
 			browse("https://bitbucket.org/houqi/connect6-ng/src");
@@ -237,6 +246,8 @@ public class UpdateDialog extends javax.swing.JDialog {
 		}
 	}
 
+	/** @brief google code按钮的事件监听函数
+	 */
 	private void google_btnActionPerformed(java.awt.event.ActionEvent evt) {
 		try {
 			browse("https://code.google.com/p/connect6-ng-dev/source/browse/");
@@ -288,7 +299,7 @@ public class UpdateDialog extends javax.swing.JDialog {
 		}
 	}
 
-	// Variables declaration - do not modify
+	// 控件
 	private javax.swing.JButton OK_btn;
 	private javax.swing.JButton bitbucket_btn;
 	private javax.swing.JButton github_btn;
@@ -298,5 +309,4 @@ public class UpdateDialog extends javax.swing.JDialog {
 	private javax.swing.JLabel title_label;
 	private javax.swing.JLabel title_label1;
 	private javax.swing.JLabel version_label1;
-	// End of variables declaration
 }

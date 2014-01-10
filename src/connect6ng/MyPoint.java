@@ -1,14 +1,15 @@
-package connect6ng;
-
-import java.io.Serializable;
 /** @file __FILE__ 
  * @brief  记录棋子的位置和颜色
  * @author 侯奇
  * @author 卢嘉勋
  * @author 刘菁菁
  * @date 2013-12-30
- * @version 1.0.0
  * 
+ */
+package connect6ng;
+
+import java.io.Serializable;
+/**@brief  记录棋子的位置和颜色
  */
 @SuppressWarnings("serial")
 class MyPoint implements Serializable {

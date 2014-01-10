@@ -9,16 +9,20 @@
  * 历史记录的管理类
  * 用来管理历史记录，包括历史记录的查询、历史记录的删除等
  */
-package connect6ng;
 
+package connect6ng;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
+/**@brief 历史记录管理类
+* 历史记录的管理类
+* 用来管理历史记录，包括历史记录的查询、历史记录的删除等
+*/
 public class HistoryModel {
-
-	public Statement stat; // 用来执行SQL指令的句柄
+	 /// 用来执行SQL指令的句柄
+	public Statement stat;
 
 	/** @brief 构造函数
 	 * 
