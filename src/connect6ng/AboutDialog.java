@@ -68,8 +68,12 @@ public class AboutDialog extends javax.swing.JDialog {
         author_label.setText("软件工程六子棋项目组");
 
         version_label.setFont(new java.awt.Font("华文楷体", 1, 14)); // NOI18N
-        version_label.setText("版本：1.0.0 ");
-
+        String v = VersionManager.getLocalVersion();
+        if( v == null )
+        	version_label.setText("版本：1.0.0 ");
+        else
+        	version_label.setText("版本：" + v);
+        
         copyright_label.setFont(new java.awt.Font("华文楷体", 1, 14)); // NOI18N
         copyright_label.setText("版权所有归 软件工程六子棋项目组 所有 ");
 

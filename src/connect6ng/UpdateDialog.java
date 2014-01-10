@@ -47,6 +47,8 @@ public class UpdateDialog extends javax.swing.JDialog {
 		github_btn = new javax.swing.JButton();
 		bitbucket_btn = new javax.swing.JButton();
 		google_btn = new javax.swing.JButton();
+        local_version = new javax.swing.JLabel();
+        latest_version = new javax.swing.JLabel();
 
 		icon_label.setIcon(new javax.swing.ImageIcon(
 				"./res/logo_100.png")); // NOI18N
@@ -99,118 +101,79 @@ public class UpdateDialog extends javax.swing.JDialog {
 			}
 		});
 
-		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(
-				getContentPane());
-		getContentPane().setLayout(layout);
-		layout.setHorizontalGroup(layout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(
-						layout.createSequentialGroup()
-								.addGroup(
-										layout.createParallelGroup(
-												javax.swing.GroupLayout.Alignment.LEADING)
-												.addGroup(
-														layout.createSequentialGroup()
-																.addGap(58, 58,
-																		58)
-																.addComponent(
-																		icon_label1)
-																.addGap(26, 26,
-																		26)
-																.addComponent(
-																		title_label1))
-												.addGroup(
-														layout.createSequentialGroup()
-																.addGap(35, 35,
-																		35)
-																.addComponent(
-																		version_label1)
-																.addPreferredGap(
-																		javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																.addGroup(
-																		layout.createParallelGroup(
-																				javax.swing.GroupLayout.Alignment.LEADING)
-																				.addComponent(
-																						OK_btn,
-																						javax.swing.GroupLayout.PREFERRED_SIZE,
-																						98,
-																						javax.swing.GroupLayout.PREFERRED_SIZE)
-																				.addGroup(
-																						layout.createSequentialGroup()
-																								.addComponent(
-																										github_btn,
-																										javax.swing.GroupLayout.PREFERRED_SIZE,
-																										48,
-																										javax.swing.GroupLayout.PREFERRED_SIZE)
-																								.addPreferredGap(
-																										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																								.addComponent(
-																										bitbucket_btn,
-																										javax.swing.GroupLayout.PREFERRED_SIZE,
-																										48,
-																										javax.swing.GroupLayout.PREFERRED_SIZE)
-																								.addPreferredGap(
-																										javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																								.addComponent(
-																										google_btn,
-																										javax.swing.GroupLayout.PREFERRED_SIZE,
-																										48,
-																										javax.swing.GroupLayout.PREFERRED_SIZE)))))
-								.addContainerGap(58, Short.MAX_VALUE)));
-		layout.setVerticalGroup(layout
-				.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(
-						layout.createSequentialGroup()
-								.addGap(31, 31, 31)
-								.addGroup(
-										layout.createParallelGroup(
-												javax.swing.GroupLayout.Alignment.LEADING)
-												.addComponent(
-														icon_label1,
-														javax.swing.GroupLayout.Alignment.TRAILING)
-												.addGroup(
-														javax.swing.GroupLayout.Alignment.TRAILING,
-														layout.createSequentialGroup()
-																.addComponent(
-																		title_label1)
-																.addGap(32, 32,
-																		32)))
-								.addGroup(
-										layout.createParallelGroup(
-												javax.swing.GroupLayout.Alignment.TRAILING)
-												.addGroup(
-														layout.createSequentialGroup()
-																.addGap(57, 57,
-																		57)
-																.addComponent(
-																		version_label1)
-																.addContainerGap(
-																		92,
-																		Short.MAX_VALUE))
-												.addGroup(
-														layout.createSequentialGroup()
-																.addPreferredGap(
-																		javax.swing.LayoutStyle.ComponentPlacement.RELATED,
-																		javax.swing.GroupLayout.DEFAULT_SIZE,
-																		Short.MAX_VALUE)
-																.addGroup(
-																		layout.createParallelGroup(
-																				javax.swing.GroupLayout.Alignment.LEADING)
-																				.addComponent(
-																						github_btn,
-																						javax.swing.GroupLayout.Alignment.TRAILING)
-																				.addComponent(
-																						bitbucket_btn,
-																						javax.swing.GroupLayout.Alignment.TRAILING)
-																				.addComponent(
-																						google_btn,
-																						javax.swing.GroupLayout.Alignment.TRAILING))
-																.addGap(28, 28,
-																		28)
-																.addComponent(
-																		OK_btn)
-																.addGap(28, 28,
-																		28)))));
+		local_version.setFont(new java.awt.Font("华文楷体", 0, 14)); // NOI18N
+		String local_v = VersionManager.getLocalVersion();
+		if( local_v == null ){
+			local_version.setText("获取本地版本号错误");
+		}else
+			local_version.setText("本地版本号：" + local_v);
+
+        latest_version.setFont(new java.awt.Font("华文楷体", 0, 14)); // NOI18N
+        String latest_v = VersionManager.getLatestVersion();
+		if( latest_v == null ){
+			latest_version.setText("获取最新版本号错误，请检查网络连接");
+		}else
+			latest_version.setText("最新版本号：" + latest_v);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(94, 94, 94)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(latest_version)
+                            .addComponent(local_version)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(58, 58, 58)
+                        .addComponent(icon_label1)
+                        .addGap(26, 26, 26)
+                        .addComponent(title_label1))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(version_label1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(github_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(bitbucket_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(google_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(85, 85, 85)
+                                .addComponent(OK_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(84, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(icon_label1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(title_label1)
+                        .addGap(32, 32, 32)))
+                .addGap(18, 18, 18)
+                .addComponent(local_version)
+                .addGap(18, 18, 18)
+                .addComponent(latest_version)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(9, 9, 9)
+                        .addComponent(version_label1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(github_btn)
+                    .addComponent(bitbucket_btn)
+                    .addComponent(google_btn))
+                .addGap(13, 13, 13)
+                .addComponent(OK_btn)
+                .addContainerGap(25, Short.MAX_VALUE))
+        );
+        
 		setTitle("软件升级");
 		setIconImage( (new ImageIcon("./res/logo_50.png")).getImage() );
 		pack();
@@ -309,4 +272,6 @@ public class UpdateDialog extends javax.swing.JDialog {
 	private javax.swing.JLabel title_label;
 	private javax.swing.JLabel title_label1;
 	private javax.swing.JLabel version_label1;
+    private javax.swing.JLabel latest_version;
+    private javax.swing.JLabel local_version;
 }
