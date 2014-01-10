@@ -7,13 +7,17 @@
  */
 package connect6ng;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.HttpURLConnection;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.logging.Level;
+
+import javax.net.ssl.HttpsURLConnection;
 
 public class VersionManager {
 
@@ -34,20 +38,53 @@ public class VersionManager {
 	public static String getLatestVersion() {
 		String v = null;
 
-		URL url;
+		URL infoUrl = null;
+		URLConnection connection = null;
+		HttpsURLConnection httpConnection = null;
+		InputStream inStream = null;
+		// 首先获取URL
 		try {
-			url = new URL("https://github.com/HouQi/connect6-ng-dev/tree/master/config/version");
-			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-			BufferedInputStream bis = new BufferedInputStream(conn.getInputStream());
-			byte[] buf = new byte[1024];
-			while( bis.read(buf) != -1 ){
-				System.out.println(buf.toString());
-				v = buf.toString();
-				v = v.trim();
-			}			
-		} catch (IOException e) {
-			Flogger.getLogger().log(Level.SEVERE, e.toString());
+			infoUrl = new URL(
+					"https://raw.github.com/HouQi/connect6-ng-dev/master/config/version");
+			// version的网址
+		} catch (MalformedURLException e) { 
+			e.printStackTrace();
 		}
+		
+		// 然后，打开URL连接
+		try {
+			connection = infoUrl.openConnection();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		// 将URL连接转化成 HTTPS 的连接
+		httpConnection = (HttpsURLConnection) connection;
+		// 从这个 HTTPS 连接中获得流
+		try {
+			inStream = httpConnection.getInputStream();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		BufferedReader reader = new BufferedReader(new InputStreamReader(
+				inStream));
+		StringBuilder sb = new StringBuilder();
+		String line = null; 
+		// 把流转化成字符串
+		try {
+			while ((line = reader.readLine()) != null) {
+				sb.append(line + "\n");
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				inStream.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		v = sb.toString();
+
 		return v;
 	}
 }
