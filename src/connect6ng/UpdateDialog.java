@@ -6,13 +6,15 @@
  * @author 刘菁菁
  * @date 2014-01-01
  * 
- * 此页面为检查更新页面，挂载GitHub的链接。
+ * 此页面为检查更新页面，附加GitHub的链接。
+ * 通过多线程读取文件和网页上的版本信息
  */
 package connect6ng;
 
 import java.lang.reflect.Method;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.logging.Level;
-
 import javax.swing.ImageIcon;
 
 /** @brief  "检查更新"菜单的弹出界面
@@ -20,8 +22,10 @@ import javax.swing.ImageIcon;
  * 检查软件的更新情况，是否为最新版本
  */
 @SuppressWarnings("serial")
-public class UpdateDialog extends javax.swing.JDialog {
+public class UpdateDialog extends javax.swing.JDialog implements Observer  {
 
+	UpdateModel model = null;
+	
 	/***@brief 构造函数
 	 * 
 	 * @param parent 父构件
@@ -29,6 +33,7 @@ public class UpdateDialog extends javax.swing.JDialog {
 	 */
 	public UpdateDialog(java.awt.Frame parent, boolean modal) {
 		super(parent, modal);
+		model = new UpdateModel();
 		initComponents();
 	}
 
@@ -102,18 +107,10 @@ public class UpdateDialog extends javax.swing.JDialog {
 		});
 
 		local_version.setFont(new java.awt.Font("华文楷体", 0, 14)); // NOI18N
-		String local_v = VersionManager.getLocalVersion();
-		if( local_v == null ){
-			local_version.setText("获取本地版本号错误");
-		}else
-			local_version.setText("本地版本号：" + local_v);
+		local_version.setText( model.getLocalVersion() );
 
         latest_version.setFont(new java.awt.Font("华文楷体", 0, 14)); // NOI18N
-        String latest_v = VersionManager.getLatestVersion();
-		if( latest_v == null ){
-			latest_version.setText("获取最新版本号错误，请检查网络连接");
-		}else
-			latest_version.setText("最新版本号：" + latest_v);
+        latest_version.setText(model.getLatestVersion());
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -177,6 +174,9 @@ public class UpdateDialog extends javax.swing.JDialog {
 		setTitle("软件升级");
 		setIconImage( (new ImageIcon("./res/logo_50.png")).getImage() );
 		pack();
+		
+		model.addObserver(this);
+		updateVersion();
 	}// </editor-fold>
 
 	/** @brief 确定 按钮的事件监听函数
@@ -260,6 +260,48 @@ public class UpdateDialog extends javax.swing.JDialog {
 				// 这个值在上面已经成功的得到了一个进程。
 				Runtime.getRuntime().exec(new String[] { browser, url });
 		}
+	}
+	
+	/**@brief 更新版本号
+	 * 
+	 * 用多线程实现版本号的读取，提高响应速度
+	 */
+	private void updateVersion(){
+		Thread t1 = new Thread(){
+			public void run(){
+				String local_v = VersionManager.getLocalVersion();
+				model.setLocalVersion(local_v);
+			}
+		};
+		t1.start();
+		
+		Thread t2 = new Thread(){
+			public void run(){				
+		        String latest_v = VersionManager.getLatestVersion();
+		        model.setLatestVersion(latest_v);
+			}
+		};
+		t2.start();
+	}
+	
+	/**@brief 更新函数
+	 * 
+	 * 重设标签信息，显示正确的版本号
+	 */
+	@Override
+	public void update(Observable obs, Object obj) {
+		model = (UpdateModel) obs;
+		String local_v = model.getLocalVersion();
+		if( local_v == null ){
+			local_version.setText("获取本地版本号错误");
+		}else
+			local_version.setText("本地版本号：" + local_v);
+		
+		String latest_v = model.getLatestVersion();
+		if( latest_v == null ){
+			latest_version.setText("获取最新版本号错误，请检查网络连接");
+		}else
+			latest_version.setText("最新版本号：" + latest_v);
 	}
 
 	// 控件
