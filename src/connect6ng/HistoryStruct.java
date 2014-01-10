@@ -1,21 +1,30 @@
-package connect6ng;
 /** @file __FILE__ 
  * @brief  返回对弈结果
  * @author 侯奇
  * @author 卢嘉勋
  * @author 刘菁菁
  * @date 2013-12-30
- * @version 1.0.0
- * 
+ *
+ * 历史记录的数据结构，包括
+ * 	- 和电脑对弈的总局数
+ * 	- 和电脑对弈的胜利的局数
  */
+package connect6ng;
 
 /**
  * @brief 对弈结果管理类，用来管理对弈结果
- * @author lujx
+ * @author 侯奇
+ * @author 卢嘉勋
+ * @author 刘菁菁
  *	
+ * 历史记录的数据结构，包括
+ * 	- 和电脑对弈的总局数
+ * 	- 和电脑对弈的胜利的局数
  */
 public class HistoryStruct {
+	/// 胜利的局数
 	private int win;
+	/// 失败的局数
 	private int all;
 	
 	/**

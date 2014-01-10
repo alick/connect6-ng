@@ -5,7 +5,6 @@
  * @author 卢嘉勋
  * @author 刘菁菁
  * @date 2014-01-01
- * @version v 1.0.0
  * 
  * 算法的实现模块，输入棋盘的布局，输出棋盘的落子
  */
@@ -20,9 +19,12 @@ import java.util.*;
  */
 class Alg {
     //IO共享内存部分，储存每一个棋子的位置与颜色
+	/// 棋局上的棋子
     private Vector<MyPoint> data;
-    private int ChessBoard[][];
+    /// 新增加的棋子
     private Vector<MyPoint> new_data;
+    /// 棋局的布局数组
+    private int ChessBoard[][];
 
     static int[] os = new int[] {0, 0, 2, 20, 65535, 65535, 65535};
     static int[] ms = new int[] {0, 0, 1, 10, 35, 35, 999999};
@@ -141,10 +143,11 @@ class Alg {
                         ChessBoard[x1][y1] = -1;
                         ChessBoard[x2][y2] = -1;
                     }
-//		System.out.println(vmax);	//TestCode
+        // 增加落子
         data.add(new MyPoint(_x1, _y1, color));
         data.add(new MyPoint(_x2, _y2, color));
         
+        // 新增加的落子
         new_data.add(new MyPoint(_x1, _y1, color));
         new_data.add(new MyPoint(_x2, _y2, color));
     }

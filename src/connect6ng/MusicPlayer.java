@@ -4,7 +4,6 @@
  * @author 卢嘉勋
  * @author 刘菁菁
  * @date 2013-12-30
- * @version 1.0.0
  * 
  */
 package connect6ng;
@@ -25,21 +24,28 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 
 /**
- * @brief MusicPlayer : 音效模块，负责背景音乐的播放
+ * @brief 音效模块，负责背景音乐的播放
  * 
- *        
+ * 对外提供接口，负责音乐的播放
  */
 public class MusicPlayer {
-	// / 声音流
-	public AudioClip background;
-	public AudioClip [] gameover;
-	public AudioClip [] chess_down;
-	public AudioClip error_tip;
+	/// 背景音乐
+	private AudioClip background;
+	/// 结束提示音
+	private AudioClip [] gameover;
+	/// 落子提示音
+	private AudioClip [] chess_down;
+	/// 错误提示音
+	private AudioClip error_tip;
 
 	/**
-	 * @brief 播放音乐文件名 *.wav
-	 * @param state
+	 * @brief 构造函数
+	 * @param state 音效的开关状态
 	 * 
+	 * 	on	：	开启声音
+	 * 	off	：	关闭声音
+	 * 
+	 * 创建一个音乐播放器，并初始化状态为state
 	 */
 	public MusicPlayer(String state) {
 		URL file;
@@ -75,8 +81,11 @@ public class MusicPlayer {
 	}
 	
 	/**
-	 * @brief 设置播放状态
-	 * @param state
+	 * @brief 设置播放状态为state
+	 * @param state	 音效的开关状态
+	 * 
+	 * 	on	：	开启声音
+	 * 	off	：	关闭声音
 	 */
 	public void setState(String state){
 		state = state.trim();
@@ -88,13 +97,14 @@ public class MusicPlayer {
 		}
 	}
 	
-	/** @brief 播放音乐
+	/** @brief 播放音乐，type为音效类型
 	 * 
-	 * @param type
-	 * 	negative for error tip
-	 * 	0 for win
-	 *  1 for lose
-	 *  2-9 for chess down
+	 * @param type 提示音的类型
+	 * 
+	 * 	<0 ： 错误提示音
+	 * 	0 ： 胜利音
+	 * 	1 ： 失败音
+	 * 	2-9 ： 落子音
 	 */
 	public void playSound(int type){
 		if( type < 0 ){
@@ -111,9 +121,9 @@ public class MusicPlayer {
 	
 	/**
 	 * @brief 输出错误提示
-	 * @param errMsg
+	 * @param errMsg 错误信息
 	 */
-	public void pushErrorDialog(String errMsg){
+	private void pushErrorDialog(String errMsg){
 		final JDialog myDialog = new JDialog();
 		myDialog.setTitle("错误提示");
 		myDialog.setSize(180, 100);

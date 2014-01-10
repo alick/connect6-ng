@@ -5,8 +5,9 @@
  * @author 卢嘉勋
  * @author 刘菁菁
  * @date 2014-01-01
- * @version v 1.0.0
- * 
+ *
+ * 历史记录的管理类
+ * 用来管理历史记录，包括历史记录的查询、历史记录的删除等
  */
 package connect6ng;
 
@@ -19,6 +20,10 @@ public class HistoryModel {
 
 	public Statement stat; // 用来执行SQL指令的句柄
 
+	/** @brief 构造函数
+	 * 
+	 * 初始化数据库
+	 */
 	public HistoryModel() {
 
 		// 创建数据库
@@ -63,6 +68,11 @@ public class HistoryModel {
 
 	}
 	
+	/** @brief 向数据库中插入数据
+	 * 
+	 * @param result 游戏结果
+	 * @param hist_time 游戏记录的创建事件
+	 */
 	public void insert(int result, String hist_time){
 		try {
 			// 连接SQLite的JDBC
@@ -86,11 +96,11 @@ public class HistoryModel {
 		}
 	}
 
-	/**
-	 * 初始化数据库链接，如果没有数据库的话则创建一个
+	/**@brief 初始化数据库 
+	 * 
+	 * 初始化数据库，如果没有数据库的话则创建一个
 	 */
 	public void init() {
-		System.out.println("数据库初始化");
 		try {
 			// 连接SQLite的JDBC
 			Class.forName("org.sqlite.JDBC");
@@ -104,9 +114,7 @@ public class HistoryModel {
 			// 判断表是否存在
 			ResultSet rsTables = conn.getMetaData().getTables(null, null,
 					"HistoryLog", null);
-			if (rsTables.next()) {
-				System.out.println("HistoryLog表存在,不需要创建");
-			} else {
+			if (!rsTables.next()) {
 				// 创建表，-1：负；0：平；1胜
 				stat.executeUpdate("create table HistoryLog(results int, hist_time varchar(256));");
 			}
@@ -117,6 +125,10 @@ public class HistoryModel {
 		}
 	}
 	
+	/**@brief 清空数据库
+	 * 
+	 * 清空历史记录
+	 */
 	public void clearDB(){
 		System.out.println("数据库初始化");
 		try {
@@ -131,7 +143,6 @@ public class HistoryModel {
 
 			// 统计数据
 			String exe_sql = "delete from HistoryLog;";
-			System.out.println(exe_sql);
 			stat.execute(exe_sql);
 
 			conn.close(); // 结束数据库的连接

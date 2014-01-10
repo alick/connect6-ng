@@ -1,18 +1,26 @@
 /**
  /** @file __FILE__
- * @brief AboutDialog : "关于六子棋"菜单的弹出界面
+ * @brief "关于六子棋"菜单的弹出界面
  * @author 侯奇
  * @author 卢嘉勋
  * @author 刘菁菁
  * @date 2014-01-01
- * @version v 1.0.0
  * 
+ * 用来显示About界面，介绍软件的大体情况
  */
 
 package connect6ng;
 
 import javax.swing.ImageIcon;
 
+/** @brief "关于六子棋"菜单的弹出界面
+ * 
+ * @author 侯奇
+ * @author 卢嘉勋
+ * @author 刘菁菁
+ * 
+ * 用来显示About界面，介绍软件的大体情况
+ */
 @SuppressWarnings("serial")
 public class AboutDialog extends javax.swing.JDialog {
 
@@ -40,7 +48,7 @@ public class AboutDialog extends javax.swing.JDialog {
         version_label = new javax.swing.JLabel();
         copyright_label = new javax.swing.JLabel();
         icon_label = new javax.swing.JLabel();
-        version_label1 = new javax.swing.JLabel();
+        code_label = new javax.swing.JLabel();
 
         jScrollPane1.setViewportView(jTextPane1);
 
@@ -67,8 +75,8 @@ public class AboutDialog extends javax.swing.JDialog {
 
         icon_label.setIcon(new javax.swing.ImageIcon("./res/logo_100.png")); // NOI18N
 
-        version_label1.setFont(new java.awt.Font("华文楷体", 1, 14)); // NOI18N
-        version_label1.setText("软件源代码参见：http://github.com/HouQi/connect6-ng.git");
+        code_label.setFont(new java.awt.Font("华文楷体", 1, 14)); // NOI18N
+        code_label.setText("软件源代码参见：http://github.com/HouQi/connect6-ng.git");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -100,7 +108,7 @@ public class AboutDialog extends javax.swing.JDialog {
                 .addContainerGap())
             .addGroup(layout.createSequentialGroup()
                 .addGap(51, 51, 51)
-                .addComponent(version_label1)
+                .addComponent(code_label)
                 .addContainerGap(58, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -120,7 +128,7 @@ public class AboutDialog extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(copyright_label)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(version_label1)
+                .addComponent(code_label)
                 .addGap(11, 11, 11)
                 .addComponent(OK_btn)
                 .addContainerGap(22, Short.MAX_VALUE))
@@ -133,10 +141,15 @@ public class AboutDialog extends javax.swing.JDialog {
         pack();
     }
 
+    /** OK按钮的触发函数
+     * 
+     * @param evt 事件
+     */
     private void OK_btnActionPerformed(java.awt.event.ActionEvent evt) {
         AboutDialog.this.dispose();
     }
 
+    // 控件的定义
     private javax.swing.JButton OK_btn;
     private javax.swing.JLabel author_label;
     private javax.swing.JLabel copyright_label;
@@ -145,5 +158,5 @@ public class AboutDialog extends javax.swing.JDialog {
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JLabel title_label;
     private javax.swing.JLabel version_label;
-    private javax.swing.JLabel version_label1;
+    private javax.swing.JLabel code_label;
 }

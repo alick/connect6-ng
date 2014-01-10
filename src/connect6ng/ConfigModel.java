@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.util.Properties;
 import java.util.logging.Level;
 
-/** @brief 管理配置文件爱你
+/** @brief 管理配置文件类
  * 
  */
 public class ConfigModel {
