@@ -1,4 +1,4 @@
-/** @file __FILE__ 
+/** @file MyPoint.java 
  * @brief  记录棋子的位置和颜色
  * @author 侯奇
  * @author 卢嘉勋

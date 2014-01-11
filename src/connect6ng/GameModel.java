@@ -1,5 +1,4 @@
-/**
- * @file __FILE__
+/** @file GameModel.java
  * @brief Game的Model
  * @author 侯奇
  * @author 卢嘉勋
@@ -13,9 +12,10 @@ import java.io.Serializable;
 import java.util.Vector;
 import java.util.Observable;
 
-/** @brief 游戏场景的Model
- * 
- * 游戏的数据Model
+/** 
+ * @brief Game的Model
+ * @details
+ * 游戏的数据Model，用来负责数据的更新
  */
 @SuppressWarnings("serial")
 public class GameModel extends Observable implements Serializable  {

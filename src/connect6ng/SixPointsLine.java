@@ -1,7 +1,4 @@
-package connect6ng;
-
-
-/** @file __FILE__ 
+/** @file SixPointsLine.java
  * @brief  棋子位置队列操作
  * @author 侯奇
  * @author 卢嘉勋
@@ -10,11 +7,10 @@ package connect6ng;
  * @version 1.0.0
  * 
  */
+package connect6ng;
 
 /**
  * @brief 连续六子队列管理
- * @author lujx
- *
  */
 class SixPointsLine {
     //棋盘上的连续6个位置队列

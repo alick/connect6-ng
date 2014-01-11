@@ -1,25 +1,17 @@
-/**
- /** @file __FILE__
+/** @file AboutDialog.java
+ * 
  * @brief "关于六子棋"菜单的弹出界面
  * @author 侯奇
  * @author 卢嘉勋
  * @author 刘菁菁
- * @date 2014-01-01
  * 
  * 用来显示About界面，介绍软件的大体情况
  */
-
 package connect6ng;
 
 import javax.swing.ImageIcon;
 
-/** @brief "关于六子棋"菜单的弹出界面
- * 
- * @author 侯奇
- * @author 卢嘉勋
- * @author 刘菁菁
- * 
- * 用来显示About界面，介绍软件的大体情况
+/**@brief "关于六子棋"菜单的弹出界面
  */
 @SuppressWarnings("serial")
 public class AboutDialog extends javax.swing.JDialog {

@@ -1,5 +1,5 @@
 /**
- * @file __FILE__
+ * @file GameController.java
  * @brief MVC 架构的controller结构
  * @author 侯奇
  * @author 卢嘉勋
@@ -19,10 +19,7 @@ import java.util.logging.*;
 
 import javax.swing.*;
 
-/**
- * @brief MVC 架构的controller结构
- * 
- *        用来管理程序的数据和视图
+/**@brief MVC 架构的controller结构
  */
 @SuppressWarnings("serial")
 class GameController extends JFrame {
@@ -57,9 +54,9 @@ class GameController extends JFrame {
 
 	// 帮助菜单
 	JMenu menu_help = new JMenu("帮助");
-	JMenuItem menu_AboutSixChess = new JMenuItem("关于六子棋");
-	JMenuItem menu_SeekHelp = new JMenuItem("查看帮助");
-	JMenuItem menu_CheckUpdate = new JMenuItem("检查更新");
+	JMenuItem menu_About = new JMenuItem("关于六子棋");
+	JMenuItem menu_Help = new JMenuItem("查看帮助");
+	JMenuItem menu_Update = new JMenuItem("检查更新");
 
 	/**
 	 * @brief 构造函数
@@ -151,19 +148,19 @@ class GameController extends JFrame {
 		// 帮助：
 		menu_JMenuBar.add(menu_help);
 
-		menu_help.add(menu_AboutSixChess);
-		menu_AboutSixChess.addActionListener(new ack_menu_AboutSixChess());
-		menu_AboutSixChess.setAccelerator(KeyStroke.getKeyStroke('A',
+		menu_help.add(menu_About);
+		menu_About.addActionListener(new ack_menu_About());
+		menu_About.setAccelerator(KeyStroke.getKeyStroke('A',
 				java.awt.Event.CTRL_MASK, false));
 
-		menu_help.add(menu_SeekHelp);
-		menu_SeekHelp.addActionListener(new ack_menu_SeekHelp());
-		menu_SeekHelp.setAccelerator(KeyStroke.getKeyStroke('H',
+		menu_help.add(menu_Help);
+		menu_Help.addActionListener(new ack_menu_Help());
+		menu_Help.setAccelerator(KeyStroke.getKeyStroke('H',
 				java.awt.Event.CTRL_MASK, false));
 
-		menu_help.add(menu_CheckUpdate);
-		menu_CheckUpdate.addActionListener(new ack_menu_CheckUpdate());
-		menu_CheckUpdate.setAccelerator(KeyStroke.getKeyStroke('U',
+		menu_help.add(menu_Update);
+		menu_Update.addActionListener(new ack_menu_Update());
+		menu_Update.setAccelerator(KeyStroke.getKeyStroke('U',
 				java.awt.Event.CTRL_MASK, false));
 
 		// 窗口监听
@@ -438,7 +435,6 @@ class GameController extends JFrame {
 	@SuppressWarnings("deprecation")
 	private void computer_turn() {
 		if (game_model.getComputer() && !game_model.playerTurn()) {
-			System.out.println("here computer turn");
 
 			// 电脑turn
 			kernel.placeTwoStones(game_model.getCurrentColor());
@@ -462,7 +458,7 @@ class GameController extends JFrame {
 	 * 
 	 *        弹出六子棋的“关于”界面
 	 */
-	class ack_menu_AboutSixChess implements ActionListener {
+	class ack_menu_About implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 
@@ -477,7 +473,7 @@ class GameController extends JFrame {
 	 * 
 	 *        帮助界面的监听
 	 */
-	class ack_menu_SeekHelp implements ActionListener {
+	class ack_menu_Help implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			HelpDialog d = new HelpDialog(GameController.this, true);
@@ -491,7 +487,7 @@ class GameController extends JFrame {
 	 * 
 	 * 软件更新的监听
 	 */
-	class ack_menu_CheckUpdate implements ActionListener {
+	class ack_menu_Update implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			UpdateDialog d = new UpdateDialog(GameController.this, true);
@@ -574,7 +570,6 @@ class GameController extends JFrame {
 			}
 
 			int x = e.getX(), y = e.getY();
-			System.out.println("x,y " + x + "," + y);
 			x = (int) (x - getInsets().left - getContentPane().getLocation()
 					.getX());
 			y = (int) (y - getInsets().top - getContentPane().getLocation()

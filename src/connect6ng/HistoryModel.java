@@ -1,11 +1,10 @@
-/**
- * @file __FILE__
+/**@file HistoryModel.java
  * @brief 历史记录管理类
  * @author 侯奇
  * @author 卢嘉勋
  * @author 刘菁菁
  * @date 2014-01-01
- *
+ * @details
  * 历史记录的管理类
  * 用来管理历史记录，包括历史记录的查询、历史记录的删除等
  */
@@ -17,6 +16,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 
 /**@brief 历史记录管理类
+ * @details
 * 历史记录的管理类
 * 用来管理历史记录，包括历史记录的查询、历史记录的删除等
 */

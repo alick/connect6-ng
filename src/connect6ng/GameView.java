@@ -1,5 +1,4 @@
-/**
- * @file __FILE__
+/** @file GameView.java
  * @brief 历史记录显示界面
  * @author 侯奇
  * @author 卢嘉勋

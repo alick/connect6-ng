@@ -1,5 +1,5 @@
 /**
- * @file __FILE__
+ * @file UpdateDialog.java
  * @brief  "检查更新"菜单的弹出界面
  * @author 侯奇
  * @author 卢嘉勋
@@ -45,8 +45,6 @@ public class UpdateDialog extends javax.swing.JDialog implements Observer  {
 
 		icon_label = new javax.swing.JLabel();
 		title_label = new javax.swing.JLabel();
-		icon_label1 = new javax.swing.JLabel();
-		title_label1 = new javax.swing.JLabel();
 		OK_btn = new javax.swing.JButton();
 		version_label1 = new javax.swing.JLabel();
 		github_btn = new javax.swing.JButton();
@@ -55,19 +53,13 @@ public class UpdateDialog extends javax.swing.JDialog implements Observer  {
         local_version = new javax.swing.JLabel();
         latest_version = new javax.swing.JLabel();
 
+		setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
 		icon_label.setIcon(new javax.swing.ImageIcon(
 				"./res/logo_100.png")); // NOI18N
 
 		title_label.setFont(new java.awt.Font("华文行楷", 1, 22)); // NOI18N
 		title_label.setText("六子棋小游戏");
-
-		setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
-		icon_label1.setIcon(new javax.swing.ImageIcon(
-				"./res/logo_100.png")); // NOI18N
-
-		title_label1.setFont(new java.awt.Font("华文行楷", 1, 22)); // NOI18N
-		title_label1.setText("六子棋小游戏");
 
 		OK_btn.setText("确定");
 		OK_btn.addActionListener(new java.awt.event.ActionListener() {
@@ -125,9 +117,9 @@ public class UpdateDialog extends javax.swing.JDialog implements Observer  {
                             .addComponent(local_version)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(58, 58, 58)
-                        .addComponent(icon_label1)
+                        .addComponent(icon_label)
                         .addGap(26, 26, 26)
-                        .addComponent(title_label1))
+                        .addComponent(title_label))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -149,9 +141,9 @@ public class UpdateDialog extends javax.swing.JDialog implements Observer  {
             .addGroup(layout.createSequentialGroup()
                 .addGap(31, 31, 31)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(icon_label1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(icon_label, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(title_label1)
+                        .addComponent(title_label)
                         .addGap(32, 32, 32)))
                 .addGap(18, 18, 18)
                 .addComponent(local_version)
@@ -223,13 +215,14 @@ public class UpdateDialog extends javax.swing.JDialog implements Observer  {
 
 	/**
 	 * 发布消息
-	 * 
 	 * @param url
 	 *            待发布的消息
 	 * @exception Exception
+	 * 			 打开路径错误
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private static void browse(String url) throws Exception {
+	private static void browse(String url)
+			throws Exception {
 		// 获取操作系统的名字
 		String osName = System.getProperty("os.name", "");
 		if (osName.startsWith("Mac OS")) {
@@ -310,9 +303,7 @@ public class UpdateDialog extends javax.swing.JDialog implements Observer  {
 	private javax.swing.JButton github_btn;
 	private javax.swing.JButton google_btn;
 	private javax.swing.JLabel icon_label;
-	private javax.swing.JLabel icon_label1;
 	private javax.swing.JLabel title_label;
-	private javax.swing.JLabel title_label1;
 	private javax.swing.JLabel version_label1;
     private javax.swing.JLabel latest_version;
     private javax.swing.JLabel local_version;

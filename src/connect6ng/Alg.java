@@ -1,21 +1,17 @@
-/**
- * @file __FILE__
- * @brief Alg : 六子棋的AI模块
+/** @file Alg.java
+ * @brief AI算法的实现模块
  * @author 侯奇
  * @author 卢嘉勋
  * @author 刘菁菁
  * @date 2014-01-01
- * 
- * 算法的实现模块，输入棋盘的布局，输出棋盘的落子
+ * @details
+ * 输入棋盘的布局，输出最后的结果
  */
-
 package connect6ng;
 
 import java.util.*;
 
-/** @brief AI算法的实现模块
- * 
- * 输入棋盘的布局，输出最后的结果
+/**@brief AI 的算法实现模块 
  */
 class Alg {
     //IO共享内存部分，储存每一个棋子的位置与颜色

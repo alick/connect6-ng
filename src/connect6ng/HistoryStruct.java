@@ -1,4 +1,4 @@
-/** @file __FILE__ 
+/** @file HistoryStruct.java 
  * @brief  返回对弈结果
  * @author 侯奇
  * @author 卢嘉勋

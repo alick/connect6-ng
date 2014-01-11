@@ -1,9 +1,11 @@
 /** @file VersionManager.java
- * @brief 版本控制类
  * @author 侯奇
  * @author 卢嘉勋
  * @author 刘菁菁
- * 
+ * @brief 版本控制类 
+ * @details 用于
+ * 	- 从文件中读去本地版本号
+ * 	- 从网络中获取最新版本号
  */
 package connect6ng;
 
@@ -19,8 +21,17 @@ import java.util.logging.Level;
 
 import javax.net.ssl.HttpsURLConnection;
 
+/**@brief 版本控制类
+ * 
+ * 用于从文件中读去本地版本号和从网络中获取最新版本号
+ */
 public class VersionManager {
 
+	/**@brief 获取本地版本号
+	 * @return 本地版本号
+	 * 
+	 * 如果读取版本号出现异常，返回null
+	 */
 	public static String getLocalVersion() {
 		String v = null;
 		try {
@@ -35,6 +46,12 @@ public class VersionManager {
 		return v;
 	}
 
+	/**@brief 获取最新版本号
+	 * @return 最新版本号
+	 * 
+	 * 从Github上读取最新的version文件的内容，并加以返回
+	 * 如果网络连接处问题，返回为null 
+	 */
 	public static String getLatestVersion() {
 		String v = null;
 

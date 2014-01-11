@@ -1,5 +1,5 @@
 /**
- * @file __FILE__
+ * @file Connect6.java
  * @brief 程序的入口
  * @author 侯奇
  * @author 卢嘉勋
@@ -9,12 +9,9 @@
  * 
  * 程序的入口
  */
-
 package connect6ng;
 
-/**
- * @brief 程序的入口类
- * 
+/**@brief 程序的入口
  */
 public class Connect6 {
 	public static void main(String[] args) {

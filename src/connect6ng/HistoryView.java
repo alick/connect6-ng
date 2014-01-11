@@ -1,23 +1,24 @@
-package connect6ng;
-
-import javax.swing.ImageIcon;
-
 /**
- * @file __FILE__
+ * @file HistoryView.java
  * @brief 历史记录模块
  * @author 侯奇
  * @author 卢嘉勋
  * @author 刘菁菁
  * @date 2013-12-30
  * @version 1.0.0
- * 
+ * @details 
+ * 用来显示历史记录
+ */
+package connect6ng;
+
+import javax.swing.ImageIcon;
+
+/**
+ * @brief 历史记录模块
+ * @details
+ * 用来显示历史记录的剩率
  */
 @SuppressWarnings("serial")
-/**
- * @brief 历史记录类
- * 
- *	用来显示历史记录
- */
 public class HistoryView extends javax.swing.JDialog {
 
 	/**

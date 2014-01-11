@@ -1,4 +1,4 @@
-/** @file __FILE__ 
+/** @file MusicPlayer.java 
  * @brief  音乐播放模块
  * @author 侯奇
  * @author 卢嘉勋

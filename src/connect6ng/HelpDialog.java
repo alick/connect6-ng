@@ -1,4 +1,4 @@
-/** @file __FILE__ 
+/** @file HelpDialog.java
  * @brief  帮助界面
  * @author 侯奇
  * @author 卢嘉勋

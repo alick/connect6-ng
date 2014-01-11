@@ -1,11 +1,9 @@
-/**
- * @file __FILE__
- * @brief  配置文件的管理类
+/** @brief 管理配置文件类
+ * @file ConfigModel.java
  * @author 侯奇
  * @author 卢嘉勋
  * @author 刘菁菁
  * @date 2014-01-01
- * @version v 1.0.0
  * 
  * 管理配置文件
  * 当前用来管理音效
@@ -20,13 +18,11 @@ import java.util.Properties;
 import java.util.logging.Level;
 
 /** @brief 管理配置文件类
- * 
  */
 public class ConfigModel {
 	private String musicState;
 	
 	/** @brief 构造函数
-	 * 
 	 */
 	public ConfigModel(){
 		Properties pro = new Properties();
