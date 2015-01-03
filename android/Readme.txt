@@ -1,2 +1,3 @@
-This is our project.
-Our password is gf9mW6Kd4xB5
+This is the Android port of the connect6 project.
+
+You can find an installable APK file in `Connect6/bin/`.
