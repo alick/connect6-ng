@@ -1,0 +1,46 @@
+<resources>
+
+    <string name="app_name">六子棋</string>
+
+    <!-- 主界面 -->
+    <string name="startgame">开始游戏</string>
+    <string name="exit">退出游戏</string>
+    <string name="setmode">设置模式</string>
+    <string name="aboutus">关于我们</string>
+    
+    <!-- 关于我们界面 -->
+    <string name="version">版本：1.0</string>
+    <string name="aboutusok">确定</string>
+    <string name="copyright">Copyright 喜迎十八大小组</string>
+    
+    <!-- 游戏界面 -->
+    <string name="newgame">新局</string>
+    <string name="undogame">悔棋</string>
+    <string name="gamesetting">游戏设置</string>
+    <string name="gameresult">游戏结果</string>
+    <string name="save">保存棋谱</string>   
+    <string name="returnmenu">返回菜单</string>
+    <string name="openchessmanual">载入棋谱</string>
+    <string name="zoomout">缩小</string>
+    <string name="zoomin">放大</string>
+    <string name="blackside">黑方</string>
+    <string name="whiteside">白方</string>
+    
+    <!-- 系统设置 -->
+    <string name="PVEmode">对战模式:</string>
+    <string name="operationalmode">游戏模式:</string>
+    <string name="firstmode">落子顺序:</string>
+    <string name="PVE">人机对战</string>
+    <string name="practice">练习模式</string>
+    <string name="first">玩家先手</string>
+    <string name="setmodeok">确定</string>
+    
+    <!-- 游戏设置 -->
+    <string name="sound">声音效果：</string>
+    <string name="vibrate">振动效果：</string>
+    <string name="open">开启</string>
+    <string name="close">关闭</string>
+    <string name="gamesettingok">确定</string>
+    <string name="gameresultok">确定</string>
+    <string name="gamesettingcancel">取消</string>
+</resources>
