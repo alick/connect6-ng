@@ -1,3 +1,22 @@
+/*
+ * Copyright 2012 Shuyang Jiang, Yipeng Ma and Bo Liu
+ * 
+ * This file is part of Connect6.
+
+   Connect6 is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+
+   Connect6 is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with Connect6.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package cn.edu.tsinghua.se2012.connect6;
 
 import android.media.AudioManager;
@@ -13,57 +32,83 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 
+/**
+ * ä¸»èœå•ç•Œé¢
+ * 
+ * @version 1.0
+ * @author Shuyang Jiang, Yipeng Ma and Bo Liu
+ *
+ */
 @SuppressLint({ "HandlerLeak", "HandlerLeak" })
 public class StartActivity extends Activity {
-	
-	// ÓÎÏ·ÉèÖÃ²ÎÊı
+	// æ¸¸æˆè®¾ç½®å‚æ•°
+	/** æ˜¯å¦äººæœºå¯¹æˆ˜  */
 	static public boolean isPVE = true;
+	/** æ˜¯å¦ç»ƒä¹ æ¨¡å¼  */
 	static public boolean isPractice = true;
+	/** æ˜¯å¦ç©å®¶å…ˆæ‰‹  */
 	static public boolean isFirst = true;
+	/** å£°éŸ³å¼€å…³  */
 	static public boolean soundOpen = true;
+	/** éœ‡åŠ¨å¼€å…³  */
 	static public boolean vibrateOpen = true;
+	/** æ˜¯å¦æœ‰æ£‹è°±  */
 	static public boolean hasChessManual = false;
 
-	static float screenHeight; // ÆÁÄ»¸ß¶È
-	static float screenWidth; // ÆÁÄ»¿í¶È
+	/** å±å¹•é«˜åº¦  */
+	static float screenHeight;
+	/** å±å¹•å®½åº¦  */
+	static float screenWidth;
+	/** æ˜¯å¦è¿›å…¥ä¸»èœå•ç•Œé¢  */
 	static boolean flag = false;
 
-	final int CODE = 0x717; // Æô¶¯ÉèÖÃÄ£Ê½»î¶¯µÄÇëÇóÂë
+	/** å¯åŠ¨è®¾ç½®æ¨¡å¼æ´»åŠ¨çš„è¯·æ±‚ç   */
+	final int CODE = 0x717;
 
+	/** å¼€å§‹æ¸¸æˆæŒ‰é’®  */
 	private ImageButton startGameBtn;
+	/** æ¨¡å¼è®¾ç½®æŒ‰é’®  */
 	private ImageButton setModeBtn;
+	/** å…³äºæˆ‘ä»¬æŒ‰é’®  */
 	private ImageButton aboutUsBtn;
+	/** é€€å‡ºæ¸¸æˆæŒ‰é’®  */
 	private ImageButton exitBtn;
+	/** SoundPoolå¯¹è±¡ï¼Œç”¨æ¥æ’­æ”¾æŒ‰é’®æŒ‰ä¸‹çš„å£°éŸ³  */
 	private SoundPool soundpool;
 	
+	/** æ˜¯å¦é€€å‡º  */
 	private boolean isExit = false;
-
-	// ½ÓÊÜĞÅÏ¢½çÃæÌø×ª
+	
+	/** æ¥å—ä¿¡æ¯ç•Œé¢è·³è½¬  */
 	Handler hd = new Handler() {
 		@Override
-		public void handleMessage(Message msg) {// ÖØĞ´·½·¨
+		public void handleMessage(Message msg) {// é‡å†™æ–¹æ³•
 			switch (msg.what) {
 			case 0:
-				gotoMainView(); // Ö÷½çÃæ
+				gotoMainView(); // ä¸»ç•Œé¢
 				break;
 			}
 		}
 	};
 
+	/**
+	 * åˆ›å»ºç•Œé¢ï¼Œåšä¸€äº›æ•°æ®çš„åˆå§‹åŒ–å·¥ä½œ
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); // ÉèÖÃÎªÊúÆÁÆÁ
-		requestWindowFeature(Window.FEATURE_NO_TITLE);// ÉèÖÃÈ«ÆÁ
+		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); // è®¾ç½®ä¸ºç«–å±
+		requestWindowFeature(Window.FEATURE_NO_TITLE);// è®¾ç½®å…¨å±
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-		DisplayMetrics dm = new DisplayMetrics(); // »ñÈ¡ÊÖ»ú·Ö±æÂÊ
+		DisplayMetrics dm = new DisplayMetrics(); // è·å–æ‰‹æœºåˆ†è¾¨ç‡
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
 		screenHeight = dm.heightPixels;
 		screenWidth = dm.widthPixels;
@@ -77,13 +122,17 @@ public class StartActivity extends Activity {
 		}
 	}
 
-	// »¶Ó­½çÃæ
+	/**
+	 * è¿›å…¥æ¬¢è¿ç•Œé¢
+	 */
 	public void gotoWelcomeView() {
 		WelcomeView mView = new WelcomeView(this);
 		setContentView(mView);
 	}
 
-	// ½øÈëÖ÷½çÃæ
+	/**
+	 * è¿›å…¥ä¸»ç•Œé¢
+	 */	
 	public void gotoMainView() {
 		setContentView(R.layout.start);
 		if (flag == false) {
@@ -97,7 +146,7 @@ public class StartActivity extends Activity {
 		exitBtn = (ImageButton) findViewById(R.id.exit);
 		soundpool = new SoundPool(1, AudioManager.STREAM_SYSTEM, 0);
 
-		// ¿ªÊ¼ÓÎÏ·°´Å¥
+		// å¼€å§‹æ¸¸æˆæŒ‰é’®è®¾ç½®ç›‘å¬å™¨
 		startGameBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				playSound();
@@ -108,7 +157,7 @@ public class StartActivity extends Activity {
 			}
 		});
 
-		// ÉèÖÃÄ£Ê½°´Å¥
+		// æ¨¡å¼è®¾ç½®æŒ‰é’®è®¾ç½®ç›‘å¬å™¨
 		setModeBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				playSound();
@@ -119,7 +168,7 @@ public class StartActivity extends Activity {
 			}
 		});
 
-		// ¹ØÓÚÎÒÃÇ°´Å¥
+		// å…³äºæˆ‘ä»¬æŒ‰é’®è®¾ç½®ç›‘å¬å™¨
 		aboutUsBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				playSound();
@@ -130,7 +179,7 @@ public class StartActivity extends Activity {
 			}
 		});
 
-		// ÍË³ö°´Å¥
+		// é€€å‡ºæŒ‰é’®è®¾ç½®ç›‘å¬å™¨
 		exitBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				isExit = true;
@@ -139,18 +188,31 @@ public class StartActivity extends Activity {
 		});
 	}
 
-	// ÍË³ö°´Å¥ÖØÔØ
+	/**
+	 * é€€å‡ºæŒ‰é’®é‡è½½
+	 */	
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (KeyEvent.KEYCODE_BACK == keyCode) {
 			writePreferences();
 			flag = false;
 			finish();
 			System.exit(0);
+		}else if (KeyEvent.KEYCODE_VOLUME_DOWN == keyCode){
+			AudioManager am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+			am.adjustStreamVolume (AudioManager.STREAM_RING, AudioManager.ADJUST_LOWER, 
+					AudioManager.FLAG_SHOW_UI|AudioManager.FLAG_PLAY_SOUND|AudioManager.FLAG_ALLOW_RINGER_MODES);
+		}else if (KeyEvent.KEYCODE_VOLUME_UP == keyCode){
+			AudioManager am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+			am.adjustStreamVolume (AudioManager.STREAM_RING, AudioManager.ADJUST_RAISE, 
+					AudioManager.FLAG_SHOW_UI|AudioManager.FLAG_PLAY_SOUND|AudioManager.FLAG_ALLOW_RINGER_MODES);
 		}
+		
 		return true;
 	}
 
-	// ¶ÁÈ¡ÓÎÏ·²ÎÊı
+	/**
+	 * è¯»å–æ¸¸æˆå‚æ•°
+	 */
 	public void readPreferences() {
 		SharedPreferences preferences = getSharedPreferences("Pref",
 				MODE_PRIVATE);
@@ -162,7 +224,9 @@ public class StartActivity extends Activity {
 		hasChessManual = preferences.getBoolean("haschessmanual", false);
 	}
 
-	// ±£´æÓÎÏ·²ÎÊı
+	/**
+	 * ä¿å­˜æ¸¸æˆå‚æ•°
+	 */
 	public void writePreferences() {
 		SharedPreferences preferences = getSharedPreferences("Pref",
 				MODE_PRIVATE);
@@ -176,7 +240,9 @@ public class StartActivity extends Activity {
 		editor.commit();
 	}
 	
-	//ÍË³öÓÎÏ·
+	/**
+	 * é€€å‡ºæ¸¸æˆ
+	 */
 	public void exitGame(){
 		writePreferences();
 		flag = false;
@@ -184,7 +250,9 @@ public class StartActivity extends Activity {
 		System.exit(0);
 	}
 	
-	// ²¥·ÅÉùÒô
+	/**
+	 * æ’­æ”¾å£°éŸ³
+	 */
 	public void playSound(){
 		if (soundOpen) {
 			final int sourceId = soundpool.load(StartActivity.this,

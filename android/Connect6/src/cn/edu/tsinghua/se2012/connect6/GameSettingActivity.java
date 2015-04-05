@@ -1,3 +1,22 @@
+/*
+ * Copyright 2012 Shuyang Jiang, Yipeng Ma and Bo Liu
+ * 
+ * This file is part of Connect6.
+
+   Connect6 is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+
+   Connect6 is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with Connect6.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package cn.edu.tsinghua.se2012.connect6;
 
 import android.app.Activity;
@@ -9,24 +28,41 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 
-public class GameSettingActivity extends Activity {
-	
-	private String[] openArray = { "����", "�ر�" };
+/**
+ * 游戏设置界面
+ * 
+ * @version 1.0
+ * @author Shuyang Jiang, Yipeng Ma and Bo Liu
+ *
+ */
 
+public class GameSettingActivity extends Activity {
+	/** 开启,关闭字符数组  */
+	private String[] openArray = { "开启", "关闭" };
+
+	/** 声音效果按钮  */
 	private Button soundOpenBtn;
+	/** 振动效果按钮  */
 	private Button vibrateOpenBtn;
+	/** 确定按钮  */
 	private Button okBtn;
+	/** SoundPool对象，用来播放按钮按下的声音  */
 	private SoundPool soundpool;
 	
+	/** 按下声音效果按钮 ，振动效果按钮发出的声音的标记  */
 	final int OPTION_BUTTON = 0;
+	/** 按下确定按钮发出的声音的标记  */
 	final int OK_BUTTON = 1;
 
+	/**
+	 * 创建界面，做一些数据的初始化工作
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); // ����Ϊ������
-		requestWindowFeature(Window.FEATURE_NO_TITLE);// �����ޱ���
+		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); // 设置为竖屏
+		requestWindowFeature(Window.FEATURE_NO_TITLE);// 设置无标题
 		setContentView(R.layout.gamesetting);
 		
 		soundOpenBtn = (Button)findViewById(R.id.soundOpen);
@@ -35,17 +71,17 @@ public class GameSettingActivity extends Activity {
 		soundpool = new SoundPool(2, AudioManager.STREAM_SYSTEM, 0);
 		
 		if (StartActivity.soundOpen){
-			soundOpenBtn.setText("����");
+			soundOpenBtn.setText("开启");
 		}else{
-			soundOpenBtn.setText("�ر�");
+			soundOpenBtn.setText("关闭");
 		}
 		if (StartActivity.vibrateOpen){
-			vibrateOpenBtn.setText("����");
+			vibrateOpenBtn.setText("开启");
 		}else{
-			vibrateOpenBtn.setText("�ر�");
+			vibrateOpenBtn.setText("关闭");
 		}
 	
-	// ����Ч������
+	// 声音效果设置
 	soundOpenBtn.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
 					playSound(OPTION_BUTTON);
@@ -53,7 +89,7 @@ public class GameSettingActivity extends Activity {
 					soundOpenBtn.setText(openArray[(StartActivity.soundOpen?0:1)]);		
 				}
 			});
-	//��Ч����ť
+	// 振动效果按钮
 	vibrateOpenBtn.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
 					playSound(OPTION_BUTTON);
@@ -61,7 +97,7 @@ public class GameSettingActivity extends Activity {
 					vibrateOpenBtn.setText(openArray[(StartActivity.vibrateOpen?0:1)]);		
 				}
 			});
-	// ȷ����ť
+	// 确定按钮
 	okBtn.setOnClickListener(new View.OnClickListener() {
 				public void onClick(View v) {
 					playSound(OK_BUTTON);
@@ -70,6 +106,9 @@ public class GameSettingActivity extends Activity {
 			});
 	}
 	
+	/**
+	 * 播放声音
+	 */
 	public void playSound(int id){
 		if (StartActivity.soundOpen) {			
 			final int sourceId;

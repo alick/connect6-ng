@@ -1,3 +1,22 @@
+/*
+ * Copyright 2012 Shuyang Jiang, Yipeng Ma and Bo Liu
+ * 
+ * This file is part of Connect6.
+
+   Connect6 is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+
+   Connect6 is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with Connect6.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package cn.edu.tsinghua.se2012.connect6;
 
 import android.app.Activity;
@@ -14,30 +33,55 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+/**
+ * 游戏结果界面
+ * 
+ * @version 1.0
+ * @author Shuyang Jiang, Yipeng Ma and Bo Liu
+ *
+ */
+
 public class GameResultActivity extends Activity {
-	//��Ϸ���
+	/** 游戏结果  */
 	public static int result;
 	
+	/** 游戏胜利  */
 	private final int SUCCESS = 0;
+	/** 游戏失败  */
 	private final int FAIL = 1;
+	/** 游戏结束  */
 	private final int GAMEOVER = 2;
+	/** 振动时间  */
 	private final int vibrateTime = 2000;
 	
+	/** 游戏胜利图片  */
 	private ImageView gameSuccess;
+	/** 游戏失败图片  */
 	private ImageView gameFail;
+	/** 人人对战布局  */
 	private RelativeLayout doubleGame;
+	/** 黑方胜利图片  */
 	private ImageView blackLaugh;
+	/** 黑方失败图片  */
 	private ImageView blackCry;
+	/** 白方胜利图片  */
 	private ImageView whiteLaugh;
+	/** 白方失败图片  */
 	private ImageView whiteCry;
+	/** 确定按钮  */
 	private Button okButton;
+	/** SoundPool对象，用来播放按钮按下的声音  */
 	private SoundPool soundpool;
+	/** 振动器  */
 	private Vibrator vibrator;
 	
+	/**
+	 * 创建界面，做一些数据的初始化工作
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); // ����Ϊ������
+		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); // 设置为竖屏
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.result);
 				
@@ -110,6 +154,9 @@ public class GameResultActivity extends Activity {
 		});
 	}
 	
+	/**
+	 * 播放声音
+	 */
 	public void playSound(int id){
 		if (StartActivity.soundOpen) {
 			final int sourceId;

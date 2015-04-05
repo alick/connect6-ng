@@ -1,5 +1,25 @@
+/*
+ * Copyright 2012 Shuyang Jiang, Yipeng Ma and Bo Liu
+ * 
+ * This file is part of Connect6.
+
+   Connect6 is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+
+   Connect6 is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with Connect6.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package cn.edu.tsinghua.se2012.connect6;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -8,37 +28,59 @@ import android.graphics.Paint;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-//¿ªÊ¼»¶Ó­½çÃæ
-public class WelcomeView extends SurfaceView implements SurfaceHolder.Callback {// ÊµÏÖÉúÃüÖÜÆÚ»Øµ÷½Ó¿Ú
-	StartActivity activity;
-	Paint paint;
-	int currentAlpha = 0; // µ±Ç°µÄÍ¸Ã÷¶È
-	int screenWidth = (int) StartActivity.screenWidth;
-	int screenHeight = (int) StartActivity.screenHeight;
-	int sleepSpan = 50;
-	int pic;
-	Bitmap logo; // µ±Ç°logoÍ¼Æ¬ÒıÓÃ
+/**
+ * å®ç°æ¸¸æˆè½¯ä»¶è¿›å…¥æ—¶çš„æ¬¢è¿ç•Œé¢
+ * 
+ * @version 1.0
+ * @author Shuyang Jiang, Yipeng Ma and Bo Liu
+ *
+ */
 
+public class WelcomeView extends SurfaceView implements SurfaceHolder.Callback {
+	/* å®ç°ç”Ÿå‘½å‘¨æœŸå›è°ƒæ¥å£ */
+	/** ä¸»èœå•ç•Œé¢ */
+	StartActivity activity;
+	/** ç”»ç¬”å¯¹è±¡ï¼ŒåŒ…å«æˆ‘ä»¬è¦èŠ±çš„å›¾å½¢çš„é¢œè‰²å’Œç±»å‹ */
+	Paint paint;
+	/** å½“å‰çš„é€æ˜åº¦  */
+	int currentAlpha = 0; 
+	/** ç•Œé¢å®½åº¦  */
+	int screenWidth = (int) StartActivity.screenWidth;
+	/** ç•Œé¢é«˜åº¦  */
+	int screenHeight = (int) StartActivity.screenHeight;
+	/** æ¬¢è¿ç•Œé¢å›¾ç‰‡ç›¸é‚»é€æ˜åº¦ä¹‹é—´çš„åˆ‡æ¢æ—¶é—´é—´éš”  */
+	int sleepSpan = 50;
+	/** æ¬¢è¿ç•Œé¢å›¾ç‰‡  */
+	int pic;
+	/** å½“å‰logoå›¾ç‰‡å¼•ç”¨  */
+	Bitmap logo; 
+
+	/**
+	 * æ„é€ å‡½æ•°ï¼Œè¿›è¡Œç›¸å…³åˆå§‹åŒ–çš„å·¥ä½œ
+	 */
 	public WelcomeView(StartActivity activity) {
 		super(activity);
 		this.activity = activity;
-		this.getHolder().addCallback(this);// ÉèÖÃÉúÃüÖÜÆÚ»Øµ÷½Ó¿ÚµÄÊµÏÖÕß
-		paint = new Paint(); // ´´½¨»­±Ê
-		paint.setAntiAlias(true); // ´ò¿ª¿¹¾â³İ
+		this.getHolder().addCallback(this);// è®¾ç½®ç”Ÿå‘½å‘¨æœŸå›è°ƒæ¥å£çš„å®ç°è€…
+		paint = new Paint(); // åˆ›å»ºç”»ç¬”
+		paint.setAntiAlias(true); // æ‰“å¼€æŠ—é”¯é½¿
 		pic = R.drawable.welcome;
 		Bitmap temp = BitmapFactory.decodeResource(activity.getResources(), pic);
 		logo = Bitmap.createScaledBitmap(temp, screenWidth, screenHeight, true);
 	}
 
+	/**
+	 * ç»˜åˆ¶æ¬¢è¿ç•Œé¢å›¾ç‰‡
+	 */
 	@Override
 	public void onDraw(Canvas canvas) {
 		try {
-			// »æÖÆºÚÉ«Ìî³ä¾ØĞÎÇå±³¾°
+			// ç»˜åˆ¶é»‘è‰²å¡«å……çŸ©å½¢æ¸…èƒŒæ™¯
 			paint.setColor(Color.BLACK);
 			paint.setAlpha(255);
 			canvas.drawRect(0, 0, screenWidth, screenHeight, paint);
 
-			// ½øĞĞÆ½ÃæÌùÍ¼
+			// è¿›è¡Œå¹³é¢è´´å›¾
 			if (logo == null)
 				return;
 			paint.setAlpha(currentAlpha);
@@ -54,20 +96,22 @@ public class WelcomeView extends SurfaceView implements SurfaceHolder.Callback {
 	public void surfaceChanged(SurfaceHolder arg0, int arg1, int arg2, int arg3) {
 	}
 
-	public void surfaceCreated(SurfaceHolder arg0) { // ´´½¨Ê±±»µ÷ÓÃ
+	public void surfaceCreated(SurfaceHolder arg0) {
+		/* åˆ›å»ºæ—¶è¢«è°ƒç”¨  */
 		new Thread() {
+			@SuppressLint("WrongCall") 
 			public void run() {				
-				for (int i = 255; i > -10; i = i - 10) // ¶¯Ì¬¸ü¸ÄÍ¼Æ¬µÄÍ¸Ã÷¶ÈÖµ²¢²»¶ÏÖØ»æ
+				for (int i = 255; i > -10; i = i - 10) // åŠ¨æ€æ›´æ”¹å›¾ç‰‡çš„é€æ˜åº¦å€¼å¹¶ä¸æ–­é‡ç»˜
 				{
 					currentAlpha = i;
 					if (currentAlpha < 0) {
 						currentAlpha = 0;
 					}
 					SurfaceHolder myholder = WelcomeView.this.getHolder();
-					Canvas canvas = myholder.lockCanvas();// »ñÈ¡»­²¼
+					Canvas canvas = myholder.lockCanvas();// è·å–ç”»å¸ƒ
 					try {
 						synchronized (myholder) {
-							onDraw(canvas); // »æÖÆ
+							onDraw(canvas); // ç»˜åˆ¶
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -91,6 +135,6 @@ public class WelcomeView extends SurfaceView implements SurfaceHolder.Callback {
 		}.start();
 	}
 
-	public void surfaceDestroyed(SurfaceHolder arg0) { // Ïú»ÙÊ±±»µ÷ÓÃ
+	public void surfaceDestroyed(SurfaceHolder arg0) { // é”€æ¯æ—¶è¢«è°ƒç”¨
 	}
 }

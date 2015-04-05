@@ -1,18 +1,51 @@
+/*
+ * Copyright 2012 Shuyang Jiang, Yipeng Ma and Bo Liu
+ * 
+ * This file is part of Connect6.
+
+   Connect6 is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+
+   Connect6 is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with Connect6.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package cn.edu.tsinghua.se2012.connect6;
 
 import java.util.*;
 import java.io.*;
 
+/**
+ * æ¸¸æˆç®—æ³•
+ * 
+ * @version 1.0
+ * @author Shuyang Jiang, Yipeng Ma and Bo Liu
+ *
+ */
+
 @SuppressWarnings({"rawtypes", "unchecked"})
 class alg {
-	
+	/** IOå…±äº«å†…å­˜éƒ¨åˆ†ï¼Œå‚¨å­˜æ¯ä¸€ä¸ªæ£‹å­çš„ä½ç½®ä¸é¢œè‰² */
 	private Vector data;
-	// IO¹²ÏíÄÚ´æ²¿·Ö£¬´¢´æÃ¿Ò»¸öÆå×ÓµÄÎ»ÖÃÓëÑÕÉ«
+	/** to be added */
 	private int ChessBoard[][];
 
+	/** to be added */
 	static int[] os = new int[] { 0, 0, 2, 20, 65535, 65535, 65535 };
+	/** to be added */
 	static int[] ms = new int[] { 0, 0, 1, 10, 35, 35, 999999 };
 
+	/**
+	 * æ„é€ å‡½æ•°
+	 * @param _data åˆå§‹åŒ–æ—¶æ¯ä¸€ä¸ªæ£‹å­çš„ä½ç½®ä¸é¢œè‰²
+	 */
 	alg(Vector _data) {
 		data = _data;
 		ChessBoard = new int[19][];
@@ -24,10 +57,16 @@ class alg {
 		}
 	}
 
+	/**
+	 * å°†æ£‹å­çš„ä½ç½®ä¸é¢œè‰²è®¾ç½®ä¸º_dataä¸­æŒ‡å®šçš„ä¿¡æ¯
+	 */
 	void set(Vector _data) {
 		data = _data;
 	}
 
+	/**
+	 * å¤ä½
+	 */
 	void clrp() {
 		for (int i = 0; i < 19; i++) {
 			for (int j = 0; j < 19; j++) {
@@ -36,7 +75,10 @@ class alg {
 		}
 	}
 
-	void cal(int color) {// ¼ÆËãÖ®ºóÁ½Ã¶ÑÕÉ«ÎªcolorµÄ×ÓµÄÎ»ÖÃ£¬Ö±½Ó½«Êı¾İ²åÈëdataÖĞ
+	/**
+	 * è®¡ç®—ä¹‹åä¸¤æšé¢œè‰²ä¸ºcolorçš„å­çš„ä½ç½®ï¼Œç›´æ¥å°†æ•°æ®æ’å…¥dataä¸­
+	 */
+	void cal(int color) {
 		int size;
 		size = data.size();
 		if (size == 0) {
@@ -57,7 +99,7 @@ class alg {
 		_x1 = _x2 = _y1 = _y2 = 0;
 		vmax = -99999999;
 		for (x1 = 0; x1 < 19; x1++)
-			// Ã¶¾ÙÖ®ºóÁ½Ã¶ÆåµÄÎ»ÖÃ
+			// æšä¸¾ä¹‹åä¸¤æšæ£‹çš„ä½ç½®
 			for (x2 = 0; x2 < 19; x2++)
 				for (y1 = 0; y1 < 19; y1++)
 					for (y2 = 0; y2 < 19; y2++) {
@@ -71,7 +113,7 @@ class alg {
 						ChessBoard[x1][y1] = color;
 						ChessBoard[x2][y2] = color;
 
-						v = value(color);// ¼ÆËãµÃ·Ö
+						v = value(color);// ï¿½ï¿½ï¿½ï¿½Ã·ï¿½
 						if (vmax < v) {
 							vmax = v;
 							k = 2;
@@ -79,7 +121,7 @@ class alg {
 							_x2 = x2;
 							_y1 = y1;
 							_y2 = y2;
-						} else if (vmax == v) {// Èç¹ûµÃ·ÖÏàÍ¬ÔòËæ»úÑ¡ÔñÒ»¸ö£¬µ«±£Ö¤ÏàÍ¬µÃ·ÖµÄËùÓĞÏÂ·¨µÈ¸ÅÂÊ
+						} else if (vmax == v) {// ï¿½ï¿½ï¿½ï¿½Ã·ï¿½ï¿½ï¿½Í¬ï¿½ï¿½ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö¤ï¿½ï¿½Í¬ï¿½Ã·Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Â·ï¿½ï¿½È¸ï¿½ï¿½ï¿½
 							if (Math.random() * k <= 1) {
 								_x1 = x1;
 								_x2 = x2;
@@ -117,13 +159,13 @@ class alg {
 		return false;
 	}
 
-	int value(int color) {// ¼ÆËãµ±Ç°ÆåÅÌ¸ÃÑÕÉ«µÄµÃ·Ö
+	int value(int color) {// ï¿½ï¿½ï¿½ãµ±Ç°ï¿½ï¿½ï¿½Ì¸ï¿½ï¿½ï¿½É«ï¿½ÄµÃ·ï¿½
 		SixPoint l = new SixPoint();
 
 		int _value;
 		_value = 0;
 
-		for (int i = 0; i < 19; i++) {// Ë®Æ½·½Ïò
+		for (int i = 0; i < 19; i++) {// Ë®Æ½ï¿½ï¿½ï¿½ï¿½
 			l.add(ChessBoard[i][0]);
 			l.add(ChessBoard[i][1]);
 			l.add(ChessBoard[i][2]);
@@ -136,7 +178,7 @@ class alg {
 			}
 		}
 
-		for (int i = 0; i < 19; i++) {// ÊúÖ±·½Ïò
+		for (int i = 0; i < 19; i++) {// ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½
 			l.add(ChessBoard[0][i]);
 			l.add(ChessBoard[1][i]);
 			l.add(ChessBoard[2][i]);
@@ -149,7 +191,7 @@ class alg {
 			}
 		}
 
-		// "\"·½Ïò
+		// "\"ï¿½ï¿½ï¿½ï¿½
 		for (int i = 0; i < 14; i++) {
 			l.add(ChessBoard[0][i]);
 			l.add(ChessBoard[1][i + 1]);
@@ -175,7 +217,7 @@ class alg {
 			}
 		}
 
-		// "/"·½Ïò
+		// "/"ï¿½ï¿½ï¿½ï¿½
 		for (int i = 5; i < 19; i++) {
 			l.add(ChessBoard[0][i]);
 			l.add(ChessBoard[1][i - 1]);
@@ -203,12 +245,12 @@ class alg {
 		return _value;
 	}
 
-	boolean hadsix(int color) {// ·µ»ØÊÇ·ñÓĞ´ËÑÕÉ«µÄÁùÁ¬
+	boolean hadsix(int color) {// ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½Ğ´ï¿½ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		int ChessBoardState[][];
 		ChessBoardState = new int[19][];
 		int i, j;
 
-		for (i = 0; i < 19; i++) {// Ë®Æ½·½Ïò
+		for (i = 0; i < 19; i++) {// Ë®Æ½ï¿½ï¿½ï¿½ï¿½
 			ChessBoardState[i] = new int[19];
 			ChessBoardState[i][0] = (ChessBoard[i][0] == color) ? 1 : 0;
 			for (j = 1; j < 19; j++) {
@@ -219,7 +261,7 @@ class alg {
 				}
 			}
 		}
-		for (j = 0; j < 19; j++) {// ÊúÖ±·½Ïò
+		for (j = 0; j < 19; j++) {// ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½
 			ChessBoardState[0][j] = (ChessBoard[0][j] == color) ? 1 : 0;
 			for (i = 1; i < 19; i++) {
 				ChessBoardState[i][j] = (ChessBoard[i][j] == color) ? (ChessBoardState[i - 1][j] + 1)
@@ -230,7 +272,7 @@ class alg {
 			}
 		}
 
-		for (i = 0; i < 19; i++) {// "\"·½Ïò
+		for (i = 0; i < 19; i++) {// "\"ï¿½ï¿½ï¿½ï¿½
 			ChessBoardState[0][i] = (ChessBoard[0][i] == color) ? 1 : 0;
 			ChessBoardState[i][0] = (ChessBoard[i][0] == color) ? 1 : 0;
 		}
@@ -243,7 +285,7 @@ class alg {
 				}
 			}
 
-		for (i = 0; i < 19; i++) {// "/"·½Ïò
+		for (i = 0; i < 19; i++) {// "/"ï¿½ï¿½ï¿½ï¿½
 			ChessBoardState[0][i] = (ChessBoard[0][i] == color) ? 1 : 0;
 			ChessBoardState[i][18] = (ChessBoard[i][18] == color) ? 1 : 0;
 		}
@@ -259,7 +301,7 @@ class alg {
 		return false;
 	}
 
-	boolean hadsix() {// ·µ»ØÊÇ·ñÓĞÁùÁ¬£¨²»Çø·ÖºÚ°×£©
+	boolean hadsix() {// ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÖºÚ°×£ï¿½
 		mypoint p;
 		int size = data.size();
 		clrp();
@@ -272,7 +314,7 @@ class alg {
 	}
 }
 
-class SixPoint {// ÆåÅÌÉÏµÄÁ¬Ğø6¸öÎ»ÖÃ¶ÓÁĞ
+class SixPoint {// ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ï¿½ï¿½6ï¿½ï¿½Î»ï¿½Ã¶ï¿½ï¿½ï¿½
 	int i[] = new int[6];
 	int colors[] = new int[3];
 	int CurrentPoint;
@@ -285,14 +327,14 @@ class SixPoint {// ÆåÅÌÉÏµÄÁ¬Ğø6¸öÎ»ÖÃ¶ÓÁĞ
 			i[s] = -1;
 	}
 
-	void add(int color) {// ÔÚ¶ÓÁĞÖĞ¼ÓÈëÒ»¸öÆå×Ó£¬Í¬Ê±µ¯³ö×îºóÒ»¸ö
+	void add(int color) {// ï¿½Ú¶ï¿½ï¿½ï¿½ï¿½Ğ¼ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Ó£ï¿½Í¬Ê±ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½
 		colors[i[CurrentPoint] + 1]--;
 		i[CurrentPoint++] = color;
 		CurrentPoint %= 6;
 		colors[color + 1]++;
 	}
 
-	int score(int color) {// ·µ»Øµ±Ç°¶ÓÁĞÏàÓ¦ÑÕÉ«µÄµÃ·Ö
+	int score(int color) {// ï¿½ï¿½ï¿½Øµï¿½Ç°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½É«ï¿½ÄµÃ·ï¿½
 		if (colors[1 - color + 1] != 0)
 			return 0;
 		return colors[color + 1];
@@ -300,7 +342,7 @@ class SixPoint {// ÆåÅÌÉÏµÄÁ¬Ğø6¸öÎ»ÖÃ¶ÓÁĞ
 }
 
 @SuppressWarnings({"serial"})
-class mypoint implements Serializable {// ¼ÇÂ¼×ø±ê¼°ÑÕÉ«
+class mypoint implements Serializable {// ï¿½ï¿½Â¼ï¿½ï¿½ï¿½ê¼°ï¿½ï¿½É«
 	private int x, y, color;
 
 	mypoint(int _x, int _y, int _color) {

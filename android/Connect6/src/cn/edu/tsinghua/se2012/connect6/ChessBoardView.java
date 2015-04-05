@@ -1,3 +1,22 @@
+/*
+ * Copyright 2012 Shuyang Jiang, Yipeng Ma and Bo Liu
+ * 
+ * This file is part of Connect6.
+
+   Connect6 is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+
+   Connect6 is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with Connect6.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package cn.edu.tsinghua.se2012.connect6;
 
 import java.util.Vector;
@@ -17,6 +36,13 @@ import android.view.GestureDetector.OnGestureListener;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 
+/**
+ * æ£‹ç›˜ç•Œé¢
+ * 
+ * @version 1.0
+ * @author Shuyang Jiang, Yipeng Ma and Bo Liu
+ *
+ */
 @SuppressWarnings({ "deprecation", "rawtypes", "unchecked"})
 public class ChessBoardView extends ImageView implements OnGestureListener {
 	private int screenWidth;
@@ -29,30 +55,30 @@ public class ChessBoardView extends ImageView implements OnGestureListener {
 	private Vector data;
 	private alg kernel;
 	private int state;
-	// 0 = ³õÊ¼¡¢ÓÎÏ·ÔİÍ£×´Ì¬
-	// 1 = ÓÃ»§»¹ĞëÏÂ1×Ó
-	// 2 = ÓÃ»§»¹ĞëÏÂ2×Ó
+	// 0 = ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Ï·ï¿½ï¿½Í£×´Ì¬
+	// 1 = ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½1ï¿½ï¿½
+	// 2 = ï¿½Ã»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½2ï¿½ï¿½
 	private boolean pause;
-	// ÓÎÏ·ÊÇ·ñ´¦ÓÚÔİÍ£×´Ì¬
+	// ï¿½ï¿½Ï·ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½Í£×´Ì¬
 	private int color;
-	// 0 = ºÚ×Ó
-	// 1 = °××Ó
-	// -1 = ¿Õ°×
+	// 0 = ï¿½ï¿½ï¿½ï¿½
+	// 1 = ï¿½ï¿½ï¿½ï¿½
+	// -1 = ï¿½Õ°ï¿½
 	private boolean computer;
-	// 0 = ·ÇÈË»ú¶ÔÕ½
-	// 1 = ÈË»ú¶ÔÕ½
+	// 0 = ï¿½ï¿½ï¿½Ë»ï¿½ï¿½ï¿½Õ½
+	// 1 = ï¿½Ë»ï¿½ï¿½ï¿½Õ½
 
 	private int mode;
-	// 0 = Á·Ï°Ä£Ê½
+	// 0 = ï¿½ï¿½Ï°Ä£Ê½
 	// 1 = ÊµÕ½Ä£Ê½
 	private boolean AIRunOnce = false; // 122012-MYP
 	private boolean TellAIRunOnce = false;
 	private boolean SoundOver = true;
 	private boolean ComputerWin = false; // 122012-MYP
 
-	private int[] cGridLen = { 10, 25, 30, 35, 40, 45 }; // ¸ñ×ÓµÄ³¤¶È
-	private int[] cChessRadius = { 3, 8, 10, 12, 13, 15 };// Æå×ÓµÄ°ë¾¶
-	private int[] cSignRadius = { 2, 4, 5, 6, 7, 8 }; // ±êÖ¾µÄ°ë¾¶
+	private int[] cGridLen = { 10, 25, 30, 35, 40, 45 }; // ï¿½ï¿½ï¿½ÓµÄ³ï¿½ï¿½ï¿½
+	private int[] cChessRadius = { 3, 8, 10, 12, 13, 15 };// ï¿½ï¿½ï¿½ÓµÄ°ë¾¶
+	private int[] cSignRadius = { 2, 4, 5, 6, 7, 8 }; // ï¿½ï¿½Ö¾ï¿½Ä°ë¾¶
 	private final int SIZE_COUNT = 5;
 	private int X_MIN = 50, X_MAX = 590, Y_MIN = 90, Y_MAX = 630;
 	private final int SIZE_X = 650, SIZE_Y = 680;
@@ -64,7 +90,7 @@ public class ChessBoardView extends ImageView implements OnGestureListener {
 	private int signRadius = 3;
 	private int currentSizeLevel = 0;
 
-	// ¹¹Ôìº¯Êı
+	// ï¿½ï¿½ï¿½ìº¯ï¿½ï¿½
 	public ChessBoardView(Context context) {
 		super(context);
 		this.context = context;
@@ -83,7 +109,7 @@ public class ChessBoardView extends ImageView implements OnGestureListener {
 		soundpool = new SoundPool(1, AudioManager.STREAM_SYSTEM, 0);
 	}
 
-	// ³õÊ¼»¯
+	// ï¿½ï¿½Ê¼ï¿½ï¿½
 	public void init() {
 		data = new Vector();
 		kernel = new alg(data);
@@ -92,7 +118,7 @@ public class ChessBoardView extends ImageView implements OnGestureListener {
 		computer = true;
 	}
 
-	// ÆåÆ×³õÊ¼»¯£¬computerÊÇ·ñÈË»ú¶ÔÕ½
+	// ï¿½ï¿½ï¿½×³ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½computerï¿½Ç·ï¿½ï¿½Ë»ï¿½ï¿½ï¿½Õ½
 	public void init(Vector _Data, boolean _Computer) {
 		data = _Data;
 		kernel = new alg(data);
@@ -110,7 +136,7 @@ public class ChessBoardView extends ImageView implements OnGestureListener {
 		setWillNotDraw(false);
 	}
 
-	public void SetArea(int xmin, int xmax, int ymin, int ymax) {// ÉèÖÃÏÔÊ¾ÇøÓò
+	public void SetArea(int xmin, int xmax, int ymin, int ymax) {// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½
 		X_MIN = xmin;
 		X_MAX = xmax;
 		Y_MIN = ymin;
@@ -154,7 +180,7 @@ public class ChessBoardView extends ImageView implements OnGestureListener {
 			paint.setColor(Color.BLACK);
 		else
 			paint.setColor(Color.WHITE);
-		paint.setStyle(Style.FILL); // Ìî³ä
+		paint.setStyle(Style.FILL); // ï¿½ï¿½ï¿½
 		canvas.drawCircle((float) x, (float) y, (float) r, paint);
 
 	}
@@ -207,7 +233,7 @@ public class ChessBoardView extends ImageView implements OnGestureListener {
 	}
 
 	public void Paint(Canvas canvas) {
-		// »æÖÆ½çÃæ
+		// ï¿½ï¿½ï¿½Æ½ï¿½ï¿½ï¿½
 		if (ComputerWin) {
 			ComputerWin = false;
 			displayGameResult(2);  // disp the computer win msg
@@ -249,14 +275,14 @@ public class ChessBoardView extends ImageView implements OnGestureListener {
 			}
 		}
 
-		// Èç¹û²»ÊÇ19x19 ĞèÒª¸Ä±äÒ»ÏÂ´úÂë
-		PlotSign(10 - 1, 10 - 1, canvas); // »æÖÆ5¸ö±êÖ¾µã
+		// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½19x19 ï¿½ï¿½Òªï¿½Ä±ï¿½Ò»ï¿½Â´ï¿½ï¿½ï¿½
+		PlotSign(10 - 1, 10 - 1, canvas); // ï¿½ï¿½ï¿½ï¿½5ï¿½ï¿½ï¿½ï¿½Ö¾ï¿½ï¿½
 		PlotSign(4 - 1, 4 - 1, canvas);
 		PlotSign(4 - 1, 16 - 1, canvas);
 		PlotSign(16 - 1, 4 - 1, canvas);
 		PlotSign(16 - 1, 16 - 1, canvas);
 
-		Size = data.size(); // »æÖÆÆå×Ó
+		Size = data.size(); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		for (i = 0; i < Size; i++) {
 			p = (mypoint) data.elementAt(i);
 
@@ -304,21 +330,21 @@ public class ChessBoardView extends ImageView implements OnGestureListener {
 		}
 	}
 
-	public void First() {// ÏÈÊÖ
+	public void First() {// ï¿½ï¿½ï¿½ï¿½
 		data.clear();
 		state = 1;
 		color = 0;
 		pause = false;
 	}
 
-	public void Last() {// ºóÊÖ
+	public void Last() {// ï¿½ï¿½ï¿½ï¿½
 		data.clear();
 		data.add(new mypoint(9, 9, 0));
 		state = 2;
 		color = 1;
 	}
 
-	public void Restart() {// ÖØĞÂ¿ªÊ¼
+	public void Restart() {// ï¿½ï¿½ï¿½Â¿ï¿½Ê¼
 		int p;
 		int ccolor;
 		if (computer) {
@@ -354,13 +380,13 @@ public class ChessBoardView extends ImageView implements OnGestureListener {
 		computer = true;
 	}
 
-	public void Comp(boolean _computer) {// ÇĞ»»ÈË»ú¶ÔÕ½
+	public void Comp(boolean _computer) {// ï¿½Ğ»ï¿½ï¿½Ë»ï¿½ï¿½ï¿½Õ½
 		state = 0;
 		data.clear();
 		computer = _computer;
 	}
 
-	public void Prac() {// ÇĞ»»Á·Ï°±ÈÈüÄ£Ê½
+	public void Prac() {// ï¿½Ğ»ï¿½ï¿½ï¿½Ï°ï¿½ï¿½ï¿½ï¿½Ä£Ê½
 		data.clear();
 		state = 0;
 		pause = false;
@@ -368,7 +394,7 @@ public class ChessBoardView extends ImageView implements OnGestureListener {
 
 	}
 
-	public void Back() {// »ÚÆå
+	public void Back() {// ï¿½ï¿½ï¿½ï¿½
 		int Size;
 		Size = data.size();
 		if (Size == 0) {
@@ -407,7 +433,7 @@ public class ChessBoardView extends ImageView implements OnGestureListener {
 		}
 	}
 
-	public void Interrupt() {// ÔİÍ£ÓÎÏ·
+	public void Interrupt() {// ï¿½ï¿½Í£ï¿½ï¿½Ï·
 		if (!pause) {
 			state = 0;
 			pause = true;
@@ -469,10 +495,10 @@ public class ChessBoardView extends ImageView implements OnGestureListener {
 
 	public int PlaceChess(int mouseX, int mouseY, Canvas canvas) {
 		// / 0 --- do nothing
-		// / 1 --- "¹§Ï²ÄãÕ½Ê¤ÁËµçÄÔ£¡£¡£¡"
-		// / 2 --- "µçÄÔ»ñµÃÊ¤Àû£¡£¡£¡"
-		// / 3 --- "ºÚ·½»ñÊ¤£¡£¡£¡"
-		// / 4 --- "°×·½»ñÊ¤£¡£¡£¡"
+		// / 1 --- "ï¿½ï¿½Ï²ï¿½ï¿½Õ½Ê¤ï¿½Ëµï¿½ï¿½Ô£ï¿½ï¿½ï¿½ï¿½ï¿½"
+		// / 2 --- "ï¿½ï¿½ï¿½Ô»ï¿½ï¿½Ê¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
+		// / 3 --- "ï¿½Ú·ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
+		// / 4 --- "ï¿½×·ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"
 		if (state == 0 || pause)
 			return 0;
 		int result = 0;
@@ -494,7 +520,7 @@ public class ChessBoardView extends ImageView implements OnGestureListener {
 		int i, Size;
 		Size = data.size();
 		for (i = 0; i < Size; i++)
-			// ÖØ¸´ÏÂ×Ó
+			// ï¿½Ø¸ï¿½ï¿½ï¿½ï¿½ï¿½
 			if ((((mypoint) data.elementAt(i)).getx() == x)
 					&& (((mypoint) data.elementAt(i)).gety() == y)) {
 				return 0;
@@ -631,7 +657,7 @@ public class ChessBoardView extends ImageView implements OnGestureListener {
 		return false;
 	};
 
-	// ²¥·ÅÏÂ×ÓÉùÒô
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	public void playSound() {
 	    SoundOver = false;               // indicate cpu is load the sound
 		if (StartActivity.soundOpen) {

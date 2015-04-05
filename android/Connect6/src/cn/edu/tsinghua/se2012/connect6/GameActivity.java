@@ -1,3 +1,22 @@
+/*
+ * Copyright 2012 Shuyang Jiang, Yipeng Ma and Bo Liu
+ * 
+ * This file is part of Connect6.
+
+   Connect6 is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+
+   Connect6 is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with Connect6.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package cn.edu.tsinghua.se2012.connect6;
 
 import java.util.Vector;
@@ -5,6 +24,7 @@ import java.util.Vector;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,29 +39,47 @@ import android.widget.Button;
 import android.widget.Toast;
 import cn.edu.tsinghua.se2012.connect6.ChessBoardView;
 
+/**
+ * æ¸¸æˆç•Œé¢
+ * 
+ * @version 1.0
+ * @author Shuyang Jiang, Yipeng Ma and Bo Liu
+ *
+ */
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class GameActivity extends Activity {	
-	// ´æ´¢Æå×ÓÎ»ÖÃ
+	/** å­˜å‚¨æ£‹å­ä½ç½® */
 	private static Vector data = new Vector();
 
+	/** æ£‹ç›˜å¯¹è±¡ */
 	private ChessBoardView chessboard;
+	/** æ–°å±€æŒ‰é’® */
 	static public Button newGameBtn;
+	/** æ‚”æ£‹æŒ‰é’® */
 	static public Button undoGameBtn;
+	/** æ¸¸æˆè®¾ç½®æŒ‰é’® */
 	private Button gameSettingBtn;
+	/** ä¿å­˜æ£‹è°±æŒ‰é’® */
 	static public Button saveGameBtn;
+	/** ç¼©å°æŒ‰é’® */
 	private Button zoomOutBtn;
+	/** æ”¾å¤§æŒ‰é’® */
 	private Button zoomInBtn;
+	/** SoundPoolå¯¹è±¡ï¼Œç”¨æ¥æ’­æ”¾æŒ‰é’®æŒ‰ä¸‹çš„å£°éŸ³ */
 	private SoundPool soundpool;
 
-	// ÒÔÏÂÎªËùÓĞµÄÓÎÏ·×´Ì¬±äÁ¿µÄÉèÖÃ
+	/** ä»¥ä¸‹ä¸ºæ‰€æœ‰çš„æ¸¸æˆçŠ¶æ€å˜é‡çš„è®¾ç½® */
 	static public boolean undoEnable = true;
 
+	/**
+	 * åˆ›å»ºç•Œé¢ï¼Œåšä¸€äº›æ•°æ®çš„åˆå§‹åŒ–å·¥ä½œ
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.game);
 		
-		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); // ÉèÖÃÎªÊúÆÁÆÁ
+		this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); // è®¾ç½®ä¸ºç«–å±
 
 		chessboard = (ChessBoardView) findViewById(R.id.chessborad);
 		newGameBtn = (Button) findViewById(R.id.newgame);
@@ -53,7 +91,7 @@ public class GameActivity extends Activity {
 		soundpool = new SoundPool(1, AudioManager.STREAM_SYSTEM, 0);
 		zoomOutBtn.setEnabled(false);
 
-		// »ñÈ¡ÆÁÄ»·Ö±æÂÊ
+		// è·å–å±å¹•åˆ†è¾¨ç‡
 		DisplayMetrics dm = new DisplayMetrics();
 		getWindowManager().getDefaultDisplay().getMetrics(dm);
 		int screenWidth = dm.widthPixels;
@@ -62,9 +100,9 @@ public class GameActivity extends Activity {
 
 		chessboard.SetArea(0, screenWidth, 0, screenHeight - barHeight * 2);
 
-		// »­ÉÏÆåÅÌÏß
+		// ç”»ä¸Šæ£‹ç›˜çº¿
 		chessboard.ZoomOut();
-		chessboard.invalidate(); // ÖØĞÂ»æÖÆÆåÅÌ
+		chessboard.invalidate(); // é‡æ–°ç»˜åˆ¶æ£‹ç›˜
 		chessboard.init(data, StartActivity.isPVE);
 		if (StartActivity.isPVE && (!StartActivity.isFirst)) {
 			chessboard.Last();
@@ -73,7 +111,7 @@ public class GameActivity extends Activity {
 		}
 		CheckUndo();
 
-		// »ÚÆå
+		// æ‚”æ£‹
 		undoGameBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				playSound();
@@ -83,7 +121,7 @@ public class GameActivity extends Activity {
 			}
 		});
 
-		// ÓÎÏ·ÉèÖÃ
+		// æ¸¸æˆè®¾ç½®
 		gameSettingBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				playSound();
@@ -93,7 +131,7 @@ public class GameActivity extends Activity {
 			}
 		});
 
-		// ÆåÅÌËõĞ¡
+		// æ£‹ç›˜ç¼©å°
 		zoomOutBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				playSound();
@@ -107,7 +145,7 @@ public class GameActivity extends Activity {
 			}
 		});
 
-		// ÆåÅÌ·Å´ó
+		// æ£‹ç›˜æ”¾å¤§
 		zoomInBtn.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				playSound();
@@ -123,12 +161,14 @@ public class GameActivity extends Activity {
 		});
 	}
 
-	// ¿ªÊ¼ĞÂÓÎÏ·
+	/**
+	 * å¼€å§‹æ–°æ¸¸æˆ
+	 */
 	public void NewgameClick(View v) {
 		playSound();
-		Dialog alertDialog = new AlertDialog.Builder(this).setTitle("ÊÇ·ñ±£´æÆåÆ×£¿")
-				.setMessage("ÊÇ·ñ±£´æÆåÆ×£¿£¨Èç¹û²»±£´æÆ×Ôòµ±Ç°½øĞĞµÄÓÎÏ·½«¶ªÊ§£¬Èç¹û±£´æÆåÆ×ÔòÖ®Ç°±£´æµÄÆåÆ×½«±»¸²¸Ç£©")
-				.setPositiveButton("±£´æ", new DialogInterface.OnClickListener() {
+		Dialog alertDialog = new AlertDialog.Builder(this).setTitle("æ˜¯å¦ä¿å­˜æ£‹è°±ï¼Ÿ")
+				.setMessage("æ˜¯å¦ä¿å­˜æ£‹è°±ï¼Ÿï¼ˆå¦‚æœä¸ä¿å­˜è°±åˆ™å½“å‰è¿›è¡Œçš„æ¸¸æˆå°†ä¸¢å¤±ï¼Œå¦‚æœä¿å­˜æ£‹è°±åˆ™ä¹‹å‰ä¿å­˜çš„æ£‹è°±å°†è¢«è¦†ç›–ï¼‰")
+				.setPositiveButton("ä¿å­˜", new DialogInterface.OnClickListener() {
 
 					public void onClick(DialogInterface dialog, int which) {
 						SaveChess();
@@ -141,7 +181,7 @@ public class GameActivity extends Activity {
 						CheckUndo();
 					}
 				})
-				.setNeutralButton("²»±£´æ", new DialogInterface.OnClickListener() {
+				.setNeutralButton("ä¸ä¿å­˜", new DialogInterface.OnClickListener() {
 
 					public void onClick(DialogInterface dialog, int which) {
 						if (StartActivity.isPVE && (!StartActivity.isFirst)) {
@@ -153,7 +193,7 @@ public class GameActivity extends Activity {
 						CheckUndo();
 					}
 				})
-				.setNegativeButton("È¡Ïû", new DialogInterface.OnClickListener() {
+				.setNegativeButton("å–æ¶ˆ", new DialogInterface.OnClickListener() {
 
 					public void onClick(DialogInterface dialog, int which) {
 
@@ -162,18 +202,20 @@ public class GameActivity extends Activity {
 		alertDialog.show();
 	}
 
-	// ±£´æÆåÆ×
+	/**
+	 * ä¿å­˜æ£‹è°±
+	 */
 	public void SaveClick(View v) {
 		playSound();
-		Dialog alertDialog = new AlertDialog.Builder(this).setTitle("È·¶¨±£´æÆåÆ×£¿")
-				.setMessage("È·¶¨±£´æÆåÆ×Âğ£¿£¨Ö®Ç°±£´æµÄÆåÆ×½«±»¸²¸Ç£©")
-				.setPositiveButton("È·¶¨", new DialogInterface.OnClickListener() {
+		Dialog alertDialog = new AlertDialog.Builder(this).setTitle("ç¡®å®šä¿å­˜æ£‹è°±ï¼Ÿ")
+				.setMessage("ç¡®å®šä¿å­˜æ£‹è°±å—ï¼Ÿï¼ˆä¹‹å‰ä¿å­˜çš„æ£‹è°±å°†è¢«è¦†ç›–ï¼‰")
+				.setPositiveButton("ç¡®å®š", new DialogInterface.OnClickListener() {
 
 					public void onClick(DialogInterface dialog, int which) {
 						SaveChess();						
 					}
 				})
-				.setNegativeButton("È¡Ïû", new DialogInterface.OnClickListener() {
+				.setNegativeButton("å–æ¶ˆ", new DialogInterface.OnClickListener() {
 
 					public void onClick(DialogInterface dialog, int which) {
 
@@ -182,11 +224,13 @@ public class GameActivity extends Activity {
 		alertDialog.show();
 	}
 
-	// ÔØÈëÆåÆ×
+	/**
+	 * è½½å…¥æ£‹è°±
+	 */
 	public void LoadClick(View v) {
 		playSound();
 		if (StartActivity.hasChessManual == false){
-			Toast.makeText(GameActivity.this, "µ±Ç°Ã»ÓĞÆåÆ×", Toast.LENGTH_SHORT).show();
+			Toast.makeText(GameActivity.this, "å½“å‰æ²¡æœ‰æ£‹è°±", Toast.LENGTH_SHORT).show();
 		}else{
 			if (!undoEnable) {
 				SharedPreferences preferences = getSharedPreferences("Data",
@@ -206,9 +250,9 @@ public class GameActivity extends Activity {
 				return;
 			}
 			Dialog alertDialog = new AlertDialog.Builder(this)
-					.setTitle("È·¶¨ÔØÈëÆåÆ×£¿")
-					.setMessage("È·¶¨ÔØÈëÆåÆ×Âğ£¿£¨µ±Ç°½øĞĞµÄÓÎÏ·½«¶ªÊ§£©")
-					.setPositiveButton("È·¶¨", new DialogInterface.OnClickListener() {
+					.setTitle("ç¡®å®šè½½å…¥æ£‹è°±ï¼Ÿ")
+					.setMessage("ç¡®å®šè½½å…¥æ£‹è°±å—ï¼Ÿï¼ˆå½“å‰è¿›è¡Œçš„æ¸¸æˆå°†ä¸¢å¤±ï¼‰")
+					.setPositiveButton("ç¡®å®š", new DialogInterface.OnClickListener() {
 
 						public void onClick(DialogInterface dialog, int which) {
 							SharedPreferences preferences = getSharedPreferences(
@@ -227,7 +271,7 @@ public class GameActivity extends Activity {
 							CheckUndo();
 						}
 					})
-					.setNegativeButton("È¡Ïû", new DialogInterface.OnClickListener() {
+					.setNegativeButton("å–æ¶ˆ", new DialogInterface.OnClickListener() {
 
 						public void onClick(DialogInterface dialog, int which) {
 
@@ -237,7 +281,9 @@ public class GameActivity extends Activity {
 		}		
 	}
 
-	// ·µ»ØÖ÷²Ëµ¥
+	/**
+	 * è¿”å›ä¸»èœå•
+	 */
 	public void ReturnClick(View v) {
 		playSound();
 		if (!undoEnable) {
@@ -245,9 +291,9 @@ public class GameActivity extends Activity {
 			finish();
 			return;
 		}
-		Dialog alertDialog = new AlertDialog.Builder(this).setTitle("ÊÇ·ñ±£´æÆåÆ×£¿")
-				.setMessage("ÊÇ·ñ±£´æÆåÆ×£¿£¨Èç¹û²»±£´æÆ×Ôòµ±Ç°½øĞĞµÄÓÎÏ·½«¶ªÊ§£¬Èç¹û±£´æÆåÆ×ÔòÖ®Ç°±£´æµÄÆåÆ×½«±»¸²¸Ç£©")
-				.setPositiveButton("±£´æ", new DialogInterface.OnClickListener() {
+		Dialog alertDialog = new AlertDialog.Builder(this).setTitle("æ˜¯å¦ä¿å­˜æ£‹è°±ï¼Ÿ")
+				.setMessage("æ˜¯å¦ä¿å­˜æ£‹è°±ï¼Ÿï¼ˆå¦‚æœä¸ä¿å­˜è°±åˆ™å½“å‰è¿›è¡Œçš„æ¸¸æˆå°†ä¸¢å¤±ï¼Œå¦‚æœä¿å­˜æ£‹è°±åˆ™ä¹‹å‰ä¿å­˜çš„æ£‹è°±å°†è¢«è¦†ç›–ï¼‰")
+				.setPositiveButton("ä¿å­˜", new DialogInterface.OnClickListener() {
 
 					public void onClick(DialogInterface dialog, int which) {
 						SaveChess();
@@ -255,14 +301,14 @@ public class GameActivity extends Activity {
 						finish();
 					}
 				})
-				.setNeutralButton("²»±£´æ", new DialogInterface.OnClickListener() {
+				.setNeutralButton("ä¸ä¿å­˜", new DialogInterface.OnClickListener() {
 
 					public void onClick(DialogInterface dialog, int which) {
 						data.clear();
 						finish();
 					}
 				})
-				.setNegativeButton("È¡Ïû", new DialogInterface.OnClickListener() {
+				.setNegativeButton("å–æ¶ˆ", new DialogInterface.OnClickListener() {
 
 					public void onClick(DialogInterface dialog, int which) {
 
@@ -271,7 +317,9 @@ public class GameActivity extends Activity {
 		alertDialog.show();
 	}
 
-	// ±£´æÆåÆ×
+	/**
+	 * ä¿å­˜æ£‹è°±
+	 */
 	public void SaveChess() {
 		Vector tempdata = chessboard.getData();
 		mypoint p;
@@ -289,13 +337,15 @@ public class GameActivity extends Activity {
 		boolean saveSuccess = editor.commit();
 		if (saveSuccess){
 			StartActivity.hasChessManual = true;
-			Toast.makeText(this, "±£´æÆåÆ×³É¹¦", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "ä¿å­˜æ£‹è°±æˆåŠŸ", Toast.LENGTH_SHORT).show();
 		}else{
-			Toast.makeText(this, "±£´æÆåÆ×Ê§°Ü", Toast.LENGTH_SHORT).show();
+			Toast.makeText(this, "ä¿å­˜æ£‹è°±å¤±è´¥", Toast.LENGTH_SHORT).show();
 		}
 	}
 
-	// ¼ì²é°´Å¥»Ò»¯×´Ì¬
+	/**
+	 * æ£€æŸ¥æŒ‰é’®ç°åŒ–çŠ¶æ€
+	 */
 	public void CheckUndo() {
 		int Size = chessboard.getData().size();
 		if ((0 == Size)
@@ -314,41 +364,56 @@ public class GameActivity extends Activity {
 			undoGameBtn.setEnabled(false);
 	}
 
-	// ÍË³ö°´Å¥ÖØÔØ
+	/**
+	 * é€€å‡ºæŒ‰é’®é‡è½½
+	 */
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (!undoEnable) {
-			data.clear();
-			finish();
-			return true;
+		if (KeyEvent.KEYCODE_BACK == keyCode){
+			if (!undoEnable) {
+				data.clear();
+				finish();
+				return true;
+			}
+			Dialog alertDialog = new AlertDialog.Builder(this).setTitle("æ˜¯å¦ä¿å­˜æ£‹è°±ï¼Ÿ")
+					.setMessage("æ˜¯å¦ä¿å­˜æ£‹è°±ï¼Ÿï¼ˆå¦‚æœä¸ä¿å­˜è°±åˆ™å½“å‰è¿›è¡Œçš„æ¸¸æˆå°†ä¸¢å¤±ï¼Œå¦‚æœä¿å­˜æ£‹è°±åˆ™ä¹‹å‰ä¿å­˜çš„æ£‹è°±å°†è¢«è¦†ç›–ï¼‰")
+					.setPositiveButton("ä¿å­˜", new DialogInterface.OnClickListener() {
+
+						public void onClick(DialogInterface dialog, int which) {
+							SaveChess();
+							data.clear();
+							finish();
+						}
+					})
+					.setNeutralButton("ä¸ä¿å­˜", new DialogInterface.OnClickListener() {
+
+						public void onClick(DialogInterface dialog, int which) {
+							data.clear();
+							finish();
+						}
+					})
+					.setNegativeButton("å–æ¶ˆ", new DialogInterface.OnClickListener() {
+
+						public void onClick(DialogInterface dialog, int which) {
+
+						}
+					}).setCancelable(false).create();
+			alertDialog.show();
+		}else if (KeyEvent.KEYCODE_VOLUME_DOWN == keyCode){
+			AudioManager am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+			am.adjustStreamVolume (AudioManager.STREAM_RING, AudioManager.ADJUST_LOWER, 
+					AudioManager.FLAG_SHOW_UI|AudioManager.FLAG_PLAY_SOUND|AudioManager.FLAG_ALLOW_RINGER_MODES);
+		}else if (KeyEvent.KEYCODE_VOLUME_UP == keyCode){
+			AudioManager am = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+			am.adjustStreamVolume (AudioManager.STREAM_RING, AudioManager.ADJUST_RAISE, 
+					AudioManager.FLAG_SHOW_UI|AudioManager.FLAG_PLAY_SOUND|AudioManager.FLAG_ALLOW_RINGER_MODES);
 		}
-		Dialog alertDialog = new AlertDialog.Builder(this).setTitle("ÊÇ·ñ±£´æÆåÆ×£¿")
-				.setMessage("ÊÇ·ñ±£´æÆåÆ×£¿£¨Èç¹û²»±£´æÆ×Ôòµ±Ç°½øĞĞµÄÓÎÏ·½«¶ªÊ§£¬Èç¹û±£´æÆåÆ×ÔòÖ®Ç°±£´æµÄÆåÆ×½«±»¸²¸Ç£©")
-				.setPositiveButton("±£´æ", new DialogInterface.OnClickListener() {
-
-					public void onClick(DialogInterface dialog, int which) {
-						SaveChess();
-						data.clear();
-						finish();
-					}
-				})
-				.setNeutralButton("²»±£´æ", new DialogInterface.OnClickListener() {
-
-					public void onClick(DialogInterface dialog, int which) {
-						data.clear();
-						finish();
-					}
-				})
-				.setNegativeButton("È¡Ïû", new DialogInterface.OnClickListener() {
-
-					public void onClick(DialogInterface dialog, int which) {
-
-					}
-				}).setCancelable(false).create();
-		alertDialog.show();
+		
 		return true;
 	}
 	
-	// ²¥·ÅÉùÒô
+	/**
+	 * æ’­æ”¾å£°éŸ³
+	 */
 	public void playSound(){
 		if (StartActivity.soundOpen) {
 			final int sourceId = soundpool.load(GameActivity.this,

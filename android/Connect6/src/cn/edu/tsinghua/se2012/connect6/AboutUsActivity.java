@@ -1,3 +1,22 @@
+/*
+ * Copyright 2012 Shuyang Jiang, Yipeng Ma and Bo Liu
+ * 
+ * This file is part of Connect6.
+
+   Connect6 is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+
+   Connect6 is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with Connect6.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package cn.edu.tsinghua.se2012.connect6;
 
 import android.app.Activity;
@@ -10,22 +29,29 @@ import android.view.Window;
 import android.widget.Button;
 
 /**
+ * å®ç°ç‚¹å‡»ä¸»èœå•"å…³äºæˆ‘ä»¬"æŒ‰é’®å¼¹å‡ºçš„ç•Œé¢
  * 
- * @author jsy1992
- * ¹ØÓÚ½çÃæ
+ * @version 1.0
+ * @author Shuyang Jiang, Yipeng Ma and Bo Liu
  *
  */
+
 public class AboutUsActivity extends Activity{
+	/** ç¡®å®šæŒ‰é’® */
 	Button okBtn;
+	/** SoundPoolå¯¹è±¡ï¼Œç”¨æ¥æ’­æ”¾ç¡®å®šæŒ‰é’®æŒ‰ä¸‹çš„å£°éŸ³ */
 	private SoundPool soundpool;
 	
+	/**
+	 * åˆ›å»ºç•Œé¢ï¼Œåšä¸€äº›æ•°æ®çš„åˆå§‹åŒ–å·¥ä½œ
+	 */
 	@Override  
     public void onCreate(Bundle savedInstanceState) {  
         super.onCreate(savedInstanceState);  
-        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); // ÉèÖÃÎªÊúÆÁÆÁ
-        //ÏÈÈ¥³ıÓ¦ÓÃ³ÌĞò±êÌâÀ¸  ×¢Òâ£ºÒ»¶¨ÒªÔÚsetContentViewÖ®Ç°  
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT); // è®¾ç½®ä¸ºç«–å±
+        //å…ˆå»é™¤åº”ç”¨ç¨‹åºæ ‡é¢˜æ   æ³¨æ„ï¼šä¸€å®šè¦åœ¨setContentViewä¹‹å‰  
         requestWindowFeature(Window.FEATURE_NO_TITLE);  
-        //½«ÎÒÃÇ¶¨ÒåµÄ´°¿ÚÉèÖÃÎªÄ¬ÈÏÊÓÍ¼  
+        //å°†æˆ‘ä»¬å®šä¹‰çš„çª—å£è®¾ç½®ä¸ºé»˜è®¤è§†å›¾  
         setContentView(R.layout.aboutus);
         
         okBtn = (Button)findViewById(R.id.aboutusok);
@@ -39,7 +65,7 @@ public class AboutUsActivity extends Activity{
     }
 
 	/**
-	 * ²¥·ÅÉùÒô
+	 * æ’­æ”¾ç¡®å®šæŒ‰é’®æŒ‰ä¸‹çš„å£°éŸ³
 	 */
 	public void playSound(){
 		if (StartActivity.soundOpen) {
